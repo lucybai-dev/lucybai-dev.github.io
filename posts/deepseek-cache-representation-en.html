@@ -6,13 +6,6 @@
   <title>From DeepSeek’s Cache Hit Rate to Representation Learning - Lucy Bai</title>
   <meta name="description" content="Some notes on representation, structure, and how new structures emerge.">
   <link rel="stylesheet" href="/style.css">
-  <style>
-    .toc{margin:36px 0 52px;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-    .toc-title{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 8px}
-    .toc a{display:block;color:var(--text);text-decoration:none;padding:3px 0;font-size:15px}
-    .toc a:hover{text-decoration:underline;text-underline-offset:4px}
-    article h2{scroll-margin-top:32px;margin-top:56px}
-  </style>
 </head>
 <body>
   <main class="page">
@@ -36,16 +29,19 @@
   <script>
     const src = '/posts/20260528-deepseek-cache-representation-en.md';
     const post = document.getElementById('post');
+    const mapTitle = 'Map';
+    const langSwitch = '<a href="/posts/deepseek-cache-representation-zh.html">中文</a>';
     function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
     function inline(s){return escapeHtml(s).replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
     function slugify(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'');}
+    function mapLabel(h){return h.replace(/^From /,'').replace(/ to /,' → ').replace(/^Back to the Original Question$/,'Back to the Question');}
     function render(md){
       const lines = md.split(/\r?\n/);
       const headings = lines.filter(l=>l.trim().startsWith('## ')).map(l=>l.trim().slice(3));
       const used = {};
       const ids = headings.map(h=>{let base=slugify(h)||'section';let id=base;used[base]=(used[base]||0)+1;if(used[base]>1)id=base+'-'+used[base];return id;});
-      const toc = '<nav class="toc"><p class="toc-title">Map</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(h.replace(/^From /,'').replace(/ to /,' → ').replace(/^Back to the Original Question$/,'Back to the Question'))+'</a>').join('')+'</nav>';
-      let html = '<p class="eyebrow">2026.05.28 · English · <a href="/posts/deepseek-cache-representation-zh.html">中文</a></p>';
+      const toc = '<nav class="toc"><p class="toc-title">'+mapTitle+'</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(mapLabel(h))+'</a>').join('')+'</nav>';
+      let html = '<p class="eyebrow">2026.05.28 · English · '+langSwitch+'</p>';
       let para = [], quote = [], h2Index = 0, seenH1 = false, insertedToc = false;
       function maybeToc(){ if(seenH1 && !insertedToc){ html += toc; insertedToc = true; } }
       function flushPara(){ if(para.length){ html += '<p>'+inline(para.join(' '))+'</p>'; para=[]; maybeToc(); } }
