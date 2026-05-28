@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>什么值得被保留下来？ - Lucy Bai</title>
+  <title>从 DeepSeek 的缓存命中率，到表示学习 - Lucy Bai</title>
   <meta name="description" content="关于表示、结构，以及新结构如何出现的一次思维漫游。">
   <link rel="stylesheet" href="/style.css">
 </head>
@@ -20,7 +20,7 @@
     <noscript>
       <article>
         <p class="eyebrow">2026.05.28 · 中文</p>
-        <h1>什么值得被保留下来？</h1>
+        <h1>从 DeepSeek 的缓存命中率，到表示学习</h1>
         <p class="intro">这篇文章需要 JavaScript 来从 Markdown 源文件渲染。</p>
         <p><a href="/posts/20260528-deepseek-cache-representation-zh.md">阅读 Markdown 源文</a></p>
       </article>
@@ -29,6 +29,7 @@
   <script>
     const src = '/posts/20260528-deepseek-cache-representation-zh.md';
     const post = document.getElementById('post');
+    const pageTitle = '从 DeepSeek 的缓存命中率，到表示学习';
     const mapTitle = '地图';
     const langSwitch = '<a href="/posts/deepseek-cache-representation-en.html">English</a>';
     function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
@@ -51,7 +52,7 @@
         if(!line){ flushPara(); flushQuote(); continue; }
         if(line.startsWith('>')){ flushPara(); quote.push(line.replace(/^>\s?/,'')); continue; }
         flushQuote();
-        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(line.slice(2))+'</h1>'; seenH1 = true; continue; }
+        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(pageTitle)+'</h1>'; seenH1 = true; continue; }
         if(line.startsWith('## ')){ flushPara(); const title=line.slice(3); html += '<h2 id="'+ids[h2Index++]+'">'+inline(title)+'</h2>'; continue; }
         para.push(line);
       }
