@@ -12,45 +12,43 @@
   <main class="page">
     <header class="site-header">
       <a class="logo" href="/">Lucy Bai</a>
-      <nav>
-        <a href="/writing.html">Notes</a>
-        <a href="/projects.html">Projects</a>
-      </nav>
+      <nav><a href="/writing.html">Notes</a><a href="/projects.html">Projects</a></nav>
     </header>
-    <article id="post"></article>
+    <article id="post">
+      <p class="eyebrow">2026.05.28 · 中文 · <a href="/posts/deepseek-cache-representation-en.html">English</a></p>
+      <h1>什么值得被保留下来？</h1>
+      <p><em>关于表示、结构，以及新结构如何出现的一次思维漫游</em></p>
+      <nav class="toc"><p class="toc-title">地图</p><a href="#从缓存到表示">缓存 → 表示</a><a href="#从压缩到抽象">压缩 → 抽象</a><a href="#从抽象到创新">抽象 → 创新</a><a href="#从创新到表示学习">创新 → 表示学习</a><a href="#从表示学习到可解释性">表示学习 → 可解释性</a><a href="#从表示到世界">表示 → 世界</a><a href="#从发现到创造">发现 → 创造</a><a href="#回到最开始的问题">回到最开始的问题</a></nav>
+    </article>
   </main>
   <script>
     const src = '/posts/20260528-deepseek-cache-representation-zh.md';
     const post = document.getElementById('post');
     function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
     function inline(s){return escapeHtml(s).replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
-    function slugify(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'');}
-    function mapTitle(h){return h.replace(/^从/,'').replace(/到/g,' → ').replace(/^回 → 最开始的问题$/,'回到最开始的问题');}
     function render(md){
+      const ids=['从缓存到表示','从压缩到抽象','从抽象到创新','从创新到表示学习','从表示学习到可解释性','从表示到世界','从发现到创造','回到最开始的问题'];
+      const maps=['缓存 → 表示','压缩 → 抽象','抽象 → 创新','创新 → 表示学习','表示学习 → 可解释性','表示 → 世界','发现 → 创造','回到最开始的问题'];
+      const toc='<nav class="toc"><p class="toc-title">地图</p>'+ids.map((id,i)=>'<a href="#'+id+'">'+maps[i]+'</a>').join('')+'</nav>';
       const lines = md.split(/\r?\n/);
-      const headings = lines.filter(l=>l.trim().startsWith('## ')).map(l=>l.trim().slice(3));
-      const used = {};
-      const ids = headings.map(h=>{let base=slugify(h)||'section';let id=base;used[base]=(used[base]||0)+1;if(used[base]>1)id=base+'-'+used[base];return id;});
-      const toc = '<nav class="toc"><p class="toc-title">地图</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(mapTitle(h))+'</a>').join('')+'</nav>';
       let html = '<p class="eyebrow">2026.05.28 · 中文 · <a href="/posts/deepseek-cache-representation-en.html">English</a></p>';
-      let para = [], quote = [], h2Index = 0, seenH1 = false, insertedToc = false;
-      function maybeToc(){ if(seenH1 && !insertedToc){ html += toc; insertedToc = true; } }
+      let para = [], quote = [], seenH1=false, insertedToc=false;
+      function maybeToc(){ if(seenH1 && !insertedToc){ html += toc; insertedToc=true; } }
       function flushPara(){ if(para.length){ html += '<p>'+inline(para.join(' '))+'</p>'; para=[]; maybeToc(); } }
       function flushQuote(){ if(quote.length){ html += '<blockquote><p>'+inline(quote.join('<br>'))+'</p></blockquote>'; quote=[]; maybeToc(); } }
       for(const raw of lines){
-        const line = raw.trim();
+        const line=raw.trim();
         if(!line){ flushPara(); flushQuote(); continue; }
         if(line.startsWith('>')){ flushPara(); quote.push(line.replace(/^>\s?/,'')); continue; }
         flushQuote();
-        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(line.slice(2))+'</h1>'; seenH1 = true; continue; }
-        if(line.startsWith('## ')){ flushPara(); const title=line.slice(3); html += '<h2 id="'+ids[h2Index++]+'">'+inline(title)+'</h2>'; continue; }
+        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(line.slice(2))+'</h1>'; seenH1=true; continue; }
+        if(line.startsWith('## ')){ flushPara(); const title=line.slice(3); html += '<h2 id="'+title+'">'+inline(title)+'</h2>'; continue; }
         para.push(line);
       }
       flushPara(); flushQuote();
-      if(!insertedToc) html += toc;
-      post.innerHTML = html;
+      post.innerHTML=html;
     }
-    fetch(src).then(r=>r.text()).then(render).catch(()=>{post.innerHTML='<p>Unable to load post.</p>';});
+    fetch(src).then(r=>r.text()).then(render).catch(()=>{});
   </script>
 </body>
 </html>
