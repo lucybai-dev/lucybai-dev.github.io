@@ -6,6 +6,7 @@
   <title>什么值得被保留下来？ - Lucy Bai</title>
   <meta name="description" content="关于表示、结构，以及新结构如何出现的一次思维漫游。">
   <link rel="stylesheet" href="/style.css">
+  <style>.toc{margin:36px 0 52px;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.toc-title{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 8px}.toc a{display:block;color:var(--text);text-decoration:none;padding:3px 0;font-size:15px}.toc a:hover{text-decoration:underline;text-underline-offset:4px}article h2{scroll-margin-top:32px;margin-top:56px}</style>
 </head>
 <body>
   <main class="page">
@@ -16,32 +17,37 @@
         <a href="/projects.html">Projects</a>
       </nav>
     </header>
-    <article id="post">
-      <p class="eyebrow">2026.05.28 · 中文</p>
-      <p>Loading...</p>
-    </article>
+    <article id="post"></article>
   </main>
   <script>
     const src = '/posts/20260528-deepseek-cache-representation-zh.md';
     const post = document.getElementById('post');
     function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
     function inline(s){return escapeHtml(s).replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
+    function slugify(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'');}
+    function mapTitle(h){return h.replace(/^从/,'').replace(/到/g,' → ').replace(/^回 → 最开始的问题$/,'回到最开始的问题');}
     function render(md){
       const lines = md.split(/\r?\n/);
+      const headings = lines.filter(l=>l.trim().startsWith('## ')).map(l=>l.trim().slice(3));
+      const used = {};
+      const ids = headings.map(h=>{let base=slugify(h)||'section';let id=base;used[base]=(used[base]||0)+1;if(used[base]>1)id=base+'-'+used[base];return id;});
+      const toc = '<nav class="toc"><p class="toc-title">地图</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(mapTitle(h))+'</a>').join('')+'</nav>';
       let html = '<p class="eyebrow">2026.05.28 · 中文 · <a href="/posts/deepseek-cache-representation-en.html">English</a></p>';
-      let para = [], quote = [];
-      function flushPara(){ if(para.length){ html += '<p>'+inline(para.join(' '))+'</p>'; para=[]; } }
-      function flushQuote(){ if(quote.length){ html += '<blockquote><p>'+inline(quote.join('<br>'))+'</p></blockquote>'; quote=[]; } }
+      let para = [], quote = [], h2Index = 0, seenH1 = false, insertedToc = false;
+      function maybeToc(){ if(seenH1 && !insertedToc){ html += toc; insertedToc = true; } }
+      function flushPara(){ if(para.length){ html += '<p>'+inline(para.join(' '))+'</p>'; para=[]; maybeToc(); } }
+      function flushQuote(){ if(quote.length){ html += '<blockquote><p>'+inline(quote.join('<br>'))+'</p></blockquote>'; quote=[]; maybeToc(); } }
       for(const raw of lines){
         const line = raw.trim();
         if(!line){ flushPara(); flushQuote(); continue; }
         if(line.startsWith('>')){ flushPara(); quote.push(line.replace(/^>\s?/,'')); continue; }
         flushQuote();
-        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(line.slice(2))+'</h1>'; continue; }
-        if(line.startsWith('## ')){ flushPara(); html += '<h2>'+inline(line.slice(3))+'</h2>'; continue; }
+        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(line.slice(2))+'</h1>'; seenH1 = true; continue; }
+        if(line.startsWith('## ')){ flushPara(); const title=line.slice(3); html += '<h2 id="'+ids[h2Index++]+'">'+inline(title)+'</h2>'; continue; }
         para.push(line);
       }
       flushPara(); flushQuote();
+      if(!insertedToc) html += toc;
       post.innerHTML = html;
     }
     fetch(src).then(r=>r.text()).then(render).catch(()=>{post.innerHTML='<p>Unable to load post.</p>';});
