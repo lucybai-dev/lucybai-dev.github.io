@@ -3,52 +3,63 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>From DeepSeek’s Cache Hit Rate to Representation Learning - Lucy Bai</title>
+  <title>什么值得被保留下来？ - Lucy Bai</title>
   <meta name="description" content="关于表示、结构，以及新结构如何出现的一次思维漫游。">
   <link rel="stylesheet" href="/style.css">
-  <style>.toc{margin:36px 0 52px;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.toc-title{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 8px}.toc a{display:block;color:var(--text);text-decoration:none;padding:3px 0;font-size:15px}.toc a:hover{text-decoration:underline;text-underline-offset:4px}article h2{scroll-margin-top:32px;margin-top:56px}</style>
 </head>
 <body>
   <main class="page">
     <header class="site-header">
       <a class="logo" href="/">Lucy Bai</a>
-      <nav><a href="/writing.html">Notes</a><a href="/projects.html">Projects</a></nav>
+      <nav>
+        <a href="/writing.html">Notes</a>
+        <a href="/projects.html">Projects</a>
+      </nav>
     </header>
-    <article id="post">
-      <p class="eyebrow">2026.05.28 · 中文 · <a href="/posts/deepseek-cache-representation-en.html">English</a></p>
-      <h1>从 DeepSeek’s Cache 命中率到表示学习</h1>
-      <p><em>关于表示、结构，以及新结构如何出现的一次思维漫游</em></p>
-      <nav class="toc"><p class="toc-title">地图</p><a href="#从缓存到表示">缓存 → 表示</a><a href="#从压缩到抽象">压缩 → 抽象</a><a href="#从抽象到创新">抽象 → 创新</a><a href="#从创新到表示学习">创新 → 表示学习</a><a href="#从表示学习到可解释性">表示学习 → 可解释性</a><a href="#从表示到世界">表示 → 世界</a><a href="#从发现到创造">发现 → 创造</a><a href="#回到最开始的问题">回到最开始的问题</a></nav>
-    </article>
+    <article id="post"></article>
+    <noscript>
+      <article>
+        <p class="eyebrow">2026.05.28 · 中文</p>
+        <h1>什么值得被保留下来？</h1>
+        <p class="intro">这篇文章需要 JavaScript 来从 Markdown 源文件渲染。</p>
+        <p><a href="/posts/20260528-deepseek-cache-representation-zh.md">阅读 Markdown 源文</a></p>
+      </article>
+    </noscript>
   </main>
   <script>
     const src = '/posts/20260528-deepseek-cache-representation-zh.md';
     const post = document.getElementById('post');
+    const mapTitle = '地图';
+    const langSwitch = '<a href="/posts/deepseek-cache-representation-en.html">English</a>';
     function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
     function inline(s){return escapeHtml(s).replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
+    function slugify(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'');}
+    function mapLabel(h){return h.replace(/^从/,'').replace(/到/,' → ').replace(/^回 → 最开始的问题$/,'回到最开始的问题');}
     function render(md){
-      const ids=['从缓存到表示','从压缩到抽象','从抽象到创新','从创新到表示学习','从表示学习到可解释性','从表示到世界','从发现到创造','回到最开始的问题'];
-      const maps=['缓存 → 表示','压缩 → 抽象','抽象 → 创新','创新 → 表示学习','表示学习 → 可解释性','表示 → 世界','发现 → 创造','回到最开始的问题'];
-      const toc='<nav class="toc"><p class="toc-title">地图</p>'+ids.map((id,i)=>'<a href="#'+id+'">'+maps[i]+'</a>').join('')+'</nav>';
       const lines = md.split(/\r?\n/);
-      let html = '<p class="eyebrow">2026.05.28 · 中文 · <a href="/posts/deepseek-cache-representation-en.html">English</a></p>';
-      let para = [], quote = [], seenH1=false, insertedToc=false;
-      function maybeToc(){ if(seenH1 && !insertedToc){ html += toc; insertedToc=true; } }
+      const headings = lines.filter(l=>l.trim().startsWith('## ')).map(l=>l.trim().slice(3));
+      const used = {};
+      const ids = headings.map(h=>{let base=slugify(h)||'section';let id=base;used[base]=(used[base]||0)+1;if(used[base]>1)id=base+'-'+used[base];return id;});
+      const toc = '<nav class="toc"><p class="toc-title">'+mapTitle+'</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(mapLabel(h))+'</a>').join('')+'</nav>';
+      let html = '<p class="eyebrow">2026.05.28 · 中文 · '+langSwitch+'</p>';
+      let para = [], quote = [], h2Index = 0, seenH1 = false, insertedToc = false;
+      function maybeToc(){ if(seenH1 && !insertedToc){ html += toc; insertedToc = true; } }
       function flushPara(){ if(para.length){ html += '<p>'+inline(para.join(' '))+'</p>'; para=[]; maybeToc(); } }
       function flushQuote(){ if(quote.length){ html += '<blockquote><p>'+inline(quote.join('<br>'))+'</p></blockquote>'; quote=[]; maybeToc(); } }
       for(const raw of lines){
-        const line=raw.trim();
+        const line = raw.trim();
         if(!line){ flushPara(); flushQuote(); continue; }
         if(line.startsWith('>')){ flushPara(); quote.push(line.replace(/^>\s?/,'')); continue; }
         flushQuote();
-        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline('From DeepSeek’s Cache Hit Rate to Representation Learning')+'</h1>'; seenH1=true; continue; }
-        if(line.startsWith('## ')){ flushPara(); const title=line.slice(3); html += '<h2 id="'+title+'">'+inline(title)+'</h2>'; continue; }
+        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(line.slice(2))+'</h1>'; seenH1 = true; continue; }
+        if(line.startsWith('## ')){ flushPara(); const title=line.slice(3); html += '<h2 id="'+ids[h2Index++]+'">'+inline(title)+'</h2>'; continue; }
         para.push(line);
       }
       flushPara(); flushQuote();
-      post.innerHTML=html;
+      if(!insertedToc) html += toc;
+      post.innerHTML = html;
     }
-    fetch(src).then(r=>r.text()).then(render).catch(()=>{});
+    fetch(src).then(r=>r.text()).then(render).catch(()=>{post.innerHTML='<p>Unable to load post.</p>';});
   </script>
 </body>
 </html>
