@@ -44,7 +44,7 @@
       const headings = lines.filter(l=>l.trim().startsWith('## ')).map(l=>l.trim().slice(3));
       const used = {};
       const ids = headings.map(h=>{let base=slugify(h)||'section';let id=base;used[base]=(used[base]||0)+1;if(used[base]>1)id=base+'-'+used[base];return id;});
-      const toc = '<nav class="toc"><p class="toc-title">Contents</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(h)+'</a>').join('')+'</nav>';
+      const toc = '<nav class="toc"><p class="toc-title">Map</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(h.replace(/^From /,'').replace(/ to /,' → ').replace(/^Back to the Original Question$/,'Back to the Question'))+'</a>').join('')+'</nav>';
       let html = '<p class="eyebrow">2026.05.28 · English · <a href="/posts/deepseek-cache-representation-zh.html">中文</a></p>';
       let para = [], quote = [], h2Index = 0, seenH1 = false, insertedToc = false;
       function maybeToc(){ if(seenH1 && !insertedToc){ html += toc; insertedToc = true; } }
