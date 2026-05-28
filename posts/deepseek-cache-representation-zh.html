@@ -46,7 +46,7 @@
       let para = [], quote = [], h2Index = 0, seenH1 = false, insertedToc = false, usedIntro = false;
       function maybeToc(){ if(seenH1 && usedIntro && !insertedToc){ html += toc; insertedToc = true; } }
       function flushPara(){ if(para.length){ html += '<p>'+inline(para.join(' '))+'</p>'; para=[]; maybeToc(); } }
-      function flushQuote(){ if(quote.length){ html += '<blockquote><p>'+inline(quote.join('<br>'))+'</p></blockquote>'; quote=[]; maybeToc(); } }
+      function flushQuote(){ if(quote.length){ html += '<blockquote><p>'+quote.map(inline).join('<br>')+'</p></blockquote>'; quote=[]; maybeToc(); } }
       for(const raw of lines){
         const line = raw.trim();
         if(!line){ flushPara(); flushQuote(); continue; }
