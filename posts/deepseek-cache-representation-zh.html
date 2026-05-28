@@ -18,7 +18,7 @@
       <p class="eyebrow">2026.05.28 · 中文 · <a href="/posts/deepseek-cache-representation-en.html">English</a></p>
       <h1>From DeepSeek’s Cache Hit Rate to Representation Learning</h1>
       <p><em>关于表示、结构，以及新结构如何出现的一次思维漫游</em></p>
-      <nav class="toc"><p class="toc-title">Map</p><a href="#从缓存到表示">Cache → Representation</a><a href="#从压缩到抽象">Compression → Abstraction</a><a href="#从抽象到创新">Abstraction → Innovation</a><a href="#从创新到表示学习">Innovation → Representation Learning</a><a href="#从表示学习到可解释性">Representation Learning → Interpretability</a><a href="#从表示到世界">Representation → World</a><a href="#从发现到创造">Discovery → Creation</a><a href="#回到最开始的问题">Back to the Question</a></nav>
+      <nav class="toc"><p class="toc-title">地图</p><a href="#从缓存到表示">缓存 → 表示</a><a href="#从压缩到抽象">压缩 → 抽象</a><a href="#从抽象到创新">抽象 → 创新</a><a href="#从创新到表示学习">创新 → 表示学习</a><a href="#从表示学习到可解释性">表示学习 → 可解释性</a><a href="#从表示到世界">表示 → 世界</a><a href="#从发现到创造">发现 → 创造</a><a href="#回到最开始的问题">回到最开始的问题</a></nav>
     </article>
   </main>
   <script>
@@ -28,8 +28,8 @@
     function inline(s){return escapeHtml(s).replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
     function render(md){
       const ids=['从缓存到表示','从压缩到抽象','从抽象到创新','从创新到表示学习','从表示学习到可解释性','从表示到世界','从发现到创造','回到最开始的问题'];
-      const maps=['Cache → Representation','Compression → Abstraction','Abstraction → Innovation','Innovation → Representation Learning','Representation Learning → Interpretability','Representation → World','Discovery → Creation','Back to the Question'];
-      const toc='<nav class="toc"><p class="toc-title">Map</p>'+ids.map((id,i)=>'<a href="#'+id+'">'+maps[i]+'</a>').join('')+'</nav>';
+      const maps=['缓存 → 表示','压缩 → 抽象','抽象 → 创新','创新 → 表示学习','表示学习 → 可解释性','表示 → 世界','发现 → 创造','回到最开始的问题'];
+      const toc='<nav class="toc"><p class="toc-title">地图</p>'+ids.map((id,i)=>'<a href="#'+id+'">'+maps[i]+'</a>').join('')+'</nav>';
       const lines = md.split(/\r?\n/);
       let html = '<p class="eyebrow">2026.05.28 · 中文 · <a href="/posts/deepseek-cache-representation-en.html">English</a></p>';
       let para = [], quote = [], seenH1=false, insertedToc=false;
