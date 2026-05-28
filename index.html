@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lucy Bai</title>
+  <meta name="description" content="Notes, essays, projects, and ideas by Lucy Bai." />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="site-header">
+      <a class="logo" href="/">Lucy Bai</a>
+      <nav>
+        <a href="/writing.html">Writing</a>
+        <a href="/projects.html">Projects</a>
+        <a href="/about.html">About</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Personal website</p>
+      <h1>Notes, essays, projects, and ideas.</h1>
+      <p class="intro">I use this space to think in public: about AI, software, products, learning, work, and the things I am building.</p>
+    </section>
+
+    <section class="section-grid">
+      <div>
+        <h2>Writing</h2>
+        <p>Short essays, observations, and working notes.</p>
+        <a class="text-link" href="/writing.html">Read notes →</a>
+      </div>
+      <div>
+        <h2>Projects</h2>
+        <p>A record of experiments, tools, and things I am making.</p>
+        <a class="text-link" href="/projects.html">View projects →</a>
+      </div>
+    </section>
+
+    <section class="latest">
+      <h2>Latest</h2>
+      <article class="post-row">
+        <span>2026-05-28</span>
+        <a href="/posts/starting-this-site.html">Starting this site</a>
+      </article>
+    </section>
+
+    <footer>
+      <p>© <span id="year"></span> Lucy Bai</p>
+    </footer>
+  </main>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
