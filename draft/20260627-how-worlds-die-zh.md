@@ -22,9 +22,31 @@
 
 我一直在跳守卫。
 
-场上只剩下一个真守卫，一个真预言家，一个真平民，实际身份为狼人的我，以及我的狼队友。我的狼队友当时伪装成了平民。
+为了让这个残局更容易看，先把真实身份摊开。
 
-按正常节奏，预言家迟早会在我和另一个对跳守卫的人之间确认一个。
+```mermaid
+flowchart LR
+  Me((我<br/>狼<br/>跳守卫)):::wolf
+  Mate((狼队友<br/>伪装平民)):::wolf
+  Seer((真预言家)):::good
+  Guard((真守卫<br/>对跳守卫)):::god
+  Villager((真平民)):::villager
+
+  Seer -- 查杀 --> Me
+  Me -. 打成双狼 .-> Seer
+  Me -. 打成双狼 .-> Guard
+
+  classDef wolf fill:#fee2e2,stroke:#dc2626,color:#7f1d1d;
+  classDef good fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+  classDef god fill:#ede9fe,stroke:#7c3aed,color:#3b0764;
+  classDef villager fill:#dcfce7,stroke:#16a34a,color:#14532d;
+```
+
+场上还有一个真守卫，一个真预言家，一个真平民，以及我的狼队友。我的狼队友当时伪装成了平民。
+
+预言家已经查杀了我。
+
+按正常节奏，他迟早会在我和另一个对跳守卫的人之间确认一个。
 
 所以在局势彻底锁死之前，我先把故事打出去。
 
@@ -40,6 +62,18 @@
 
 后来夜里，我们狼队没有刀我，而是去刀了那个真平民。
 
+```mermaid
+flowchart LR
+  Wolves[狼队视角<br/>我 + 狼队友]:::wolf -->|夜里刀| Villager((真平民)):::villager
+  Guard((真守卫)):::god -->|守护| Villager
+  Villager --> Night[平安夜]:::night
+
+  classDef wolf fill:#fee2e2,stroke:#dc2626,color:#7f1d1d;
+  classDef god fill:#ede9fe,stroke:#7c3aed,color:#3b0764;
+  classDef villager fill:#dcfce7,stroke:#16a34a,color:#14532d;
+  classDef night fill:#fef3c7,stroke:#d97706,color:#78350f;
+```
+
 结果出了平安夜。
 
 第二天，我报了和真守卫一样的刀口。
@@ -51,6 +85,35 @@
 如果我是守卫，平民没死，是因为我守中了他。
 
 故事在那一刻看起来闭合了。
+
+但这张棋盘在狼眼里和好人眼里并不一样。
+
+```mermaid
+flowchart TB
+  subgraph G[好人阵营眼里]
+    GMe((我<br/>可能是真守卫)):::unknown
+    GGuard((对跳<br/>可能是真守卫)):::unknown
+    GSeer((预言家<br/>可能是真/可能是假)):::unknown
+    GV1((平民?)):::unknown
+    GV2((平民?)):::unknown
+  end
+
+  subgraph W[狼队眼里]
+    WMe((我<br/>狼)):::wolf
+    WMate((队友<br/>狼)):::wolf
+    WGuard((对跳<br/>真守卫)):::god
+    WSeer((真预言家)):::good
+    WV((真平民<br/>刀口)):::villager
+  end
+
+  classDef wolf fill:#fee2e2,stroke:#dc2626,color:#7f1d1d;
+  classDef good fill:#dbeafe,stroke:#2563eb,color:#1e3a8a;
+  classDef god fill:#ede9fe,stroke:#7c3aed,color:#3b0764;
+  classDef villager fill:#dcfce7,stroke:#16a34a,color:#14532d;
+  classDef unknown fill:#f3f4f6,stroke:#6b7280,color:#111827;
+```
+
+同一张棋盘，在不同阵营眼里其实是两张完全不同的棋盘。
 
 最后，我赢了。
 
