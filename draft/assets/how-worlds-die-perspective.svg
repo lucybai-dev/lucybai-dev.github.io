@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 500" role="img" aria-labelledby="title desc">
+  <title id="title">Reality 到 Belief State</title>
+  <desc id="desc">真实世界经过观测变成好人阵营的信念状态：真实身份明确，但好人只能看到可能身份。</desc>
+  <style>.bg{fill:#fafafa}.title{font:700 28px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 16px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.panel{fill:#fff;stroke:#e5e7eb;stroke-width:2}.panelTitle{font:700 19px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.node text{font:600 15px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 13px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.wolf{fill:#fee2e2;stroke:#dc2626}.god{fill:#ede9fe;stroke:#7c3aed}.seer{fill:#dbeafe;stroke:#2563eb}.villager{fill:#dcfce7;stroke:#16a34a}.unknown{fill:#f3f4f6;stroke:#6b7280}.obs{fill:#ecfeff;stroke:#0891b2}.arrow{stroke:#6b7280;stroke-width:3;fill:none;marker-end:url(#arrow)}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
+  <rect class="bg" width="980" height="500" rx="28"/>
+  <text x="50" y="56" class="title">Reality → Observation → Belief State</text>
+  <text x="50" y="86" class="sub">同一局游戏，不同玩家拿到的不是同一个世界。</text>
+  <rect class="panel" x="45" y="125" width="280" height="315" rx="24"/>
+  <text x="185" y="160" text-anchor="middle" class="panelTitle">Reality</text>
+  <g class="node">
+    <circle class="wolf" cx="120" cy="220" r="37" stroke-width="2"/><text x="120" y="213" text-anchor="middle" font-size="23">🐺</text><text x="120" y="242" text-anchor="middle">我</text>
+    <circle class="wolf" cx="250" cy="220" r="37" stroke-width="2"/><text x="250" y="213" text-anchor="middle" font-size="23">🐺</text><text x="250" y="242" text-anchor="middle">队友</text>
+    <circle class="god" cx="120" cy="320" r="37" stroke-width="2"/><text x="120" y="313" text-anchor="middle" font-size="23">🛡️</text><text x="120" y="342" text-anchor="middle">守卫</text>
+    <circle class="seer" cx="250" cy="320" r="37" stroke-width="2"/><text x="250" y="313" text-anchor="middle" font-size="23">🔮</text><text x="250" y="342" text-anchor="middle">预言家</text>
+    <circle class="villager" cx="185" cy="395" r="37" stroke-width="2"/><text x="185" y="388" text-anchor="middle" font-size="23">🙂</text><text x="185" y="417" text-anchor="middle">平民</text>
+  </g>
+  <rect class="obs" x="390" y="208" width="200" height="120" rx="24" stroke-width="3"/>
+  <text x="490" y="245" text-anchor="middle" class="panelTitle">Observation</text>
+  <text x="490" y="278" text-anchor="middle" class="small">发言 / 刀口 / 查验 / 投票</text>
+  <text x="490" y="306" text-anchor="middle" class="small">这里只有碎片</text>
+  <path class="arrow" d="M330 280 L382 280"/>
+  <path class="arrow" d="M598 280 L650 280"/>
+  <rect class="panel" x="655" y="125" width="280" height="315" rx="24"/>
+  <text x="795" y="160" text-anchor="middle" class="panelTitle">Belief（好人眼里）</text>
+  <g class="node">
+    <circle class="unknown" cx="730" cy="220" r="37" stroke-width="2"/><text x="730" y="213" text-anchor="middle" font-size="23">🛡️?</text><text x="730" y="242" text-anchor="middle">我?</text>
+    <circle class="unknown" cx="860" cy="220" r="37" stroke-width="2"/><text x="860" y="213" text-anchor="middle" font-size="23">🛡️?</text><text x="860" y="242" text-anchor="middle">对跳?</text>
+    <circle class="unknown" cx="730" cy="320" r="37" stroke-width="2"/><text x="730" y="313" text-anchor="middle" font-size="23">🔮?</text><text x="730" y="342" text-anchor="middle">预言家?</text>
+    <circle class="unknown" cx="860" cy="320" r="37" stroke-width="2"/><text x="860" y="313" text-anchor="middle" font-size="23">🙂?</text><text x="860" y="342" text-anchor="middle">平民?</text>
+    <circle class="unknown" cx="795" cy="395" r="37" stroke-width="2"/><text x="795" y="388" text-anchor="middle" font-size="23">🙂?</text><text x="795" y="417" text-anchor="middle">平民?</text>
+  </g>
+</svg>
