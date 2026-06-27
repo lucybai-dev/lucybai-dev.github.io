@@ -26,7 +26,10 @@
       </article>
     </noscript>
   </main>
-  <script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+
     const src = '/draft/20260627-how-worlds-die-zh.md';
     const post = document.getElementById('post');
     const mapTitle = '目录';
@@ -43,11 +46,23 @@
       const toc = '<nav class="toc"><p class="toc-title">'+mapTitle+'</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(mapLabel(h))+'</a>').join('')+'</nav>';
       let html = '<p class="eyebrow">2026.06.27 · 中文 · Draft'+(langSwitch ? ' · '+langSwitch : '')+'</p>';
       let para = [], quote = [], h2Index = 0, seenH1 = false, insertedToc = false, usedIntro = false;
+      let inFence = false, fenceLang = '', fenceLines = [];
       function maybeToc(){ if(seenH1 && usedIntro && !insertedToc){ html += toc; insertedToc = true; } }
       function flushPara(){ if(para.length){ html += '<p>'+inline(para.join(' '))+'</p>'; para=[]; maybeToc(); } }
       function flushQuote(){ if(quote.length){ html += '<blockquote><p>'+quote.map(inline).join('<br>')+'</p></blockquote>'; quote=[]; maybeToc(); } }
+      function flushFence(){
+        const code = fenceLines.join('\n');
+        if(fenceLang === 'mermaid') html += '<div class="mermaid">'+escapeHtml(code)+'</div>';
+        else html += '<pre><code>'+escapeHtml(code)+'</code></pre>';
+        inFence = false; fenceLang = ''; fenceLines = []; maybeToc();
+      }
       for(const raw of lines){
         const line = raw.trim();
+        if(inFence){
+          if(line.startsWith('```')){ flushFence(); continue; }
+          fenceLines.push(raw); continue;
+        }
+        if(line.startsWith('```')){ flushPara(); flushQuote(); inFence = true; fenceLang = line.replace(/^```/,'').trim(); fenceLines=[]; continue; }
         if(!line){ flushPara(); flushQuote(); continue; }
         if(line.startsWith('>')){ flushPara(); quote.push(line.replace(/^>\s?/,'')); continue; }
         flushQuote();
@@ -56,9 +71,11 @@
         if(line.startsWith('## ')){ flushPara(); const title=line.slice(3); html += '<h2 id="'+ids[h2Index++]+'">'+inline(title)+'</h2>'; continue; }
         para.push(line);
       }
+      if(inFence) flushFence();
       flushPara(); flushQuote();
       if(!insertedToc) html += toc;
       post.innerHTML = html;
+      mermaid.run({ querySelector: '.mermaid' });
     }
     fetch(src).then(r=>r.text()).then(render).catch(()=>{post.innerHTML='<p>Unable to load draft.</p>';});
   </script>
