@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research OS - Lucy Bai</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .os-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:48px 0 72px}
+    .os-card{border-top:1px solid var(--line);padding:18px 0 22px}
+    .os-card h2{font-size:22px;margin-bottom:8px}
+    .os-card p{margin-bottom:14px}.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.pill{border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:13px;color:#333}.button{display:inline-flex;align-items:center;border:1px solid var(--text);border-radius:999px;padding:7px 13px;color:var(--text);text-decoration:none;font-size:14px;background:#fff}.button.secondary{border-color:var(--line);color:#333}.button:hover{text-decoration:none;background:#f7f7f7}.map{border-top:1px solid var(--line);padding-top:20px}.map-line{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0;color:#333}.node{border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:#fafafa}.arrow{color:var(--muted)}@media(max-width:700px){.os-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="site-header">
+      <a class="logo" href="/">Lucy Bai</a>
+      <nav>
+        <a href="/research.html">Research</a>
+        <a href="/writing.html">Notes</a>
+        <a href="/projects.html">Projects</a>
+      </nav>
+    </header>
+
+    <p class="eyebrow">research notebook</p>
+    <h1>Research OS</h1>
+    <p class="intro">A working space for drafts, reviews, idea maps, and publish commands.</p>
+
+    <section class="os-grid">
+      <article class="os-card">
+        <h2>Draft Pipeline</h2>
+        <p>Preview drafts before they are public. Drafts are not listed on Notes.</p>
+        <a class="button" href="/draft.html">Open Drafts</a>
+        <div class="pill-row"><span class="pill">Idea</span><span class="pill">Outline</span><span class="pill">Draft</span><span class="pill">Revising</span><span class="pill">Publish</span></div>
+      </article>
+      <article class="os-card">
+        <h2>AI Review</h2>
+        <p>Track structure, flow, examples, ending, and open questions for each draft.</p>
+        <a class="button" href="/review/how-worlds-die-zh.html">Open Review</a>
+        <div class="pill-row"><span class="pill">Structure</span><span class="pill">Flow</span><span class="pill">Examples</span><span class="pill">Ending</span></div>
+      </article>
+      <article class="os-card">
+        <h2>Idea Map</h2>
+        <p>Keep the research thread visible instead of letting ideas disappear into chat history.</p>
+        <a class="button" href="/map.html">Open Map</a>
+        <div class="pill-row"><span class="pill">Possible Worlds</span><span class="pill">Constraint</span><span class="pill">Pruning</span><span class="pill">Intervention</span></div>
+      </article>
+      <article class="os-card">
+        <h2>Publish Commands</h2>
+        <p>Static sites cannot safely publish from a browser button. Copy commands and send them in chat.</p>
+        <a class="button secondary" href="/draft.html#commands">View Commands</a>
+      </article>
+    </section>
+
+    <section class="map">
+      <p class="eyebrow">current thread</p>
+      <h2>Reasoning under incomplete information</h2>
+      <div class="map-line">
+        <span class="node">Observation</span><span class="arrow">→</span><span class="node">Possible Worlds</span><span class="arrow">→</span><span class="node">Constraint Propagation</span><span class="arrow">→</span><span class="node">Pruning</span><span class="arrow">→</span><span class="node">Intervention</span>
+      </div>
+      <p>Current draft: <a class="text-link" href="/draft/how-worlds-die-zh.html">世界是如何死去的</a></p>
+    </section>
+  </main>
+</body>
+</html>
