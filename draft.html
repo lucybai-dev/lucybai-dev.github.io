@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drafts - Lucy Bai</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .draft-card{border-top:1px solid var(--line);padding:22px 0 24px}
+    .draft-card h2{margin-bottom:6px;font-size:22px}
+    .draft-meta{font-size:14px;color:var(--muted);margin-bottom:12px}
+    .draft-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .button{display:inline-flex;align-items:center;border:1px solid var(--text);border-radius:999px;padding:7px 13px;color:var(--text);text-decoration:none;font-size:14px;background:#fff;cursor:pointer}
+    .button.secondary{border-color:var(--line);color:#333}
+    .button:hover{text-decoration:none;background:#f7f7f7}
+    .workflow-note{border-top:1px solid var(--line);margin-top:56px;padding-top:20px;color:#333}
+    .copybox{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;background:#f6f6f6;border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:14px;overflow:auto}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="site-header">
+      <a class="logo" href="/">Lucy Bai</a>
+      <nav>
+        <a href="/writing.html">Notes</a>
+        <a href="/projects.html">Projects</a>
+      </nav>
+    </header>
+
+    <p class="eyebrow">private workflow</p>
+    <h1>Drafts</h1>
+    <p class="intro">Preview-only drafts. These are not listed on the public Notes page.</p>
+
+    <section class="latest">
+      <article class="draft-card">
+        <p class="draft-meta">2026.06.27 · 中文 · Draft</p>
+        <h2>世界是如何死去的</h2>
+        <p>从一局狼人杀整理不完整信息下的推理过程。</p>
+        <div class="draft-actions">
+          <a class="button" href="/draft/how-worlds-die-zh.html">Preview</a>
+          <a class="button secondary" href="/draft/20260627-how-worlds-die-zh.md">Markdown</a>
+          <button class="button secondary" onclick="copyPublish('publish how-worlds-die-zh')">Copy publish command</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="workflow-note">
+      <h2>Workflow</h2>
+      <p>Draft files live under <code>/draft/</code>. Published files live under <code>/posts/</code> and appear on <code>writing.html</code>.</p>
+      <p>Because this is a static GitHub Pages site, a browser button cannot safely publish without exposing a GitHub token. Use the command below in chat when a draft is ready.</p>
+      <pre class="copybox" id="publish-command">publish how-worlds-die-zh</pre>
+    </section>
+  </main>
+  <script>
+    function copyPublish(text){
+      navigator.clipboard.writeText(text).then(()=>alert('Copied: '+text)).catch(()=>alert(text));
+    }
+  </script>
+</body>
+</html>
