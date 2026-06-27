@@ -6,6 +6,10 @@
   <title>世界是如何死去的 - Lucy Bai</title>
   <meta name="description" content="从一局狼人杀整理不完整信息下的推理过程。">
   <link rel="stylesheet" href="/style.css">
+  <style>
+    .figure { margin: 2rem 0; }
+    .figure img { display: block; width: 100%; max-width: 980px; height: auto; border-radius: 24px; }
+  </style>
 </head>
 <body>
   <main class="page">
@@ -35,6 +39,7 @@
     const mapTitle = '目录';
     const langSwitch = '';
     function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+    function escapeAttr(s){return escapeHtml(s).replace(/"/g,'&quot;');}
     function inline(s){return escapeHtml(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
     function slugify(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'');}
     function mapLabel(h){return h;}
@@ -64,6 +69,8 @@
         }
         if(line.startsWith('```')){ flushPara(); flushQuote(); inFence = true; fenceLang = line.replace(/^```/,'').trim(); fenceLines=[]; continue; }
         if(!line){ flushPara(); flushQuote(); continue; }
+        const img = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+        if(img){ flushPara(); flushQuote(); html += '<figure class="figure"><img src="'+escapeAttr(img[2])+'" alt="'+escapeAttr(img[1])+'"></figure>'; maybeToc(); continue; }
         if(line.startsWith('>')){ flushPara(); quote.push(line.replace(/^>\s?/,'')); continue; }
         flushQuote();
         if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(line.slice(2))+'</h1>'; seenH1 = true; continue; }
