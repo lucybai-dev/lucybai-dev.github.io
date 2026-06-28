@@ -66,7 +66,7 @@
 
 但这张棋盘在狼眼里和好人眼里并不一样。
 
-![Reality 到 Belief State：同一局游戏在不同阵营眼里不是同一个世界](/draft/assets/how-worlds-die-perspective.svg)
+![现实 Reality 到信念状态 Belief State：同一局游戏在不同阵营眼里不是同一个世界](/draft/assets/how-worlds-die-perspective.svg)
 
 同一局游戏，不同玩家其实生活在不同的世界里。
 
@@ -252,21 +252,7 @@ flowchart TD
 
 我发现，一条世界线会有很多种死法。
 
-```mermaid
-flowchart LR
-  W[一条世界线]
-  W --> R[规则冲突]
-  W --> O[观测冲突]
-  W --> A[行动冲突]
-  W --> U[收益冲突]
-  W --> F[未来冲突]
-
-  R --> RX[剪掉]
-  O --> OX[剪掉]
-  A --> AX[剪掉]
-  U --> UX[剪掉]
-  F --> FX[剪掉]
-```
+![一条世界线会因为规则、观测、行动、收益或未来冲突而被剪掉](/draft/assets/how-worlds-die-pruning-types.svg)
 
 有些世界死在规则上。
 
@@ -374,21 +360,7 @@ flowchart LR
 
 后来我发现，我真正做的事情更像这样。
 
-```mermaid
-flowchart TD
-  S[已有信息]
-  S --> W[构造多个可能世界]
-  W --> C[传播约束]
-  C --> P[剪枝]
-  P --> M{还剩多个世界？}
-  M -->|否| E[暂时采用当前世界]
-  M -->|是| F[向未来模拟]
-  F --> G{还能区分吗？}
-  G -->|能| P
-  G -->|不能| I[主动制造信息]
-  I --> N[新发言 / 新投票 / 新刀口]
-  N --> C
-```
+![不完整信息下的推理循环：构造世界、传播约束、剪枝、模拟、干预、再观测](/draft/assets/how-worlds-die-reasoning-loop.svg)
 
 先根据已有信息构造多个可能世界。
 
