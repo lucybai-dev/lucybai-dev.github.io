@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">两条世界线</title>
+  <desc id="desc">从刀口成立出发，比较我是真守卫和对跳是真守卫两条世界线：前者解释不了狼为什么不刀唯一神，后者能解释刀口。</desc>
+  <style>.bg{fill:#fafafa}.title{font:700 26px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 15px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.obs{fill:#ecfeff;stroke:#0891b2;stroke-width:3}.world{fill:#fff;stroke:#e5e7eb;stroke-width:2}.dead{fill:#fee2e2;stroke:#dc2626;stroke-width:3}.alive{fill:#dcfce7;stroke:#16a34a;stroke-width:3}.label{font:700 18px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 14px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.x{font:800 22px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#991b1b}.check{font:800 22px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#166534}.arrow{stroke:#6b7280;stroke-width:3;fill:none;marker-end:url(#arrow)}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
+  <rect class="bg" width="900" height="360" rx="28"/>
+  <text x="50" y="55" class="title">从刀口，开始分世界</text>
+  <text x="50" y="83" class="sub">同一个平安夜，放进不同世界线里，意义完全不同。</text>
+  <rect class="obs" x="350" y="110" width="200" height="58" rx="22"/>
+  <text x="450" y="146" text-anchor="middle" class="label">刀口 = 🙂</text>
+  <path class="arrow" d="M410 170 C350 195,270 205,230 228"/>
+  <path class="arrow" d="M490 170 C550 195,630 205,670 228"/>
+  <rect class="world" x="85" y="225" width="290" height="86" rx="24"/>
+  <text x="230" y="258" text-anchor="middle" class="label">A：我是真守卫</text>
+  <text x="230" y="286" text-anchor="middle" class="small">狼为什么不刀唯一神？</text>
+  <rect class="dead" x="300" y="240" width="52" height="52" rx="18"/><text x="326" y="274" text-anchor="middle" class="x">×</text>
+  <rect class="world" x="525" y="225" width="290" height="86" rx="24"/>
+  <text x="670" y="258" text-anchor="middle" class="label">B：对跳是真守卫</text>
+  <text x="670" y="286" text-anchor="middle" class="small">能解释狼刀平民被守中</text>
+  <rect class="alive" x="740" y="240" width="52" height="52" rx="18"/><text x="766" y="274" text-anchor="middle" class="check">✓</text>
+</svg>
