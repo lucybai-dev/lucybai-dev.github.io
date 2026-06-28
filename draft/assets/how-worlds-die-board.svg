@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" role="img" aria-labelledby="title desc">
   <title id="title">残局的上帝视角</title>
-  <desc id="desc">五名玩家的真实身份：我是狼并跳守卫，队友是狼并伪装平民，另外三人分别是真守卫、真预言家和真平民；预言家当天查杀我，我把预言家和真守卫打成双狼。</desc>
+  <desc id="desc">五名玩家的真实身份：我是狼并跳守卫，队友是狼并伪装平民，另外三人分别是真守卫、真预言家和真平民；我提前把预言家和真守卫打成双狼。</desc>
   <style>
-    .bg{fill:#fafafa}.card{fill:#fff;stroke:#e5e7eb;stroke-width:2}.title{font:700 28px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 16px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.node text{font:600 18px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 14px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.wolf{fill:#fee2e2;stroke:#dc2626}.god{fill:#ede9fe;stroke:#7c3aed}.seer{fill:#dbeafe;stroke:#2563eb}.villager{fill:#dcfce7;stroke:#16a34a}.line{stroke:#d1d5db;stroke-width:2;stroke-dasharray:6 6}.attack{stroke:#dc2626;stroke-width:3;fill:none;marker-end:url(#red)}.story{stroke:#9ca3af;stroke-width:2;fill:none;stroke-dasharray:6 6;marker-end:url(#arrow)}
+    .bg{fill:#fafafa}.title{font:700 28px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 16px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.node text{font:600 18px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 14px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.wolf{fill:#fee2e2;stroke:#dc2626}.god{fill:#ede9fe;stroke:#7c3aed}.seer{fill:#dbeafe;stroke:#2563eb}.villager{fill:#dcfce7;stroke:#16a34a}.line{stroke:#d1d5db;stroke-width:2;stroke-dasharray:6 6}.story{stroke:#9ca3af;stroke-width:2;fill:none;stroke-dasharray:6 6;marker-end:url(#arrow)}
   </style>
-  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker><marker id="red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker></defs>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker></defs>
   <rect class="bg" width="920" height="430" rx="28"/>
   <text x="50" y="56" class="title">残局：先站到上帝视角</text>
   <text x="50" y="86" class="sub">场上只剩五个人。真实身份如下。</text>
@@ -12,8 +12,6 @@
   <line class="line" x1="460" y1="140" x2="665" y2="235"/>
   <line class="line" x1="255" y1="235" x2="460" y2="315"/>
   <line class="line" x1="665" y1="235" x2="460" y2="315"/>
-  <path class="attack" d="M382 300 C365 240,392 190,432 166"/>
-  <text x="365" y="245" class="small" fill="#991b1b">当天查杀</text>
   <path class="story" d="M420 110 C345 95,270 145,255 177"/>
   <text x="310" y="110" class="small">打成双狼</text>
   <path class="story" d="M500 110 C575 95,650 145,665 177"/>
