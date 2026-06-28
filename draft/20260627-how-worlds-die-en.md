@@ -26,7 +26,7 @@ I had been claiming to be the Guard.
 
 To make the situation easier to explain, let us first look at the board from an omniscient view.
 
-![Endgame board from the omniscient view](/draft/assets/how-worlds-die-board.svg)
+![Endgame board from the omniscient view](/draft/assets/how-worlds-die-board-en.svg)
 
 Before the game state completely locked against me, I decided to get my story out first.
 
@@ -48,7 +48,7 @@ No one died overnight.
 
 The next day, the real Guard and I reported the same kill target.
 
-![The next day: two Guard claims report the same kill target](/draft/assets/how-worlds-die-observation.svg)
+![The next day: two Guard claims report the same kill target](/draft/assets/how-worlds-die-observation-en.svg)
 
 So the fact that no one died overnight now had a reasonable explanation.
 
@@ -124,7 +124,7 @@ The real Guard protected him.
 
 The next day, I reported the same kill target and completed my story.
 
-![Starting from the kill target, comparing two worlds](/draft/assets/how-worlds-die-world-tree.svg)
+![Starting from the kill target, comparing two worlds](/draft/assets/how-worlds-die-world-tree-en.svg)
 
 That was when I realized.
 
@@ -180,7 +180,7 @@ If town wants to win, then that world is already dead.
 
 It just dies in the future.
 
-![If town believes I am the Guard, this world still loses one round later](/draft/assets/how-worlds-die-future.svg)
+![If town believes I am the Guard, this world still loses one round later](/draft/assets/how-worlds-die-future-en.svg)
 
 At that moment, I realized.
 
