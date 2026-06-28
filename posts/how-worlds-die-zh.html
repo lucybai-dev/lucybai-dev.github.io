@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>世界是如何死去的 - Lucy Bai</title>
+  <meta name="description" content="当真相不可观测时，我们该如何推理？">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .figure { margin: 2rem 0; }
+    .figure img { display: block; width: 100%; max-width: 980px; height: auto; border-radius: 24px; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="site-header">
+      <a class="logo" href="/">Lucy Bai</a>
+      <nav>
+        <a href="/writing.html">Notes</a>
+        <a href="/projects.html">Projects</a>
+      </nav>
+    </header>
+    <article id="post"></article>
+    <noscript>
+      <article>
+        <p class="eyebrow">2026.06.27 · 中文</p>
+        <h1>世界是如何死去的</h1>
+        <p class="intro">当真相不可观测时，我们该如何推理？</p>
+        <p><a href="/posts/20260627-how-worlds-die-zh.md">阅读 Markdown 源文</a></p>
+      </article>
+    </noscript>
+  </main>
+  <script>
+    const src = '/posts/20260627-how-worlds-die-zh.md';
+    const post = document.getElementById('post');
+    const pageTitle = '世界是如何死去的';
+    const mapTitle = '地图';
+    const langSwitch = '<a href="/posts/how-worlds-die.html">English</a>';
+    function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+    function escapeAttr(s){return escapeHtml(s).replace(/"/g,'&quot;');}
+    function inline(s){return escapeHtml(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
+    function slugify(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'');}
+    function mapLabel(h){return h;}
+    function render(md){
+      const lines = md.split(/\r?\n/);
+      const headings = lines.filter(l=>l.trim().startsWith('## ')).map(l=>l.trim().slice(3));
+      const used = {};
+      const ids = headings.map(h=>{let base=slugify(h)||'section';let id=base;used[base]=(used[base]||0)+1;if(used[base]>1)id=base+'-'+used[base];return id;});
+      const toc = '<nav class="toc"><p class="toc-title">'+mapTitle+'</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(mapLabel(h))+'</a>').join('')+'</nav>';
+      let html = '<p class="eyebrow">2026.06.27 · 中文 · '+langSwitch+'</p>';
+      let para = [], quote = [], h2Index = 0, seenH1 = false, insertedToc = false, usedIntro = false;
+      function maybeToc(){ if(seenH1 && usedIntro && !insertedToc){ html += toc; insertedToc = true; } }
+      function flushPara(){ if(para.length){ html += '<p>'+inline(para.join(' '))+'</p>'; para=[]; maybeToc(); } }
+      function flushQuote(){ if(quote.length){ html += '<blockquote><p>'+quote.map(inline).join('<br>')+'</p></blockquote>'; quote=[]; maybeToc(); } }
+      for(const raw of lines){
+        const line = raw.trim();
+        if(!line){ flushPara(); flushQuote(); continue; }
+        const img = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+        if(img){ flushPara(); flushQuote(); html += '<figure class="figure"><img src="'+escapeAttr(img[2])+'" alt="'+escapeAttr(img[1])+'"></figure>'; maybeToc(); continue; }
+        if(line.startsWith('>')){ flushPara(); quote.push(line.replace(/^>\s?/,'')); continue; }
+        flushQuote();
+        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(pageTitle)+'</h1>'; seenH1 = true; continue; }
+        if(seenH1 && !usedIntro && /^\*[^*]+\*$/.test(line)){ flushPara(); html += '<p class="intro">'+inline(line.replace(/^\*|\*$/g,''))+'</p>'; usedIntro = true; maybeToc(); continue; }
+        if(line.startsWith('## ')){ flushPara(); const title=line.slice(3); html += '<h2 id="'+ids[h2Index++]+'">'+inline(title)+'</h2>'; continue; }
+        para.push(line);
+      }
+      flushPara(); flushQuote();
+      if(!insertedToc) html += toc;
+      post.innerHTML = html;
+    }
+    fetch(src).then(r=>r.text()).then(render).catch(()=>{post.innerHTML='<p>Unable to load post.</p>';});
+  </script>
+</body>
+</html>
