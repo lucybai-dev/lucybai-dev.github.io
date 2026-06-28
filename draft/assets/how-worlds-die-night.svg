@@ -1,18 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 390" role="img" aria-labelledby="title desc">
-  <title id="title">夜晚行动</title>
-  <desc id="desc">狼队刀真平民，真守卫也守护真平民，因此出现平安夜。</desc>
-  <style>.bg{fill:#fafafa}.title{font:700 28px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 16px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.label{font:600 18px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 14px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.wolf{fill:#fee2e2;stroke:#dc2626}.god{fill:#ede9fe;stroke:#7c3aed}.villager{fill:#dcfce7;stroke:#16a34a}.night{fill:#fef3c7;stroke:#d97706}.arrow{stroke:#6b7280;stroke-width:3;fill:none;marker-end:url(#arrow)}.guard{stroke:#7c3aed;stroke-width:3;fill:none;marker-end:url(#purple)}</style>
-  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker><marker id="purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker></defs>
-  <rect class="bg" width="920" height="390" rx="28"/>
-  <text x="50" y="56" class="title">夜晚：刀口和守护落在同一个人身上</text>
-  <text x="50" y="86" class="sub">狼队去刀真平民，真守卫刚好守中了他。</text>
-  <g>
-    <circle class="wolf" cx="170" cy="200" r="64" stroke-width="3"/><text x="170" y="192" text-anchor="middle" font-size="38">🐺🐺</text><text x="170" y="232" text-anchor="middle" class="label">狼队</text>
-    <circle class="villager" cx="470" cy="200" r="64" stroke-width="3"/><text x="470" y="192" text-anchor="middle" font-size="38">🙂</text><text x="470" y="232" text-anchor="middle" class="label">真平民</text>
-    <circle class="god" cx="470" cy="330" r="42" stroke-width="3"/><text x="470" y="335" text-anchor="middle" font-size="28">🛡️</text>
-    <circle class="night" cx="740" cy="200" r="64" stroke-width="3"/><text x="740" y="192" text-anchor="middle" font-size="38">🌙</text><text x="740" y="232" text-anchor="middle" class="label">平安夜</text>
-    <path class="arrow" d="M235 200 C300 170,360 170,405 200"/><text x="320" y="155" text-anchor="middle" class="small">夜里刀</text>
-    <path class="guard" d="M470 288 L470 265"/><text x="555" y="315" text-anchor="middle" class="small">守护</text>
-    <path class="arrow" d="M535 200 C595 190,635 190,675 200"/><text x="605" y="170" text-anchor="middle" class="small">于是</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" role="img" aria-labelledby="title desc">
+  <title id="title">平安夜</title>
+  <desc id="desc">狼队刀真平民，真守卫也守真平民，因此出现平安夜。</desc>
+  <style>.bg{fill:#fafafa}.title{font:700 26px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 15px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.label{font:600 17px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 13px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.wolf{fill:#fee2e2;stroke:#dc2626}.god{fill:#ede9fe;stroke:#7c3aed}.villager{fill:#dcfce7;stroke:#16a34a}.night{fill:#fef3c7;stroke:#d97706}.knife{stroke:#dc2626;stroke-width:3;fill:none;marker-end:url(#red)}.guard{stroke:#7c3aed;stroke-width:3;fill:none;marker-end:url(#purple)}.result{stroke:#d97706;stroke-width:3;fill:none;marker-end:url(#gold)}</style>
+  <defs><marker id="red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker><marker id="purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker><marker id="gold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d97706"/></marker></defs>
+  <rect class="bg" width="900" height="320" rx="28"/>
+  <text x="50" y="55" class="title">平安夜</text>
+  <text x="50" y="83" class="sub">刀口和守护，落在同一个人身上。</text>
+  <circle class="wolf" cx="145" cy="180" r="52" stroke-width="3"/><text x="145" y="170" text-anchor="middle" font-size="32">🐺🐺</text><text x="145" y="203" text-anchor="middle" class="label">狼队</text>
+  <circle class="villager" cx="450" cy="180" r="52" stroke-width="3"/><text x="450" y="170" text-anchor="middle" font-size="32">🙂</text><text x="450" y="203" text-anchor="middle" class="label">真平民</text>
+  <circle class="god" cx="450" cy="82" r="40" stroke-width="3"/><text x="450" y="92" text-anchor="middle" font-size="30">🛡️</text>
+  <circle class="night" cx="735" cy="180" r="52" stroke-width="3"/><text x="735" y="170" text-anchor="middle" font-size="32">🌙</text><text x="735" y="203" text-anchor="middle" class="label">平安夜</text>
+  <path class="knife" d="M200 180 L388 180"/><text x="292" y="160" text-anchor="middle" class="small">刀</text>
+  <path class="guard" d="M450 122 L450 126"/><text x="490" y="122" class="small">守</text>
+  <path class="result" d="M506 180 L675 180"/>
 </svg>
