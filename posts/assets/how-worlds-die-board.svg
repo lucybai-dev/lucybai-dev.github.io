@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" role="img" aria-labelledby="title desc">
+  <title id="title">残局</title>
+  <desc id="desc">残局里场上只剩五个人：我、队友、真守卫、真预言家和真平民。</desc>
+  <style>
+    .bg{fill:#fafafa}.title{font:700 26px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 15px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.node text{font:600 17px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 13px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.wolf{fill:#fee2e2;stroke:#dc2626}.god{fill:#ede9fe;stroke:#7c3aed}.seer{fill:#dbeafe;stroke:#2563eb}.villager{fill:#dcfce7;stroke:#16a34a}
+  </style>
+  <rect class="bg" width="900" height="300" rx="28"/>
+  <text x="50" y="55" class="title">残局</text>
+  <text x="50" y="83" class="sub">场上只剩五个人。</text>
+  <g class="node">
+    <circle class="wolf" cx="120" cy="170" r="54" stroke-width="3"/>
+    <text x="120" y="160" text-anchor="middle" font-size="32">🐺</text><text x="120" y="191" text-anchor="middle">我</text><text x="120" y="214" text-anchor="middle" class="small">跳守卫</text>
+    <circle class="wolf" cx="285" cy="170" r="54" stroke-width="3"/>
+    <text x="285" y="160" text-anchor="middle" font-size="32">🐺</text><text x="285" y="191" text-anchor="middle">队友</text><text x="285" y="214" text-anchor="middle" class="small">装平民</text>
+    <circle class="god" cx="450" cy="170" r="54" stroke-width="3"/>
+    <text x="450" y="160" text-anchor="middle" font-size="32">🛡️</text><text x="450" y="191" text-anchor="middle">真守卫</text><text x="450" y="214" text-anchor="middle" class="small">对跳</text>
+    <circle class="seer" cx="615" cy="170" r="54" stroke-width="3"/>
+    <text x="615" y="160" text-anchor="middle" font-size="32">🔮</text><text x="615" y="191" text-anchor="middle">真预言家</text>
+    <circle class="villager" cx="780" cy="170" r="54" stroke-width="3"/>
+    <text x="780" y="160" text-anchor="middle" font-size="32">🙂</text><text x="780" y="191" text-anchor="middle">真平民</text>
+  </g>
+</svg>
