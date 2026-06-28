@@ -2,6 +2,8 @@
 
 *How do we reason when truth is unobservable?*
 
+**English** · [中文](/draft/how-worlds-die-zh.html)
+
 ## Prologue｜I Thought I Could Find the Truth
 
 When I first started playing Werewolf, I was drawn to the logic of the game.
