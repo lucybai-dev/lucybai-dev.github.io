@@ -1,26 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" role="img" aria-labelledby="title desc">
-  <title id="title">残局的上帝视角</title>
-  <desc id="desc">五名玩家的真实身份：我是狼并跳守卫，队友是狼并伪装平民，另外三人分别是真守卫、真预言家和真平民；我提前把预言家和真守卫打成双狼。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" role="img" aria-labelledby="title desc">
+  <title id="title">残局</title>
+  <desc id="desc">残局里场上只剩五个人：我、队友、真守卫、真预言家和真平民。</desc>
   <style>
-    .bg{fill:#fafafa}.title{font:700 28px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 16px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.node text{font:600 18px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 14px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.wolf{fill:#fee2e2;stroke:#dc2626}.god{fill:#ede9fe;stroke:#7c3aed}.seer{fill:#dbeafe;stroke:#2563eb}.villager{fill:#dcfce7;stroke:#16a34a}.line{stroke:#d1d5db;stroke-width:2;stroke-dasharray:6 6}.story{stroke:#9ca3af;stroke-width:2;fill:none;stroke-dasharray:6 6;marker-end:url(#arrow)}
+    .bg{fill:#fafafa}.title{font:700 26px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 15px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.node text{font:600 17px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 13px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.wolf{fill:#fee2e2;stroke:#dc2626}.god{fill:#ede9fe;stroke:#7c3aed}.seer{fill:#dbeafe;stroke:#2563eb}.villager{fill:#dcfce7;stroke:#16a34a}
   </style>
-  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker></defs>
-  <rect class="bg" width="920" height="430" rx="28"/>
-  <text x="50" y="56" class="title">残局：先站到上帝视角</text>
-  <text x="50" y="86" class="sub">场上只剩五个人。真实身份如下。</text>
-  <line class="line" x1="460" y1="140" x2="255" y2="235"/>
-  <line class="line" x1="460" y1="140" x2="665" y2="235"/>
-  <line class="line" x1="255" y1="235" x2="460" y2="315"/>
-  <line class="line" x1="665" y1="235" x2="460" y2="315"/>
-  <path class="story" d="M420 110 C345 95,270 145,255 177"/>
-  <text x="310" y="110" class="small">打成双狼</text>
-  <path class="story" d="M500 110 C575 95,650 145,665 177"/>
-  <text x="610" y="110" class="small">打成双狼</text>
+  <rect class="bg" width="900" height="300" rx="28"/>
+  <text x="50" y="55" class="title">残局</text>
+  <text x="50" y="83" class="sub">场上只剩五个人。</text>
   <g class="node">
-    <circle class="wolf" cx="460" cy="140" r="58" stroke-width="3"/><text x="460" y="130" text-anchor="middle" font-size="34">🐺</text><text x="460" y="162" text-anchor="middle">我</text><text x="460" y="185" text-anchor="middle" class="small">跳守卫</text>
-    <circle class="wolf" cx="255" cy="235" r="58" stroke-width="3"/><text x="255" y="225" text-anchor="middle" font-size="34">🐺</text><text x="255" y="257" text-anchor="middle">队友</text><text x="255" y="280" text-anchor="middle" class="small">装平民</text>
-    <circle class="god" cx="665" cy="235" r="58" stroke-width="3"/><text x="665" y="225" text-anchor="middle" font-size="34">🛡️</text><text x="665" y="257" text-anchor="middle">真守卫</text><text x="665" y="280" text-anchor="middle" class="small">对跳</text>
-    <circle class="seer" cx="360" cy="330" r="58" stroke-width="3"/><text x="360" y="320" text-anchor="middle" font-size="34">🔮</text><text x="360" y="352" text-anchor="middle">真预言家</text>
-    <circle class="villager" cx="560" cy="330" r="58" stroke-width="3"/><text x="560" y="320" text-anchor="middle" font-size="34">🙂</text><text x="560" y="352" text-anchor="middle">真平民</text>
+    <circle class="wolf" cx="120" cy="170" r="54" stroke-width="3"/>
+    <text x="120" y="160" text-anchor="middle" font-size="32">🐺</text><text x="120" y="191" text-anchor="middle">我</text><text x="120" y="214" text-anchor="middle" class="small">跳守卫</text>
+    <circle class="wolf" cx="285" cy="170" r="54" stroke-width="3"/>
+    <text x="285" y="160" text-anchor="middle" font-size="32">🐺</text><text x="285" y="191" text-anchor="middle">队友</text><text x="285" y="214" text-anchor="middle" class="small">装平民</text>
+    <circle class="god" cx="450" cy="170" r="54" stroke-width="3"/>
+    <text x="450" y="160" text-anchor="middle" font-size="32">🛡️</text><text x="450" y="191" text-anchor="middle">真守卫</text><text x="450" y="214" text-anchor="middle" class="small">对跳</text>
+    <circle class="seer" cx="615" cy="170" r="54" stroke-width="3"/>
+    <text x="615" y="160" text-anchor="middle" font-size="32">🔮</text><text x="615" y="191" text-anchor="middle">真预言家</text>
+    <circle class="villager" cx="780" cy="170" r="54" stroke-width="3"/>
+    <text x="780" y="160" text-anchor="middle" font-size="32">🙂</text><text x="780" y="191" text-anchor="middle">真平民</text>
   </g>
 </svg>
