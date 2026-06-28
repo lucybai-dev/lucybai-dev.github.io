@@ -44,13 +44,11 @@ The real Guard protected him.
 
 No one died overnight.
 
-The next day.
-
-The real Guard and I reported the same kill target.
+The next day, the real Guard and I reported the same kill target.
 
 ![The next day: two Guard claims report the same kill target](/draft/assets/how-worlds-die-observation.svg)
 
-So the no-death night now had a reasonable explanation.
+So the fact that no one died overnight now had a reasonable explanation.
 
 If I was the Guard.
 
@@ -60,13 +58,9 @@ Because I protected him.
 
 At that moment, the story closed.
 
-In the end.
+In the end, I won that game.
 
-I won that game.
-
-Until later, during review.
-
-I went through the whole game again.
+Until later, during review, I went through the whole game again.
 
 And suddenly realized.
 
@@ -88,17 +82,13 @@ The player counterclaiming Guard was also a wolf.
 
 I kept pushing the story forward.
 
-If that was true.
-
-Then I was the only town power role still alive.
+If that was true, then I was the only town power role still alive.
 
 The wolves already knew who I was.
 
 Why didn’t they target me?
 
-If they killed me.
-
-They could win by killing off the remaining power role.
+If they killed me, they would be much closer to winning by eliminating the power roles.
 
 But they did not.
 
@@ -108,7 +98,7 @@ I stopped there.
 
 Everything people had said before could still be explained.
 
-The no-death night could still be explained.
+The fact that no one died overnight could still be explained.
 
 Only the wolves’ night action.
 
@@ -122,7 +112,7 @@ The Seer was real.
 
 And I was a wolf.
 
-Everything suddenly became smooth.
+Suddenly, everything fit.
 
 The wolves knew who the real villager was.
 
@@ -130,9 +120,7 @@ So they targeted the villager.
 
 The real Guard protected him.
 
-The next day.
-
-I reported the same kill target and completed my story.
+The next day, I reported the same kill target and completed my story.
 
 ![Starting from the kill target, comparing two worlds](/draft/assets/how-worlds-die-world-tree.svg)
 
@@ -150,7 +138,7 @@ After that.
 
 When I reviewed a game, I stopped rushing to decide who was who.
 
-I would first lay out all the worlds that could still hold.
+I would first lay out all the worlds that could still stand.
 
 Then push them forward, one by one.
 
@@ -166,11 +154,7 @@ But I soon realized.
 
 A world does not have to die from an immediate contradiction.
 
-Sometimes.
-
-If you push it one more step forward.
-
-It collapses on its own.
+Sometimes, if you push it one more step forward, it collapses on its own.
 
 For example.
 
@@ -190,25 +174,21 @@ The remaining wolf can still kill me at night.
 
 Town still loses.
 
-If town wants to win.
-
-Then that world is already dead.
+If town wants to win, then that world is already dead.
 
 It just dies in the future.
 
 ![If town believes I am the Guard, this world still loses one round later](/draft/assets/how-worlds-die-future.svg)
 
-At that moment.
-
-I realized.
+At that moment, I realized.
 
 A world does not have to contradict the present.
 
 It can crack in the next round.
 
-In utility.
+In the choices it leaves open.
 
-In action.
+In the outcome it leads to.
 
 Or somewhere further in the future.
 
@@ -220,11 +200,7 @@ But laying out all possible worlds.
 
 And cutting away every impossible one.
 
-If I could keep doing that.
-
-Then what remained at the end.
-
-Would be the truth.
+If I could keep doing that, then what remained at the end would be the truth.
 
 ## Chapter 4｜Why There May Not Be One World Left
 
@@ -290,15 +266,13 @@ I thought that if I exposed the lie, I would get the truth.
 
 Later.
 
-I thought that if I kept killing the wrong worlds, I would get the truth.
+I thought that if I kept cutting away the wrong worlds, I would get the truth.
 
 Unfortunately.
 
 I later realized that the goal I had been chasing might not exist.
 
-Until the roles are revealed at the end.
-
-We can never uniquely determine what truly happened in that game.
+Until the roles are revealed at the end, we can never uniquely determine what truly happened in that game.
 
 What reasoning really does.
 
