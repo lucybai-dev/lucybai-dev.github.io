@@ -2,8 +2,6 @@
 
 *当真相不可观测时，我们该如何推理？*
 
-<p><a href="/draft/how-worlds-die.html">English</a> · <strong>中文</strong></p>
-
 ## Prologue｜我以为我能找到真相
 
 刚开始接触狼人杀这个游戏时，我被游戏里的种种逻辑推演所吸引。
