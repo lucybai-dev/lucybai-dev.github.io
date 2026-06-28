@@ -2,8 +2,6 @@
 
 *How do we reason when truth is unobservable?*
 
-<p><strong>English</strong> · <a href="/draft/how-worlds-die-zh.html">中文</a></p>
-
 ## Prologue｜I Thought I Could Find the Truth
 
 When I first started playing Werewolf, I was drawn to the logic of the game.
@@ -36,13 +34,13 @@ That night, we did not target the power role. We targeted the villager.
 
 The real Guard protected him, so no one died overnight.
 
-The next day, the real Guard and I reported the same kill target.
+The next day, the real Guard and I both named the same kill target.
 
-![The next day: two Guard claims report the same kill target](/draft/assets/how-worlds-die-observation-en.svg)
+![The next day: two Guard claims name the same kill target](/draft/assets/how-worlds-die-observation-en.svg)
 
 So the fact that no one died overnight now had a reasonable explanation.
 
-If I was the Guard, the villager survived because I had protected him.
+If I were the Guard, the villager survived because I had protected him.
 
 At that moment, the story closed.
 
@@ -82,7 +80,7 @@ The wolves knew who the real villager was, so they targeted the villager.
 
 The real Guard protected him.
 
-The next day, I reported the same kill target and completed my story.
+The next day, I named the same kill target and completed my story.
 
 ![Starting from the kill target, comparing two worlds](/draft/assets/how-worlds-die-world-tree-en.svg)
 
@@ -98,7 +96,7 @@ I would first lay out all the worlds that could still stand, then push them forw
 
 That game was like this.
 
-If I was the Guard, why didn’t the wolves target me?
+If I were the Guard, why didn’t the wolves target me?
 
 That world died first.
 
