@@ -2,7 +2,7 @@
 
 *How do we reason when truth is unobservable?*
 
-**English** · [中文](/draft/how-worlds-die-zh.html)
+<p><strong>English</strong> · <a href="/draft/how-worlds-die-zh.html">中文</a></p>
 
 ## Prologue｜I Thought I Could Find the Truth
 
