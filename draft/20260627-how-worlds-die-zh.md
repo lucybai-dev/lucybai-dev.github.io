@@ -2,7 +2,7 @@
 
 *当真相不可观测时，我们该如何推理？*
 
-[English](/draft/how-worlds-die.html) · **中文**
+<p><a href="/draft/how-worlds-die.html">English</a> · <strong>中文</strong></p>
 
 ## Prologue｜我以为我能找到真相
 
