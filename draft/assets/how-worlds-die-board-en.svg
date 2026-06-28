@@ -1,22 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 320" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 340" role="img" aria-labelledby="title desc">
   <title id="title">Endgame Board</title>
   <desc id="desc">Only five players remain: me, my teammate, the real Guard, the real Seer, and the real Villager.</desc>
   <style>
-    .bg{fill:#fafafa}.title{font:700 26px ui-sans-serif,system-ui,sans-serif;fill:#111827}.sub{font:400 15px ui-sans-serif,system-ui,sans-serif;fill:#6b7280}.node text{font:600 16px ui-sans-serif,system-ui,sans-serif;fill:#111827}.small{font:400 12px ui-sans-serif,system-ui,sans-serif;fill:#6b7280}.wolf{fill:#fee2e2;stroke:#dc2626}.god{fill:#ede9fe;stroke:#7c3aed}.seer{fill:#dbeafe;stroke:#2563eb}.villager{fill:#dcfce7;stroke:#16a34a}
+    .bg{fill:#fafafa}.title{font:700 26px ui-sans-serif,system-ui,sans-serif;fill:#111827}.sub{font:400 15px ui-sans-serif,system-ui,sans-serif;fill:#6b7280}.node text{font:600 15px ui-sans-serif,system-ui,sans-serif;fill:#111827}.small{font:400 11.5px ui-sans-serif,system-ui,sans-serif;fill:#6b7280}.wolf{fill:#fee2e2;stroke:#dc2626}.god{fill:#ede9fe;stroke:#7c3aed}.seer{fill:#dbeafe;stroke:#2563eb}.villager{fill:#dcfce7;stroke:#16a34a}
   </style>
-  <rect class="bg" width="1000" height="320" rx="28"/>
+  <rect class="bg" width="1100" height="340" rx="28"/>
   <text x="50" y="55" class="title">Endgame Board</text>
   <text x="50" y="83" class="sub">Only five players are left.</text>
   <g class="node">
-    <circle class="wolf" cx="120" cy="180" r="58" stroke-width="3"/>
-    <text x="120" y="166" text-anchor="middle" font-size="32">🐺</text><text x="120" y="196" text-anchor="middle">Me</text><text x="120" y="220" text-anchor="middle" class="small">Claiming Guard</text>
-    <circle class="wolf" cx="310" cy="180" r="58" stroke-width="3"/>
-    <text x="310" y="166" text-anchor="middle" font-size="32">🐺</text><text x="310" y="196" text-anchor="middle">Teammate</text><text x="310" y="220" text-anchor="middle" class="small">Fake Villager</text>
-    <circle class="god" cx="500" cy="180" r="58" stroke-width="3"/>
-    <text x="500" y="166" text-anchor="middle" font-size="32">🛡️</text><text x="500" y="196" text-anchor="middle">Real Guard</text><text x="500" y="220" text-anchor="middle" class="small">Counterclaim</text>
-    <circle class="seer" cx="690" cy="180" r="58" stroke-width="3"/>
-    <text x="690" y="166" text-anchor="middle" font-size="32">🔮</text><text x="690" y="196" text-anchor="middle">Real Seer</text>
-    <circle class="villager" cx="880" cy="180" r="58" stroke-width="3"/>
-    <text x="880" y="166" text-anchor="middle" font-size="32">🙂</text><text x="880" y="196" text-anchor="middle">Villager</text>
+    <circle class="wolf" cx="130" cy="190" r="62" stroke-width="3"/>
+    <text x="130" y="173" text-anchor="middle" font-size="30">🐺</text><text x="130" y="203" text-anchor="middle">Me</text><text x="130" y="226" text-anchor="middle" class="small">Claiming</text><text x="130" y="241" text-anchor="middle" class="small">Guard</text>
+    <circle class="wolf" cx="340" cy="190" r="62" stroke-width="3"/>
+    <text x="340" y="173" text-anchor="middle" font-size="30">🐺</text><text x="340" y="203" text-anchor="middle">Teammate</text><text x="340" y="226" text-anchor="middle" class="small">Fake</text><text x="340" y="241" text-anchor="middle" class="small">Villager</text>
+    <circle class="god" cx="550" cy="190" r="62" stroke-width="3"/>
+    <text x="550" y="173" text-anchor="middle" font-size="30">🛡️</text><text x="550" y="203" text-anchor="middle">Real Guard</text><text x="550" y="226" text-anchor="middle" class="small">Counterclaim</text>
+    <circle class="seer" cx="760" cy="190" r="62" stroke-width="3"/>
+    <text x="760" y="173" text-anchor="middle" font-size="30">🔮</text><text x="760" y="203" text-anchor="middle">Real Seer</text>
+    <circle class="villager" cx="970" cy="190" r="62" stroke-width="3"/>
+    <text x="970" y="173" text-anchor="middle" font-size="30">🙂</text><text x="970" y="203" text-anchor="middle">Villager</text>
   </g>
 </svg>
