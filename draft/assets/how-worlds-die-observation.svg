@@ -1,20 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" role="img" aria-labelledby="title desc">
-  <title id="title">两个守卫同报刀口</title>
-  <desc id="desc">第二天，我和对跳守卫都报守了同一个平民，因此真正被确认的是刀口，而不是守卫身份。</desc>
-  <style>.bg{fill:#fafafa}.title{font:700 28px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 16px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.bubble{fill:#fff;stroke:#e5e7eb;stroke-width:2}.label{font:600 18px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.quote{font:500 22px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 15px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.obs{fill:#ecfeff;stroke:#0891b2}.villager{fill:#dcfce7;stroke:#16a34a}.arrow{stroke:#6b7280;stroke-width:3;fill:none;marker-end:url(#arrow)}</style>
-  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
-  <rect class="bg" width="920" height="430" rx="28"/>
-  <text x="50" y="56" class="title">第二天：两个守卫报出同一个刀口</text>
-  <text x="50" y="86" class="sub">这一步确认的不是身份，而是观测。</text>
-  <rect class="bubble" x="70" y="135" width="330" height="100" rx="22"/>
-  <text x="105" y="175" class="label">🛡️ 我</text><text x="105" y="210" class="quote">“我守了 🙂”</text>
-  <rect class="bubble" x="520" y="135" width="330" height="100" rx="22"/>
-  <text x="555" y="175" class="label">🛡️ 对跳守卫</text><text x="555" y="210" class="quote">“我也守了 🙂”</text>
-  <path class="arrow" d="M235 250 C285 290,340 315,410 320"/>
-  <path class="arrow" d="M685 250 C635 290,580 315,510 320"/>
-  <g>
-    <rect class="obs" x="330" y="285" width="260" height="92" rx="24" stroke-width="3"/>
-    <text x="460" y="320" text-anchor="middle" class="small">Observation</text>
-    <text x="460" y="354" text-anchor="middle" class="quote">昨天刀口 = 🙂 ✓</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" role="img" aria-labelledby="title desc">
+  <title id="title">刀口成立</title>
+  <desc id="desc">我和对跳守卫都报守同一个平民，因此确认昨天刀口在这个平民身上。</desc>
+  <style>.bg{fill:#fafafa}.title{font:700 26px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 15px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.card{fill:#fff;stroke:#e5e7eb;stroke-width:2}.result{fill:#dcfce7;stroke:#16a34a;stroke-width:3}.label{font:700 18px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.quote{font:600 20px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 14px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.arrow{stroke:#6b7280;stroke-width:3;fill:none;marker-end:url(#arrow)}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
+  <rect class="bg" width="900" height="320" rx="28"/>
+  <text x="50" y="55" class="title">刀口成立</text>
+  <text x="50" y="83" class="sub">两个对立身份，报出了同一个刀口。</text>
+  <rect class="card" x="75" y="125" width="250" height="95" rx="22"/>
+  <text x="105" y="162" class="label">🛡️ 我</text>
+  <text x="105" y="195" class="quote">“我守了 🙂”</text>
+  <rect class="card" x="575" y="125" width="250" height="95" rx="22"/>
+  <text x="605" y="162" class="label">🛡️ 对跳守卫</text>
+  <text x="605" y="195" class="quote">“我也守了 🙂”</text>
+  <path class="arrow" d="M330 172 L420 172"/>
+  <path class="arrow" d="M570 172 L480 172"/>
+  <rect class="result" x="360" y="230" width="180" height="62" rx="22"/>
+  <text x="450" y="268" text-anchor="middle" class="label">✓ 刀口 = 🙂</text>
+  <path class="arrow" d="M450 182 L450 224"/>
 </svg>
