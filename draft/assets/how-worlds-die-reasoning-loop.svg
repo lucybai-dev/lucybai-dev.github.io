@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 620" role="img" aria-labelledby="title desc">
+  <title id="title">不完整信息下的推理循环</title>
+  <desc id="desc">从已有信息构造可能世界，传播约束并剪枝；如果仍有多个世界，就向未来模拟或主动制造新观测，然后继续循环。</desc>
+  <style>.bg{fill:#fafafa}.title{font:700 28px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.sub{font:400 16px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.step{fill:#fff;stroke:#e5e7eb;stroke-width:2}.decision{fill:#fef3c7;stroke:#d97706;stroke-width:2.5}.act{fill:#ede9fe;stroke:#7c3aed;stroke-width:2.5}.obs{fill:#ecfeff;stroke:#0891b2;stroke-width:2.5}.done{fill:#dcfce7;stroke:#16a34a;stroke-width:2.5}.label{font:700 17px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#111827}.small{font:400 13px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#6b7280}.edge{stroke:#6b7280;stroke-width:2.5;fill:none;marker-end:url(#arrow)}.loop{stroke:#7c3aed;stroke-width:2.5;fill:none;stroke-dasharray:7 7;marker-end:url(#purple)}.tag{font:700 13px ui-sans-serif,system-ui,"Noto Sans SC",sans-serif;fill:#374151}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker><marker id="purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker></defs>
+  <rect class="bg" width="980" height="620" rx="28"/>
+  <text x="50" y="56" class="title">我后来发现自己在做什么</text>
+  <text x="50" y="86" class="sub">这不是一次线性推理，而是一个不断获得观测、构造世界、剪枝、再获得观测的循环。</text>
+
+  <rect class="obs" x="390" y="120" width="200" height="70" rx="22"/><text x="490" y="150" text-anchor="middle" class="label">已有信息</text><text x="490" y="174" text-anchor="middle" class="small">发言 / 查验 / 刀口 / 投票</text>
+  <rect class="step" x="390" y="225" width="200" height="70" rx="22"/><text x="490" y="255" text-anchor="middle" class="label">构造多个可能世界</text><text x="490" y="279" text-anchor="middle" class="small">World A / B / C ...</text>
+  <rect class="step" x="390" y="330" width="200" height="70" rx="22"/><text x="490" y="360" text-anchor="middle" class="label">传播约束</text><text x="490" y="384" text-anchor="middle" class="small">规则 / 收益 / 轮次 / 行动</text>
+  <rect class="step" x="390" y="435" width="200" height="70" rx="22"/><text x="490" y="465" text-anchor="middle" class="label">剪枝</text><text x="490" y="489" text-anchor="middle" class="small">删掉已经无法成立的世界</text>
+
+  <path class="edge" d="M490 190 L490 218"/>
+  <path class="edge" d="M490 295 L490 323"/>
+  <path class="edge" d="M490 400 L490 428"/>
+
+  <rect class="decision" x="675" y="430" width="205" height="80" rx="26"/><text x="777" y="463" text-anchor="middle" class="label">还剩多个世界？</text><text x="777" y="489" text-anchor="middle" class="small">不确定性是否还太大</text>
+  <path class="edge" d="M590 470 L668 470"/>
+  <text x="628" y="455" text-anchor="middle" class="tag">检查</text>
+
+  <rect class="done" x="675" y="310" width="205" height="70" rx="22"/><text x="777" y="340" text-anchor="middle" class="label">暂时采用当前世界</text><text x="777" y="364" text-anchor="middle" class="small">否：先行动</text>
+  <path class="edge" d="M777 430 L777 388"/>
+  <text x="795" y="410" class="tag">否</text>
+
+  <rect class="step" x="100" y="430" width="205" height="80" rx="26"/><text x="202" y="463" text-anchor="middle" class="label">向未来模拟</text><text x="202" y="489" text-anchor="middle" class="small">今天出谁，夜里会怎样</text>
+  <path class="edge" d="M675 470 L313 470"/>
+  <text x="500" y="455" text-anchor="middle" class="tag">是</text>
+
+  <rect class="decision" x="100" y="295" width="205" height="80" rx="26"/><text x="202" y="328" text-anchor="middle" class="label">还能区分吗？</text><text x="202" y="354" text-anchor="middle" class="small">模拟是否足够剪枝</text>
+  <path class="edge" d="M202 430 L202 383"/>
+
+  <path class="loop" d="M305 335 C345 335,350 365,382 365"/>
+  <text x="340" y="320" text-anchor="middle" class="tag">能</text>
+
+  <rect class="act" x="100" y="145" width="205" height="80" rx="26"/><text x="202" y="178" text-anchor="middle" class="label">主动制造信息</text><text x="202" y="204" text-anchor="middle" class="small">PK / 打平衡 / 压票</text>
+  <path class="edge" d="M202 295 L202 233"/>
+  <text x="220" y="265" class="tag">不能</text>
+
+  <rect class="obs" x="390" y="145" width="200" height="70" rx="22" opacity="0.0"/>
+  <path class="loop" d="M305 185 C340 185,350 155,382 155"/>
+  <text x="345" y="176" text-anchor="middle" class="tag">新观测</text>
+</svg>
