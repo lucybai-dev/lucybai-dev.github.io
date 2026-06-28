@@ -1,21 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 380" role="img" aria-labelledby="title desc">
   <title id="title">Two Worlds</title>
   <desc id="desc">Starting from the kill target, compare two worlds: if I am the real Guard, the wolves' choice is hard to explain; if the counterclaim is the real Guard, the kill target makes sense.</desc>
-  <style>.bg{fill:#fafafa}.title{font:700 26px ui-sans-serif,system-ui,sans-serif;fill:#111827}.sub{font:400 15px ui-sans-serif,system-ui,sans-serif;fill:#6b7280}.obs{fill:#ecfeff;stroke:#0891b2;stroke-width:3}.world{fill:#fff;stroke:#e5e7eb;stroke-width:2}.dead{fill:#fee2e2;stroke:#dc2626;stroke-width:3}.alive{fill:#dcfce7;stroke:#16a34a;stroke-width:3}.label{font:700 18px ui-sans-serif,system-ui,sans-serif;fill:#111827}.small{font:400 14px ui-sans-serif,system-ui,sans-serif;fill:#6b7280}.x{font:800 22px ui-sans-serif,system-ui,sans-serif;fill:#991b1b}.check{font:800 22px ui-sans-serif,system-ui,sans-serif;fill:#166534}.arrow{stroke:#6b7280;stroke-width:3;fill:none;marker-end:url(#arrow)}</style>
+  <style>.bg{fill:#fafafa}.title{font:700 26px ui-sans-serif,system-ui,sans-serif;fill:#111827}.sub{font:400 15px ui-sans-serif,system-ui,sans-serif;fill:#6b7280}.obs{fill:#ecfeff;stroke:#0891b2;stroke-width:3}.world{fill:#fff;stroke:#e5e7eb;stroke-width:2}.dead{fill:#fee2e2;stroke:#dc2626;stroke-width:3}.alive{fill:#dcfce7;stroke:#16a34a;stroke-width:3}.label{font:700 18px ui-sans-serif,system-ui,sans-serif;fill:#111827}.small{font:400 13px ui-sans-serif,system-ui,sans-serif;fill:#6b7280}.x{font:800 22px ui-sans-serif,system-ui,sans-serif;fill:#991b1b}.check{font:800 22px ui-sans-serif,system-ui,sans-serif;fill:#166534}.arrow{stroke:#6b7280;stroke-width:3;fill:none;marker-end:url(#arrow)}</style>
   <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
-  <rect class="bg" width="900" height="360" rx="28"/>
+  <rect class="bg" width="1060" height="380" rx="28"/>
   <text x="50" y="55" class="title">Branching From the Kill Target</text>
   <text x="50" y="83" class="sub">The same no-death night means different things in different worlds.</text>
-  <rect class="obs" x="350" y="110" width="200" height="58" rx="22"/>
-  <text x="450" y="146" text-anchor="middle" class="label">Target = 🙂</text>
-  <path class="arrow" d="M410 170 C350 195,270 205,230 228"/>
-  <path class="arrow" d="M490 170 C550 195,630 205,670 228"/>
-  <rect class="world" x="70" y="225" width="320" height="86" rx="24"/>
-  <text x="230" y="258" text-anchor="middle" class="label">A: I am the real Guard</text>
-  <text x="230" y="286" text-anchor="middle" class="small">Why did wolves not target the only PR?</text>
-  <rect class="dead" x="315" y="240" width="52" height="52" rx="18"/><text x="341" y="274" text-anchor="middle" class="x">×</text>
-  <rect class="world" x="510" y="225" width="320" height="86" rx="24"/>
-  <text x="670" y="258" text-anchor="middle" class="label">B: Counterclaim is real Guard</text>
-  <text x="670" y="286" text-anchor="middle" class="small">Explains protected villager target</text>
-  <rect class="alive" x="755" y="240" width="52" height="52" rx="18"/><text x="781" y="274" text-anchor="middle" class="check">✓</text>
+  <rect class="obs" x="430" y="112" width="200" height="58" rx="22"/>
+  <text x="530" y="148" text-anchor="middle" class="label">Target = 🙂</text>
+  <path class="arrow" d="M490 172 C405 205,325 215,265 236"/>
+  <path class="arrow" d="M570 172 C655 205,735 215,795 236"/>
+  <rect class="world" x="65" y="235" width="390" height="95" rx="24"/>
+  <text x="260" y="268" text-anchor="middle" class="label">A: I am the real Guard</text>
+  <text x="260" y="297" text-anchor="middle" class="small">Why not target the only power role?</text>
+  <rect class="dead" x="382" y="256" width="52" height="52" rx="18"/><text x="408" y="290" text-anchor="middle" class="x">×</text>
+  <rect class="world" x="605" y="235" width="390" height="95" rx="24"/>
+  <text x="800" y="268" text-anchor="middle" class="label">B: Counterclaim is real Guard</text>
+  <text x="800" y="297" text-anchor="middle" class="small">Explains protected villager target</text>
+  <rect class="alive" x="922" y="256" width="52" height="52" rx="18"/><text x="948" y="290" text-anchor="middle" class="check">✓</text>
 </svg>
