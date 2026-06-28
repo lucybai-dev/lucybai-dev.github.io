@@ -8,11 +8,11 @@ Why is the cache hit rate so high?
 
 Tasks change. Code changes. The topic of conversation changes. And yet, in many cases, the cache hit rate remains surprisingly high.
 
-Following that question naturally leads to KV Cache.
+That question leads naturally to KV cache.
 
-From an engineering perspective, KV Cache is about avoiding repeated computation. But if we keep pulling on this thread, a more interesting question appears:
+From an engineering perspective, KV cache is about avoiding repeated computation. But if we keep pulling on this thread, a more interesting question comes into view:
 
-> What exactly is KV Cache storing?
+> What exactly is KV cache storing?
 
 Or to phrase it differently:
 
@@ -20,7 +20,7 @@ Or to phrase it differently:
 
 ## From Cache to Representation
 
-If KV Cache stores some kind of intermediate representation, the next question becomes natural.
+If KV cache stores some kind of intermediate representation, the next question is natural.
 
 Once something has already been turned into vectors and matrices, why not compress it further?
 
@@ -40,7 +40,7 @@ But models seem to care less about the original input itself, and more about the
 
 In other words, the focus of compression may not be information itself, but structure.
 
-This question is not unique to KV Cache.
+This question is not unique to KV cache.
 
 Many research directions are essentially dealing with similar questions:
 
@@ -58,9 +58,9 @@ At first glance, this feels natural.
 
 But if we look closer, things become less straightforward.
 
-Zip is also compression.
+ZIP is compression too.
 
-But Zip does not form concepts.
+But ZIP does not form concepts.
 
 If we compress an entire book into an archive, the file becomes smaller, but it does not understand the book any better.
 
@@ -70,7 +70,7 @@ One is about reconstruction.
 
 The other is about understanding.
 
-From this perspective, abstraction looks more like compression that preserves structure.
+From this angle, abstraction looks more like compression that preserves structure.
 
 A large amount of detail is discarded.
 
@@ -92,7 +92,7 @@ Some relationships are preserved.
 
 Some details are deliberately ignored.
 
-Other new structures are recombined in the process.
+Other structures are recombined in the process.
 
 This may look like reducing information, but in many cases it is closer to continuous information transformation.
 
@@ -104,11 +104,11 @@ Relationships between signals are re-encoded.
 
 What eventually enters the model is no longer the raw world itself, but a new representation.
 
-From this perspective, abstraction is not merely about compressing information.
+In this sense, abstraction is not merely about compressing information.
 
 It is also about forming representations.
 
-Which leads to the next question:
+This leads to the next question:
 
 > Is abstraction a process of forming representations?
 
@@ -136,11 +136,11 @@ Abstraction.
 
 Recombination.
 
-Lift, propulsion, structure, and control were extracted from the original system and recombined in a new system.
+Lift, propulsion, structure, and control were extracted from the original system and recombined in a new one.
 
 That new system became the airplane.
 
-From this perspective, innovation starts to look less mysterious.
+From this angle, innovation starts to look less mysterious.
 
 Many engineering innovations seem to follow a similar pattern:
 
@@ -154,7 +154,7 @@ A line appears here that will keep coming back:
 
 > Decompose → Abstract → Recombine
 
-Interestingly, the airplane example leaves behind another question.
+The airplane example leaves behind another question.
 
 Did we discover lift, or did we create the airplane?
 
@@ -162,7 +162,7 @@ In some sense, both happened at the same time.
 
 ## From Innovation to Representation Learning
 
-If we bring this line of thought back to machine learning, another interesting question appears.
+If we bring this line of thought back to machine learning, the question changes again.
 
 What exactly is a neural network doing?
 
@@ -180,7 +180,7 @@ MoE does the same.
 
 If we understand neural networks as systems that continuously compress information, we quickly run into contradictions.
 
-So the question naturally changes:
+So the question becomes:
 
 > Are neural networks really compressing?
 >
@@ -230,13 +230,11 @@ Instead of defining representations first and learning afterward, representation
 
 ## From Representation Learning to Interpretability
 
-If neural networks are constantly forming new representations, the next question becomes:
+If neural networks are constantly forming new representations, the next question is:
 
 > What exactly did they learn?
 
-Following this line leads naturally to many research directions.
-
-Representation learning, interpretability, and recent work on internal model representations all live around this question.
+Many research directions live around this question, including representation learning, interpretability, and recent work on internal model representations.
 
 But there is an even more interesting question underneath:
 
@@ -272,13 +270,13 @@ For the original task, this was clearly a failure.
 
 That was also how I understood it at the time.
 
-But later, the professor’s wife offered another perspective. I no longer remember the exact details, but I still remember the impact of that moment.
+But later, someone offered another perspective. I no longer remember the exact details, but I still remember the impact of that moment.
 
 The idea was roughly this:
 
 A representation that is useless for recognizing horses is not necessarily useless for every task.
 
-If the goal were to identify the data source, the shooting environment, or even which stable the image came from, that watermark might become a very useful feature.
+If the goal were to identify the data source, the setting, or even which stable the image came from, that watermark might become a very useful feature.
 
 At that moment, I realized something.
 
@@ -320,9 +318,7 @@ Finding a balance between these two sides is one of the long-running problems in
 
 ## From Representation to the World
 
-If representation is how a model makes sense of the world, the next question becomes:
-
-What happens after representation?
+If representation is how a model makes sense of the world, what happens after representation?
 
 Representation itself is not the destination.
 
@@ -384,7 +380,7 @@ This question sounds abstract.
 
 But it appears in many research discussions.
 
-When AlphaFold predicts protein structures, is it discovering structure or predicting structure?
+When AlphaFold predicts protein structures, is it merely predicting them, or discovering a structure that was already latent in the system?
 
 When a generative model produces a design that has never existed before, is it creating, or recombining existing structures?
 
