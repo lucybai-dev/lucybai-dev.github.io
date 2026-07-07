@@ -16,6 +16,7 @@
     .button:hover{text-decoration:none;background:#f7f7f7}
     .workflow-note{border-top:1px solid var(--line);margin-top:56px;padding-top:20px;color:#333}
     .copybox{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;background:#f6f6f6;border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:14px;overflow:auto}
+    .status{color:var(--muted);padding:20px 0;border-top:1px solid var(--line)}
   </style>
 </head>
 <body>
@@ -32,42 +33,75 @@
     <h1>Drafts</h1>
     <p class="intro">Preview-only drafts. These are not listed on the public Notes page.</p>
 
-    <section class="latest">
-      <article class="draft-card">
-        <p class="draft-meta">2026.07.08 · English · Outline</p>
-        <h2>When Thinking Is Not Enough</h2>
-        <p>When existing observations can no longer eliminate competing worlds, action becomes part of reasoning itself.</p>
-        <div class="draft-actions">
-          <a class="button" href="/draft/when-thinking-is-not-enough.html">Preview</a>
-          <a class="button secondary" href="/draft/20260708-when-thinking-is-not-enough.md">Markdown</a>
-          <button class="button secondary" onclick="copyPublish('publish when-thinking-is-not-enough')">Copy publish command</button>
-        </div>
-      </article>
-
-      <article class="draft-card">
-        <p class="draft-meta">2026.06.27 · English · Draft</p>
-        <h2>How Worlds Die</h2>
-        <p>How do we reason when truth is unobservable?</p>
-        <div class="draft-actions">
-          <a class="button" href="/draft/how-worlds-die.html">Preview</a>
-          <a class="button secondary" href="/draft/how-worlds-die-zh.html">中文</a>
-          <a class="button secondary" href="/draft/20260627-how-worlds-die.md">Markdown</a>
-          <button class="button secondary" onclick="copyPublish('publish how-worlds-die')">Copy publish command</button>
-        </div>
-      </article>
+    <section class="latest" id="drafts">
+      <p class="status">Loading drafts…</p>
     </section>
 
     <section class="workflow-note">
       <h2>Workflow</h2>
-      <p>Draft files live under <code>/draft/</code>. Published files live under <code>/posts/</code> and appear on <code>writing.html</code>.</p>
-      <p>Because this is a static GitHub Pages site, a browser button cannot safely publish without exposing a GitHub token. Use the command below in chat when a draft is ready.</p>
-      <pre class="copybox" id="publish-command">publish when-thinking-is-not-enough</pre>
+      <p>Add a Markdown file to <code>/draft/</code> using the filename format <code>YYYYMMDD-slug.md</code>. It will appear here automatically.</p>
+      <p>Published files live under <code>/posts/</code> and appear on <code>writing.html</code>.</p>
+      <pre class="copybox">publish &lt;slug&gt;</pre>
     </section>
   </main>
   <script>
+    const owner = 'lucybai-dev';
+    const repo = 'lucybai-dev.github.io';
+    const draftsEl = document.getElementById('drafts');
+
+    function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+    function formatDate(name){
+      const m = name.match(/^(\d{4})(\d{2})(\d{2})-/);
+      return m ? `${m[1]}.${m[2]}.${m[3]}` : 'Draft';
+    }
+    function slugFromFile(name){return name.replace(/^\d{8}-/,'').replace(/\.md$/,'');}
+    function titleFromMarkdown(md, fallback){
+      const h1 = md.match(/^#\s+(.+)$/m);
+      return h1 ? h1[1].trim() : fallback.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    }
+    function descriptionFromMarkdown(md){
+      const italic = md.match(/^\*([^*]+)\*$/m);
+      if(italic) return italic[1].trim();
+      const lines = md.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+      const first = lines.find(line=>!line.startsWith('#') && !line.startsWith('---') && !/^[-*] /.test(line));
+      return first ? first.replace(/^>|\*|\*$/g,'').trim() : '';
+    }
     function copyPublish(text){
       navigator.clipboard.writeText(text).then(()=>alert('Copied: '+text)).catch(()=>alert(text));
     }
+    function renderCard(item){
+      const file = item.name;
+      const slug = slugFromFile(file);
+      const title = titleFromMarkdown(item.md, slug);
+      const description = descriptionFromMarkdown(item.md);
+      return `
+        <article class="draft-card">
+          <p class="draft-meta">${formatDate(file)} · Draft</p>
+          <h2>${escapeHtml(title)}</h2>
+          ${description ? `<p>${escapeHtml(description)}</p>` : ''}
+          <div class="draft-actions">
+            <a class="button" href="/draft/view.html?file=${encodeURIComponent(file)}">Preview</a>
+            <a class="button secondary" href="/draft/${encodeURIComponent(file)}">Markdown</a>
+            <button class="button secondary" data-command="publish ${escapeHtml(slug)}">Copy publish command</button>
+          </div>
+        </article>`;
+    }
+
+    fetch(`https://api.github.com/repos/${owner}/${repo}/contents/draft`)
+      .then(r=>{if(!r.ok) throw new Error('GitHub API error'); return r.json();})
+      .then(files=>files
+        .filter(f=>f.type==='file' && /^\d{8}-[a-z0-9-]+\.md$/i.test(f.name))
+        .sort((a,b)=>b.name.localeCompare(a.name)))
+      .then(files=>Promise.all(files.map(file=>
+        fetch(file.download_url).then(r=>{if(!r.ok) throw new Error('Markdown load error'); return r.text();}).then(md=>({...file,md}))
+      )))
+      .then(items=>{
+        draftsEl.innerHTML = items.length ? items.map(renderCard).join('') : '<p class="status">No drafts found.</p>';
+        draftsEl.querySelectorAll('[data-command]').forEach(button=>button.addEventListener('click',()=>copyPublish(button.dataset.command)));
+      })
+      .catch(()=>{
+        draftsEl.innerHTML = '<p class="status">Unable to load drafts from GitHub.</p>';
+      });
   </script>
 </body>
 </html>
