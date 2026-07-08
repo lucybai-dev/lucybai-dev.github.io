@@ -98,6 +98,40 @@ Questions:
 - Does the "constraint" language add anything beyond existing information-theoretic quantities?
 - Can qualitative world-pruning and probabilistic belief updating be connected without treating them as identical?
 
+## System-building hypotheses
+
+The hypotheses above are mostly explanatory: they ask what hidden states, belief updates, and information acquisition may be doing. The following hypotheses ask whether those ideas can be turned into interventions that improve a system.
+
+### S1. Explicitly training hidden-state stability may improve transfer
+
+If stable hidden states are useful rather than merely correlated with good performance, then directly encouraging equivalence across observations that share the same task-relevant state should improve OOD generalization, calibration, or planning.
+
+This should be tested against simpler explanations such as ordinary augmentation, larger datasets, stronger regularization, or increased model capacity.
+
+### S2. Training objectives determine which latent structure becomes usable
+
+Different objectives may produce hidden states with systematically different properties. Next-token prediction, reconstruction, contrastive learning, latent-dynamics prediction, belief reconstruction, and planning objectives may differ in how well they preserve task-relevant structure and uncertainty.
+
+A useful result would not only rank objectives, but explain which hidden-state properties each objective induces and under what conditions.
+
+### S3. Information-acquisition policies can be optimized separately from task policies
+
+A system may benefit from distinguishing actions chosen to complete a task from actions chosen to reduce uncertainty. Search, tool use, questioning, inspection, and experimentation could be selected according to their expected effect on belief rather than only immediate reward.
+
+The key comparison is whether a separate information-acquisition objective improves sample efficiency, decision quality, or robustness relative to a single undifferentiated policy.
+
+### S4. Belief update may require an explicit update mechanism rather than passive context accumulation
+
+Appending more observations to context does not guarantee that a model consistently revises its internal state. Architectures or training procedures that explicitly preserve, revise, reactivate, or retract beliefs may outperform systems that rely only on ordinary sequence processing.
+
+Candidate comparisons include recurrent belief states, external memory, structured latent variables, factorized hypotheses, state-space updates, and unstructured context windows.
+
+### S5. The value of a new observation may be predicted from its expected belief change
+
+If observation value is belief-relative, an agent may be able to estimate in advance which query, tool call, experiment, or data source is likely to produce the most useful update.
+
+This hypothesis connects belief representation to practical acquisition: a better belief state should make it easier to choose the next observation efficiently.
+
 ## Candidate research questions
 
 These are candidate questions, not yet a fixed agenda:
@@ -108,6 +142,9 @@ These are candidate questions, not yet a fixed agenda:
 4. **Which objectives encourage hidden states to encode task-relevant latent structure instead of observation-specific shortcuts?**
 5. **Can equivalent beliefs emerge across different models, architectures, modalities, or information channels?**
 6. **How should information acquisition be modeled when control over the observation process is shared between agent and environment?**
+7. **Can hidden-state stability be deliberately improved, and does doing so improve OOD performance?**
+8. **Which belief-update mechanisms outperform passive context accumulation?**
+9. **Can expected belief change guide more efficient information acquisition?**
 
 ## Candidate experimental directions
 
@@ -135,6 +172,14 @@ Use the same partially observable task with different model families. Test wheth
 
 Compare systems receiving a fixed observation stream with systems allowed to query, search, inspect, or intervene. Measure uncertainty reduction, task success, and the efficiency of acquired evidence.
 
+### Experiment G: Passive context versus explicit belief update
+
+Give systems the same sequential evidence while varying how state is maintained: full-context replay, recurrent latent state, structured memory, explicit hypotheses, or state-space updates. Test consistency, correction after contradictory evidence, long-horizon retention, and computational cost.
+
+### Experiment H: Optimize expected belief change
+
+Allow an agent to select among possible queries or tools. Compare immediate-reward policies, random acquisition, entropy-based acquisition, and learned belief-change predictors.
+
 ## Literature map to build
 
 The first literature review should map how existing fields define a good latent state:
@@ -151,6 +196,8 @@ The first literature review should map how existing fields define a good latent 
 - Active learning and Bayesian experimental design
 - Active inference and information-seeking RL
 - Mechanistic interpretability of LLM hidden states
+- Memory architectures and continual belief revision
+- Information-seeking and uncertainty-aware agent policies
 
 For each paper or line of work, record:
 
@@ -167,6 +214,8 @@ These remain useful intuitions but should not be treated as established concepts
 - **Constraint accumulation as a novel mechanism before comparison with Bayesian updating, information gain, identifiability, and existing constraint-based methods.**
 - **OOD failure as evidence that a model lacks a correct belief state.** This is only one possible explanation among many.
 - **Scaling laws as a consequence of accumulating independent constraints.** This is currently a speculative interpretation, not an established explanation.
+- **Hidden-state stability as automatically beneficial.** Stability can also preserve the wrong abstraction or prevent necessary updating.
+- **Explicit belief-update machinery as necessarily superior to context-based inference.** This must be established empirically and may depend on the task.
 
 ## Promotion rule
 
@@ -178,5 +227,6 @@ An item should move from this parking lot into the stable research map only when
 4. At least one experiment or formal argument supports it.
 5. Removing the concept would reduce explanatory or predictive power.
 6. Counterexamples and limitations are stated explicitly.
+7. For a system-building claim, the proposed intervention improves at least one meaningful outcome against strong baselines.
 
 Until then, the parking lot is allowed to remain inconsistent, incomplete, and provisional.
