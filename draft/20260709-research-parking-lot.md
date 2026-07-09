@@ -12,9 +12,44 @@ The current minimal vocabulary is:
 - **Hidden state**: an internal latent state used to summarize relevant history and support prediction, inference, or action.
 - **Belief**: the interpretation of a hidden state as an agent's current uncertain estimate of what is not directly observed.
 - **Information acquisition**: any process that produces further observations. It may be passive or actively influenced by the agent.
-- **Constraint / pruning view**: a new observation changes belief by reducing, reweighting, or reorganizing the set of still-compatible explanations.
+- **Constraint / pruning view**: a candidate interpretation in which observations update belief by restricting, reweighting, or reorganizing the set of still-compatible explanations.
 
 "Hidden world" remains useful as background intuition, but it is currently too broad to serve as the primary operational object. "Projection" has been removed from the core vocabulary because it has not yet shown independent explanatory or empirical value.
+
+## Working scope of the constraint view
+
+The word **constraint** is useful only when a space of possibilities has already been defined.
+
+In the limiting case, before any task-specific evidence is introduced, every element of that possibility space remains admissible. A constraint then acts by making some possibilities less admissible or impossible. In this sense, the constraint view is fundamentally subtractive or restrictive rather than additive.
+
+This does **not** mean that the world or the model literally produces uniformly random outputs. Several distinctions are required:
+
+1. **The possibility space must already exist.** Without variables, rules, architecture, semantics, or a hypothesis class, there is nothing for a constraint to restrict.
+2. **No observational constraint does not imply no structure.** Structural assumptions may already make some outcomes impossible or more likely than others.
+3. **High uncertainty does not necessarily mean a uniform distribution.** A prior may be broad but non-uniform.
+4. **Probabilistic updates need not delete possibilities.** An observation may only reweight them rather than assigning zero probability.
+
+A provisional distinction is therefore:
+
+- **Structural constraints** define the admissible space: task rules, physical assumptions, model architecture, hypothesis class, causal structure, or semantic definitions.
+- **Observational constraints** arise from evidence and restrict or reweight possibilities within that space.
+- **Incremental or effective constraints** refer only to the change contributed by a new observation relative to the agent's current belief. Repeated or already-predicted evidence may add almost no effective constraint.
+
+A minimal schematic is:
+
+```text
+Structural assumptions define a possibility space
+                    ↓
+Current belief assigns support or weight within that space
+                    ↓
+New observation restricts or reweights compatible possibilities
+                    ↓
+Updated belief
+```
+
+Under this interpretation, constraint is not necessarily a separate object extracted from an observation. It may be better understood as the **effect of an observation on a current belief over a defined possibility space**.
+
+This remains a working interpretation. It must be compared with established concepts such as hypothesis-space restriction, version spaces, Bayesian conditioning, likelihood updates, information gain, surprise, constraint satisfaction, and belief propagation.
 
 ## Parking-lot hypotheses
 
@@ -30,13 +65,14 @@ Questions:
 
 ### H2. Inference may behave like belief update through accumulated constraints
 
-As new observations arrive, a system may not merely append information. It may update an internal state by eliminating, down-weighting, or merging incompatible possibilities.
+As new observations arrive, a system may not merely append information. Relative to a structurally defined possibility space and a current belief, an observation may eliminate, down-weight, or reorganize incompatible possibilities.
 
 Questions:
 
-- Do LLM hidden states exhibit progressive concentration or stabilization as constraints accumulate?
+- Do LLM hidden states exhibit progressive concentration or stabilization as effective constraints accumulate?
 - Is this better described by Bayesian updating, constraint propagation, support reduction, energy minimization, or another formalism?
 - Can hidden-state changes be linked to which hypotheses remain compatible with the evidence?
+- When does an observation genuinely restrict a possibility space, and when does it merely alter predictions without reducing uncertainty?
 
 ### H3. A good hidden state should be stable to observation changes but sensitive to underlying-state changes
 
@@ -77,6 +113,7 @@ Questions:
 - What does cross-channel consistency mean when latent spaces are not aligned?
 - Should different channels produce identical states, equivalent states, or merely equivalent predictions and decisions?
 - Can state equivalence be formalized through sufficiency, bisimulation, predictive equivalence, or causal abstraction?
+- Under what conditions do multiple channels provide genuinely independent constraints rather than redundant observations?
 
 ### H7. Information acquisition is broader than action
 
@@ -97,6 +134,7 @@ Questions:
 - Is the relevant quantity Bayesian surprise, information gain, KL divergence, likelihood ratio, support reduction, or something else?
 - Does the "constraint" language add anything beyond existing information-theoretic quantities?
 - Can qualitative world-pruning and probabilistic belief updating be connected without treating them as identical?
+- Should effective constraint be defined through support reduction, probability reweighting, decision change, or representational change?
 
 ## System-building hypotheses
 
@@ -145,6 +183,7 @@ These are candidate questions, not yet a fixed agenda:
 7. **Can hidden-state stability be deliberately improved, and does doing so improve OOD performance?**
 8. **Which belief-update mechanisms outperform passive context accumulation?**
 9. **Can expected belief change guide more efficient information acquisition?**
+10. **Under what assumptions is the constraint view a useful description rather than a relabeling of Bayesian or information-theoretic update?**
 
 ## Candidate experimental directions
 
@@ -154,7 +193,7 @@ Construct multiple observation sequences generated from the same underlying task
 
 ### Experiment B: Sequential constraint accumulation
 
-Reveal evidence one piece at a time. Measure how hidden states, predictions, calibration, and sets of compatible hypotheses change after each observation.
+Define an explicit hypothesis or state space, then reveal evidence one piece at a time. Measure support reduction, probability reweighting, hidden-state change, predictions, calibration, and compatible hypotheses after each observation.
 
 ### Experiment C: Constraint diversity versus data volume
 
@@ -182,7 +221,7 @@ Allow an agent to select among possible queries or tools. Compare immediate-rewa
 
 ## Literature map to build
 
-The first literature review should map how existing fields define a good latent state:
+The first literature review should map how existing fields define a good latent state and how they formalize restriction of possibilities:
 
 - POMDP belief states
 - Bayesian filtering and state estimation
@@ -198,11 +237,14 @@ The first literature review should map how existing fields define a good latent 
 - Mechanistic interpretability of LLM hidden states
 - Memory architectures and continual belief revision
 - Information-seeking and uncertainty-aware agent policies
+- Version spaces and hypothesis elimination
+- Constraint satisfaction and factor graphs
+- Bayesian conditioning, likelihood updates, and support reduction
 
 For each paper or line of work, record:
 
-| Field or paper | What is the latent state? | What makes it sufficient? | How is it updated? | What objective learns it? | How is uncertainty represented? | How is OOD tested? | Does action affect information? |
-|---|---|---|---|---|---|---|---|
+| Field or paper | What is the possibility space? | What is the latent state? | What counts as a constraint or update? | What makes the state sufficient? | How is it learned or updated? | How is uncertainty represented? | How is OOD tested? | Does action affect information? |
+|---|---|---|---|---|---|---|---|---|
 
 ## Ideas deliberately not promoted
 
@@ -211,7 +253,10 @@ These remain useful intuitions but should not be treated as established concepts
 - **Projection / projector** as an independent layer between world and observation.
 - **Hidden world as a complete high-dimensional universe or set of world lines.**
 - **Pretraining as direct learning of the true world distribution.**
-- **Constraint accumulation as a novel mechanism before comparison with Bayesian updating, information gain, identifiability, and existing constraint-based methods.**
+- **Constraint accumulation as a novel mechanism before comparison with Bayesian updating, information gain, identifiability, version spaces, and existing constraint-based methods.**
+- **The absence of observational constraints as literal uniform randomness.** A possibility space may already contain structural constraints and a non-uniform prior.
+- **Every informative observation as necessarily eliminating possibilities.** Some evidence only reweights existing possibilities.
+- **Constraint as an intrinsic property of an observation.** Its effective contribution may depend on the current belief and structural assumptions.
 - **OOD failure as evidence that a model lacks a correct belief state.** This is only one possible explanation among many.
 - **Scaling laws as a consequence of accumulating independent constraints.** This is currently a speculative interpretation, not an established explanation.
 - **Hidden-state stability as automatically beneficial.** Stability can also preserve the wrong abstraction or prevent necessary updating.
