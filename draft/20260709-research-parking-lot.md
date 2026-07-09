@@ -6,15 +6,73 @@
 
 目前较宽泛的研究兴趣是：智能系统如何在部分可观测条件下运作——它们如何获取信息、形成内部表征、更新这些表征，并将其用于预测、推断或决策。
 
+目前的整体架构暂时可以表示为：
+
+```text
+                         Hidden World
+                 （不可被完整直接观测的生成过程）
+                              │
+                              │ 通过不同 information channels
+                              │
+          ┌───────────────────┼───────────────────┐
+          │                   │                   │
+       环境感知             语言／他人             工具／检索／记忆
+    图像、声音、传感器       发言、文本、报告        搜索、数据库、历史经验
+          │                   │                   │
+          └───────────────────┼───────────────────┘
+                              ▼
+                         Observations
+                    （当前实际获得的信息）
+                              │
+                              │ belief update
+                              │
+                              ▼
+                  Hidden State / Belief State
+           （对任务相关隐藏条件的内部表征与不确定估计）
+                    │                         │
+                    │                         │
+          prediction / inference        decision / planning
+                    │                         │
+                    ▼                         ▼
+                Prediction                   Action
+                                              │
+                          ┌───────────────────┴───────────────────┐
+                          │                                       │
+                    Task-oriented action                 Information-seeking action
+                       直接完成任务                     提问、搜索、检查、实验、干预
+                          │                                       │
+                          └───────────────────┬───────────────────┘
+                                              ▼
+                                  Future information acquisition
+                                              │
+                                              ▼
+                                      New observations
+                                              │
+                                              └──────→ 再次更新 belief
+```
+
+这张图包含几个目前比较稳定的判断：
+
+1. **Hidden world 只是背景概念。** 它指 observation 背后的未知生成过程，但目前不是主要的可操作研究对象。
+2. **Channel 不一定由 agent 选择。** 它可能由环境、任务规则、模型接口、其他智能体、工具条件或资源限制共同决定。
+3. **Observation 是 agent 实际获得的信息。** 同一个 hidden world 可以通过不同 channel 产生不同 observation。
+4. **Hidden state 是内部 representation。** 当它表达对任务相关隐藏条件的不确定估计时，可以把它解释为 belief state。
+5. **Belief 支持预测、推断、规划与行动。** 它不是最终输出，而是后续认知与决策的内部基础。
+6. **Information acquisition 既可以是被动的，也可以是主动的。** 即使 agent 不行动，环境也可能继续提供新 observation；行动只是影响未来 observation 的一种方式。
+7. **整个过程是循环，而不是单向流水线。** 新 observation 更新 belief，belief 影响 prediction 和 action，action 又可能改变后续可获得的信息。
+
 当前保留的最小概念集合是：
 
 - **Observation（观测）**：智能体能够从环境、记忆、工具、检索、其他智能体或已有数据中获得的信息。
 - **Hidden state（隐藏状态）**：系统内部用于总结相关历史，并支持预测、推断或行动的潜在状态。
 - **Belief（信念状态）**：当 hidden state 表达智能体对不可直接观测部分的当前不确定估计时，对该 hidden state 的一种语义解释。
+- **Information channel（信息通道）**：决定哪些信息以何种形式能够成为 observation 的过程或机制。它未必由智能体主动选择。
 - **Information acquisition（信息获取）**：任何能够产生新 observation 的过程。它既可能是被动的，也可能受到智能体主动影响。
 - **Constraint / pruning view（约束／剪枝视角）**：一种候选解释，即 observation 通过限制、重新加权或重新组织仍然兼容的解释集合来更新 belief。
 
-“Hidden world”仍然可以作为背景直觉使用，但目前过于宽泛，不适合作为主要的可操作研究对象。“Projection”已经从核心词汇中移除，因为它尚未表现出独立的解释价值或经验价值。
+Constraint 在这张图中暂时不被画成一个独立模块。它更可能是对 **observation 如何改变 current belief** 的一种解释，而不是位于 observation 与 belief 之间的额外实体。
+
+“Projection”已经从核心词汇中移除，因为它尚未表现出独立的解释价值或经验价值。
 
 ## Constraint 视角的暂定适用范围
 
