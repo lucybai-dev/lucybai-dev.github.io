@@ -1,319 +1,155 @@
-# 研究停车场：Belief、Hidden State 与 Information
+# 研究停车场：Belief Update 与 Information Acquisition
 
-*状态：探索性笔记。本文只记录尚未进入稳定研究地图的方向。当前目标不是继续增加概念，而是用文献与实验淘汰、合并和修正它们。*
+*用途：这里只保留当前仍可能导出文献问题、可证伪假设、实验或系统设计的少量想法。Git 历史负责保存被删除的旧内容，正文不承担档案功能。*
 
-## 一、最小框架
+当前限制：
 
-当前只保留四个核心概念：
+- 最多三个优先研究问题；
+- 最多三个活跃假设；
+- 最多两个近期实验入口；
+- 新想法必须合并或替换旧想法，不能只追加。
 
-```text
-                    Hidden State
-              （不可被直接完整观测）
-                          │
-                          ▼
-                    Observations
-              （当前实际获得的证据）
-                          │
-                          ▼
-             Belief over Hidden States
-          （对 hidden state 的当前内部估计）
-                          ▲
-                          │
-              Information Acquisition
-                 （passive or active）
-```
+## 一、长期目标
 
-其中：
+长期目标是构建比当前 LLM 更智能的系统：它能够结合人类与机器的优势，持续维护和修正 belief，主动获取信息，并发现仅靠人脑难以完成的模式与推理。
 
-- **Hidden state**：某个已经限定的建模问题中，不可被直接完整观测的状态。
-- **Observation**：文字、图像、视频、传感器、他人发言、工具输出、记忆或实验结果等实际证据。
-- **Belief**：系统根据已有 observations 对 hidden state 形成的当前估计；可以是显式概率分布，也可以是隐式 learned representation。
-- **Information acquisition**：新 observations 进入系统的过程，包括被动观察、查询、检索、实验和干预。
+这只是 vision，不是当前论文 claim。当前阶段不设计完整的替代 LLM 架构。
 
-暂不进入核心图的概念：
-
-- **Background knowledge / model**：解释 observation 所依赖的长期知识、规则、prior、likelihood 或生成机制。
-- **Constraint**：对 observation 如何改变 belief 的候选解释，不是独立模块。
-- **Objective / task**：可能决定什么 state 和 information 是相关的，但暂不进入最小认知循环。
-- **Hidden world、projection、information channel**：目前都不是必要的操作性概念。
-
-## 二、Constraint 的工作性解释
-
-Constraint 只有在可能性空间、hypothesis space 或 state space 已经被定义时才有意义。
+## 二、最小工作模型
 
 ```text
-Background knowledge / structural assumptions
+Background Model B + Task Specification T
                     ↓
-      定义 hypothesis space 与生成模型
+定义 hypothesis space H 与 observation model
                     ↓
-             Current belief
+          Current Observations O
                     ↓
-             New observation
-                    ↓
-比较不同 hypotheses 下该 observation 出现的可能性
-                    ↓
-限制、排除或重新加权 competing hypotheses
-                    ↓
-              Updated belief
+          Belief over H / Hidden State
+                    ↑
+       Information Acquisition
+  （observation / query / intervention）
 ```
 
-目前的工作性判断是：
+几个功能必须区分：
 
-> **Effective constraint 不是 observation 的内在属性，而是 observation 在给定 current belief、hypothesis space 与 observation-generating model 后，对 competing hypotheses 产生的区分效果。**
+- **Background model**：长期知识、prior、规则、生成机制与 causal assumptions；
+- **Task specification**：定义目标、相关变量与输出要求；
+- **Observation**：当前获得的证据；
+- **Belief**：对 competing hypotheses 或 hidden states 的当前支持度；
+- **Information acquisition**：选择下一条观察、查询、工具调用、实验或干预；
+- **Policy / capability constraints**：限制系统可以采取的动作。
 
-三门问题说明了这一点：相同的“主持人打开 C 门”，在不同主持人 policy 下会产生不同 belief update。
+这些功能不要求对应独立神经模块，但不同类型的信息不应拥有相同的更新权限。
 
-这个视角必须与以下成熟概念比较，而不能预设自己是新理论：
+Prompt injection 可以被看成一个候选应用：本应只作为 observation 的外部内容，越权修改了 task specification、policy 或 action control。
 
-- Bayesian conditioning 与 likelihood ratio；
-- version space 与 hypothesis elimination；
-- information gain、Bayesian surprise 与 value of information；
-- constraint propagation 与 belief propagation；
-- partial information decomposition；
-- causal identification 与 experimental design。
+## 三、当前核心命题
 
-## 三、四个文献专题
+> **Observation 的有效价值不是其内在属性，而是它在给定 current belief、hypothesis space 与 observation-generating model 后，对 competing hypotheses 产生的区分效果。**
 
-Parking lot 不再按大量独立 hypothesis 平铺，而是收缩为四个专题。
+这种效果可能表现为：
 
-### 专题 A：State / Belief Representation
+- 排除某些 hypotheses；
+- 重新分配概率或支持度；
+- 暴露已有 representation 中缺少必要概念；
+- 改变下一步最有价值的信息获取方式。
 
-**目的：建立共同语言，不优先追求创新。**
+该命题目前只是统一视角。它必须与 Bayesian conditioning、likelihood ratio、version space、belief revision、information gain、partial information decomposition 和 causal experimental design 比较，不能预设为新机制。
 
-需要吸收的已有问题：
+## 四、三个优先研究问题
 
-- 什么是 task-relevant state？
-- 什么使 latent representation 对预测或决策充分？
-- Belief 必须是显式概率分布，还是可以是隐式向量？
-- Invariance、sensitivity、sufficiency、calibration 与 uncertainty 如何评价？
-- Bisimulation、predictive state representation、world model 与 causal representation 分别保留什么结构？
+### RQ1：什么才算 belief-like representation？
 
-当前工作性假设：
+> 什么行为和表示性质，能把 belief 与 observation embedding、history summary 或普通 latent state 区分开？
 
-> 一个 belief-like representation 应当整合历史 observations，对无关表面变化稳定，对任务相关 hidden-state 变化敏感，并支持未来预测、更新和信息获取。
+重点性质：sufficiency、calibration、update consistency、对反证的修正能力，以及对任务相关状态变化的敏感性。
 
-但这基本是已有 representation-learning 问题的重新组织，暂不作为主要突破口。
+### RQ2：如何衡量 evidence 的 hypothesis-discrimination capacity？
 
-### 专题 B：Hypothesis Space 与 Hypothesis Pruning
+> 如何衡量序列或多模态 observations 对 competing hypotheses 的区分能力，并区分 redundant、unique 与 synergistic evidence？
 
-**这是当前最值得深入的专题之一。**
+这里要检验“constraint diversity”是否真的提供了新变量，还是已经被现有信息论、identifiability、coverage 或 effective sample size 覆盖。
 
-核心问题：
+### RQ3：如何围绕 belief 主动获取信息？
 
-> Observation 的价值，能否被理解为它对 competing hypotheses 的限制、排除或重新加权？
+> 当 belief 是隐式表示、observation model 不完全已知且获取有成本时，系统如何选择下一次 observation、query 或 intervention，以最有效地区分剩余 hypotheses？
 
-需要重点查：
+## 五、三个活跃假设
 
-- version spaces；
-- hypothesis elimination；
-- Bayesian model selection；
-- scientific hypothesis testing；
-- abductive reasoning；
-- belief revision；
-- constraint satisfaction 与 support reduction。
+### H1：Belief quality 可以预测系统在新证据下的行为
 
-关键未决问题：
+由 sufficiency、calibration、update consistency 和 contradiction recovery 构成的 belief-quality profile，可能比普通 representation similarity 更能预测 OOD、长期推理和信息获取表现。
 
-1. Hypothesis space 是人工给定、由预训练获得，还是随学习共同形成？
-2. 如果 representation space 中没有正确概念，新的 observation 是否还能形成有效 constraint？
-3. Support reduction、probability reweighting 与 representational change 是否可以统一描述？
-4. 当 observation-generating model 未知时，如何避免错误 pruning？
+### H2：数据价值取决于区分能力，而不只是数量
 
-雪地狼例子属于这里：训练数据可能没有排除“雪地背景”这一 shortcut hypothesis，因此模型没有被迫学到动物结构。
+在固定样本量、token、模型容量和计算预算下，能够排除或降权更多错误 hypotheses 的数据组成，可能比 raw sample count 更能预测 OOD generalization。
 
-### 专题 C：Information Value 与 Constraint Diversity
+这不等于“多样性永远比数据量重要”，也不意味着所有过拟合都来自 constraint 不足。
 
-**这是当前最有可能形成可检验贡献的专题。**
+### H3：基于 hypothesis discrimination 的 acquisition 更有效
 
-核心问题：
+根据 expected hypothesis discrimination 选择 query、experiment 或 intervention，可能比随机获取、只看 uncertainty 或只追求即时任务 reward 更高效。
 
-> 在固定数据或获取预算下，什么样的 observations 最能区分 competing hypotheses？
+## 六、近期实验入口
 
-需要区分：
+### 实验 A：可控的 belief-update benchmark
 
-- redundant information；
-- unique information；
-- synergistic information；
-- conditional information；
-- effective sample size；
-- intervention diversity；
-- causal coverage；
-- ordinary data diversity。
+构造一个具有显式 hidden-state / hypothesis space 和 observation-generating model 的部分可观测环境。
 
-工作性假设：
+系统操纵：
 
-> 在固定样本量、token 数与计算预算下，能够排除更多错误 hypotheses，或提供更多 unique / synergistic evidence 的数据组成，可能比 raw sample count 更能预测 OOD generalization。
+- redundant、unique 与 synergistic evidence；
+- shortcut correlation；
+- observation-model shift；
+- passive observation、query 与 intervention。
 
-这个假设目前不能表述为“约束一定比样本量更重要”。更准确的版本是：
+比较：
 
-> **Raw sample count 会高估高度重复数据的有效信息量，而 hypothesis-discrimination capacity 可能是更接近泛化能力的变量。**
-
-需要避免把 constraint diversity 当成新名词后再寻找定义。首先要确认它是否已经被 PID、mutual information、effective sample size、coverage 或 identifiability 覆盖。
-
-### 专题 D：Scientific Discovery、Causal Discovery 与 Active Information Acquisition
-
-**这是另一个最值得深入的专题。**
-
-核心问题：
-
-> 如何主动选择 observation，使 competing hypotheses 产生最可区分的结果？
-
-Information acquisition 暂分为：
-
-- **Passive observation**：环境变化、持续传感、他人主动提供信息；
-- **Query / retrieval**：提问、搜索、读取记忆、调用工具或数据库；
-- **Intervention**：主动改变生成过程再观察结果，例如实验、操控和 Pearl 式 `do()`。
-
-Causal intervention 只是 active information acquisition 的特殊形式。它的价值在于改变生成机制，使被动 observational data 无法区分的 causal hypotheses 产生不同结果。
-
-需要重点查：
-
-- Bayesian experimental design；
-- active learning；
-- value of information；
-- active sensing；
-- information-seeking RL；
-- active causal discovery；
-- optimal experiment design；
-- automated scientific discovery。
-
-开放问题：
-
-1. Belief 是隐式神经表示时，如何估计 expected information gain？
-2. Observation model 或 causal model 未知时，如何同时学习模型并选择下一次 acquisition？
-3. 如何平衡 hypothesis discrimination、任务价值、时间、成本与风险？
-4. Query、search 与 intervention 是否需要统一策略，还是应分别建模？
-
-## 四、当前只保留三个优先研究问题
-
-### RQ1
-
-> **什么性质能让一个 learned representation 成为 belief，而不仅仅是 observation embedding 或 history summary？**
-
-这一问题主要用于建立评价标准，不优先声称理论创新。
-
-### RQ2
-
-> **如何衡量一组 observations 对 competing hypotheses 的区分能力，包括 redundancy、unique information 与 synergy？**
-
-这是 constraint diversity 最需要解决的形式化问题。
-
-### RQ3
-
-> **Belief quality 与 hypothesis-discrimination capacity，能否共同预测 OOD generalization 和 information-acquisition efficiency？**
-
-这是最接近可实验研究的问题。
-
-## 五、当前最小实验入口
-
-暂时不设计“大一统 AI 架构”。先建立一个合成、可控的部分可观测环境：
-
-```text
-显式 hidden-state / hypothesis space
-              ↓
-可控 observation-generating model
-              ↓
-操纵 redundant / unique / synergistic evidence
-              ↓
-训练不同 belief encoders
-              ↓
-测量 belief quality、OOD 与 acquisition efficiency
-```
-
-优先比较：
-
-- observation-only encoder；
-- RNN / Transformer history encoder；
 - explicit Bayesian belief；
-- predictive latent model；
-- invariant / bisimulation-style representation。
+- recurrent latent state；
+- Transformer history encoder；
+- predictive latent model。
 
-优先测量：
+测量：belief accuracy、calibration、update consistency、contradiction recovery、OOD 与 acquisition efficiency。
 
-- sufficiency；
-- invariance；
-- sensitivity；
-- calibration；
-- update consistency；
-- contradiction recovery；
-- hypothesis elimination / reweighting accuracy；
-- information-acquisition efficiency。
+### 实验 B：Typed update 与 prompt injection（候选应用，不是当前主线）
 
-第一阶段只回答三个问题：
+把 system policy、task instruction、retrieved content、tool result 与 model belief 标记为不同信息类型，并限制它们可以更新的状态。
 
-1. 哪些 representation 真正在追踪 hidden state，而不是 observation pattern？
-2. 哪些数据组成真正排除了 shortcut hypotheses？
-3. 更好的 belief 是否更会选择下一条有价值的 observation？
+检验这种设计能否在保留正常 belief revision 的同时，减少不可信 observation 越权修改 task、policy 或 action 的情况。
 
-## 六、文献阅读顺序
+## 七、最小文献地图
 
-### 第一组：共同语言
+只保留五组：
 
-- State representation learning
-- POMDP belief states
-- Predictive state representations
-- World models
-- Bisimulation 与 state abstraction
-- Causal representation learning
+1. POMDP、Bayesian filtering 与 belief representation；
+2. Version spaces、Bayesian model selection 与 belief revision；
+3. Information gain、PID、data valuation 与 identifiability；
+4. Active learning、Bayesian experimental design 与 active causal discovery；
+5. Instruction–data separation、information-flow control 与 prompt injection。
 
-### 第二组：当前核心
+读每篇论文只回答四件事：
 
-- Version spaces
-- Hypothesis elimination
-- Belief revision
-- Bayesian model selection
-- Abductive reasoning
-- Scientific hypothesis testing
+1. 它维护的 state / hypothesis 是什么？
+2. Evidence 如何更新它？
+3. Observation value 如何衡量？
+4. 它导出了什么可验证结果或系统设计？
 
-### 第三组：信息价值
+## 八、删除规则
 
-- Bayesian experimental design
-- Active learning
-- Value of information
-- Partial information decomposition
-- Effective sample size
-- Data valuation 与 data diversity
+以下内容不再保存在正文中：
 
-### 第四组：主动发现
+- 只有解释作用、不能产生预测或实验的概念；
+- 已被成熟术语完整覆盖、但没有新增区别的重命名；
+- 大量相似例子和应用领域枚举；
+- 尚无证据支持的完整 AI 架构；
+- Hidden world、projection、information channel 等非必要节点；
+- “constraint 是新理论”“多模态必然更懂世界”“显式模块必然优于端到端”等强结论。
 
-- Active sensing
-- Information-seeking RL
-- Causal discovery
-- Active causal learning
-- Intervention design
-- Automated scientific discovery
+一个新条目只有同时满足以下至少两项才进入正文：
 
-对每篇论文统一记录：
-
-| 论文 / 方向 | Hypothesis space 是什么？ | Observation 如何生成？ | Belief 如何表示？ | 什么算有效 update？ | 如何衡量 observation value？ | 是否支持主动 acquisition？ | 如何测试 OOD？ |
-|---|---|---|---|---|---|---|---|
-
-## 七、暂不升级的想法
-
-以下内容继续保留在停车场，但不作为当前研究主线：
-
-- Hidden world 与 projection；
-- 把 pretraining 直接解释成 world prior；
-- 把 LLM 参数直接等同于 current belief；
-- 默认多模态模型一定拥有更好的 background knowledge；
-- 默认 constraint accumulation 是独立于 Bayesian 或 information-theoretic update 的新机制；
-- 把所有过拟合归因于 effective constraints 不足；
-- 把 hidden-state stability 直接等同于正确 representation；
-- 默认显式 belief module 一定优于 end-to-end model；
-- 把 causal intervention 等同于所有 active information acquisition；
-- 现在就设计一个替代 LLM 的完整新架构。
-
-## 八、升级规则
-
-一个想法只有满足以下大部分条件，才进入稳定研究地图：
-
-1. 已完成相关文献梳理，并识别已有术语和形式化；
-2. 能与已有概念区分，而不只是换名；
-3. 能导出可证伪预测；
-4. 有实验或形式化论证支持；
-5. 删除它会降低解释力或预测力；
-6. 已明确适用条件、反例和限制；
-7. 对 system-building claim，必须优于强 baseline；
-8. 对统一性 claim，必须说明统一后新增了什么预测或方法。
-
-在此之前，parking lot 只能用于收集和淘汰想法，不代表任何结论。
+- 对应清楚的文献检索问题；
+- 导出可证伪预测；
+- 能形成一个具体实验或 benchmark；
+- 会改变系统设计或评价方法；
+- 与现有概念存在明确而必要的区别。
