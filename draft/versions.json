@@ -1,0 +1,16 @@
+{
+  "20260709-research-parking-lot.md": {
+    "versions": [
+      {
+        "label": "文献专题版",
+        "description": "保留较完整的四个文献专题、研究问题与实验入口。",
+        "ref": "f2a0d5cd04859e1a8b68f530e1601a897bf82117"
+      },
+      {
+        "label": "精简工作版",
+        "description": "只保留能直接指导近期文献、实验与系统设计的内容。",
+        "ref": "main"
+      }
+    ]
+  }
+}
