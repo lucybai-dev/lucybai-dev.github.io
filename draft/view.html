@@ -12,17 +12,18 @@
     .draft-error { border-top:1px solid var(--line); padding-top:20px; color:var(--muted); }
     .version-nav { display:grid; grid-template-columns:112px minmax(0,1fr) 112px; gap:18px; align-items:center; margin:0 0 48px; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
     .version-nav.bottom { margin:72px 0 0; }
-    .version-button { color:var(--text); text-decoration:none; font-size:14px; }
+    .version-button { display:block; color:var(--text); text-decoration:none; font-size:14px; }
     .version-button.next { text-align:right; }
     .version-button:hover { text-decoration:underline; text-underline-offset:4px; }
-    .version-button.disabled { color:#aaa; }
+    .version-button.disabled { color:#aaa; cursor:default; }
     .version-info { min-width:0; text-align:center; }
     .version-count { display:block; color:var(--muted); font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:3px; }
     .version-info strong { display:block; font-size:14px; font-weight:600; }
     .version-description { display:block; color:var(--muted); font-size:13px; line-height:1.45; margin-top:2px; }
     @media(max-width:700px){
-      .version-nav { grid-template-columns:70px minmax(0,1fr) 70px; gap:10px; margin-bottom:38px; }
+      .version-nav { grid-template-columns:74px minmax(0,1fr) 74px; gap:8px; margin-bottom:38px; }
       .version-description { display:none; }
+      .version-button { font-size:13px; }
     }
   </style>
 </head>
@@ -45,6 +46,24 @@
     const post = document.getElementById('post');
     const navTop = document.getElementById('version-nav-top');
     const navBottom = document.getElementById('version-nav-bottom');
+    const repo = 'lucybai-dev/lucybai-dev.github.io';
+
+    const fallbackManifest = {
+      '20260709-research-parking-lot.md': {
+        versions: [
+          {
+            label: '文献专题版',
+            description: '保留较完整的四个文献专题、研究问题与实验入口。',
+            ref: 'f2a0d5cd04859e1a8b68f530e1601a897bf82117'
+          },
+          {
+            label: '精简工作版',
+            description: '只保留能直接指导近期文献、实验与系统设计的内容。',
+            ref: 'a10ffdb80a0ec8be81bd4a35c3e1a9e9728aaf6f'
+          }
+        ]
+      }
+    };
 
     function escapeHtml(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
     function escapeAttr(s){return escapeHtml(s).replace(/"/g,'&quot;');}
@@ -112,34 +131,55 @@
       if(!insertedToc && toc) html += toc;
       post.innerHTML = html;
     }
-    function sourceUrl(version){
-      if(!version.ref || version.ref === 'main') return '/draft/'+encodeURIComponent(file);
-      return 'https://raw.githubusercontent.com/lucybai-dev/lucybai-dev.github.io/'+encodeURIComponent(version.ref)+'/draft/'+encodeURIComponent(file);
+    function decodeBase64Utf8(content){
+      const binary = atob(String(content).replace(/\s/g,''));
+      const bytes = Uint8Array.from(binary, c=>c.charCodeAt(0));
+      return new TextDecoder('utf-8').decode(bytes);
+    }
+    async function fetchGithubFile(path, ref){
+      const url = 'https://api.github.com/repos/'+repo+'/contents/'+path.split('/').map(encodeURIComponent).join('/')+'?ref='+encodeURIComponent(ref);
+      const response = await fetch(url, {
+        cache: 'no-store',
+        headers: { 'Accept': 'application/vnd.github+json' }
+      });
+      if(!response.ok) throw new Error('GitHub API '+response.status);
+      const data = await response.json();
+      if(data.encoding !== 'base64' || !data.content) throw new Error('Unsupported GitHub response');
+      return decodeBase64Utf8(data.content);
+    }
+    async function loadManifest(){
+      try {
+        const text = await fetchGithubFile('draft/versions.json', 'main');
+        const manifest = JSON.parse(text);
+        if(manifest[file] && Array.isArray(manifest[file].versions) && manifest[file].versions.length){
+          return manifest[file].versions;
+        }
+      } catch (_) {}
+      return fallbackManifest[file] ? fallbackManifest[file].versions : [{label:'当前版本',description:'',ref:'main'}];
+    }
+    async function loadVersion(version){
+      try {
+        return await fetchGithubFile('draft/'+file, version.ref);
+      } catch (primaryError) {
+        const fallbackUrl = 'https://cdn.jsdelivr.net/gh/'+repo+'@'+encodeURIComponent(version.ref)+'/draft/'+encodeURIComponent(file);
+        const response = await fetch(fallbackUrl, {cache:'no-store'});
+        if(!response.ok) throw primaryError;
+        return response.text();
+      }
     }
     async function load(){
       if(!file || !/^\d{8}-[a-z0-9-]+\.md$/i.test(file)){
         post.innerHTML = '<p class="draft-error">Invalid draft file.</p>';
         return;
       }
-      let versions = [{label:'当前版本', description:'', ref:'main'}];
-      try {
-        const response = await fetch('/draft/versions.json', {cache:'no-store'});
-        if(response.ok){
-          const manifest = await response.json();
-          if(manifest[file] && Array.isArray(manifest[file].versions) && manifest[file].versions.length){
-            versions = manifest[file].versions;
-          }
-        }
-      } catch (_) {}
+      const versions = await loadManifest();
       const requested = Number(params.get('page'));
       const page = Number.isInteger(requested) && requested >= 1 && requested <= versions.length ? requested : versions.length;
       const version = versions[page-1];
       navTop.innerHTML = versionNav(version, page, versions.length, false);
       navBottom.innerHTML = versionNav(version, page, versions.length, true);
       try {
-        const response = await fetch(sourceUrl(version), {cache: version.ref === 'main' ? 'no-store' : 'force-cache'});
-        if(!response.ok) throw new Error('not found');
-        render(await response.text(), version);
+        render(await loadVersion(version), version);
       } catch (_) {
         post.innerHTML = '<p class="draft-error">Unable to load this draft version.</p>';
       }
