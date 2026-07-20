@@ -2,13 +2,13 @@
   "20260709-research-parking-lot.md": {
     "versions": [
       {
-        "label": "文献专题版",
-        "description": "保留较完整的四个文献专题、研究问题与实验入口。",
+        "label": "基础理论层",
+        "description": "解释 hidden state、background model、hypothesis space、observation model、belief update 与 effective constraint 的底层关系。",
         "ref": "f2a0d5cd04859e1a8b68f530e1601a897bf82117"
       },
       {
-        "label": "精简工作版",
-        "description": "只保留能直接指导近期文献、实验与系统设计的内容。",
+        "label": "当前研究层",
+        "description": "把基础框架转化为当前优先研究问题、活跃假设、近期实验与系统设计入口。",
         "ref": "a10ffdb80a0ec8be81bd4a35c3e1a9e9728aaf6f"
       }
     ]
