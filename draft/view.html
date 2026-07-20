@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,6 +10,20 @@
     .figure { margin: 2rem 0; }
     .figure img { display: block; width: 100%; max-width: 980px; height: auto; border-radius: 24px; }
     .draft-error { border-top:1px solid var(--line); padding-top:20px; color:var(--muted); }
+    .version-nav { display:grid; grid-template-columns:112px minmax(0,1fr) 112px; gap:18px; align-items:center; margin:0 0 48px; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .version-nav.bottom { margin:72px 0 0; }
+    .version-button { color:var(--text); text-decoration:none; font-size:14px; }
+    .version-button.next { text-align:right; }
+    .version-button:hover { text-decoration:underline; text-underline-offset:4px; }
+    .version-button.disabled { color:#aaa; }
+    .version-info { min-width:0; text-align:center; }
+    .version-count { display:block; color:var(--muted); font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:3px; }
+    .version-info strong { display:block; font-size:14px; font-weight:600; }
+    .version-description { display:block; color:var(--muted); font-size:13px; line-height:1.45; margin-top:2px; }
+    @media(max-width:700px){
+      .version-nav { grid-template-columns:70px minmax(0,1fr) 70px; gap:10px; margin-bottom:38px; }
+      .version-description { display:none; }
+    }
   </style>
 </head>
 <body>
@@ -21,14 +35,18 @@
         <a href="/projects.html">Projects</a>
       </nav>
     </header>
+    <div id="version-nav-top"></div>
     <article id="post"><p>Loading draft…</p></article>
+    <div id="version-nav-bottom"></div>
   </main>
   <script>
     const params = new URLSearchParams(location.search);
     const file = params.get('file');
     const post = document.getElementById('post');
+    const navTop = document.getElementById('version-nav-top');
+    const navBottom = document.getElementById('version-nav-bottom');
 
-    function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+    function escapeHtml(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
     function escapeAttr(s){return escapeHtml(s).replace(/"/g,'&quot;');}
     function inline(s){return escapeHtml(s)
       .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
@@ -39,13 +57,36 @@
       const m = name.match(/^(\d{4})(\d{2})(\d{2})-/);
       return m ? `${m[1]}.${m[2]}.${m[3]}` : 'Draft';
     }
-    function render(md){
+    function pageHref(page){
+      const next = new URLSearchParams(location.search);
+      next.set('file', file);
+      next.set('page', String(page));
+      return '?' + next.toString();
+    }
+    function versionNav(version, page, total, bottom=false){
+      if(total <= 1) return '';
+      const previous = page > 1
+        ? '<a class="version-button" href="'+escapeAttr(pageHref(page-1))+'">← 上一页</a>'
+        : '<span class="version-button disabled">← 上一页</span>';
+      const next = page < total
+        ? '<a class="version-button next" href="'+escapeAttr(pageHref(page+1))+'">下一页 →</a>'
+        : '<span class="version-button next disabled">下一页 →</span>';
+      const description = version.description
+        ? '<span class="version-description">'+escapeHtml(version.description)+'</span>'
+        : '';
+      return '<nav class="version-nav'+(bottom?' bottom':'')+'" aria-label="文档版本">'
+        + previous
+        + '<div class="version-info"><span class="version-count">版本 '+page+' / '+total+'</span><strong>'+escapeHtml(version.label || '未命名版本')+'</strong>'+description+'</div>'
+        + next
+        + '</nav>';
+    }
+    function render(md, version){
       const lines = md.split(/\r?\n/);
       const headings = lines.filter(l=>l.trim().startsWith('## ')).map(l=>l.trim().slice(3));
       const used = {};
       const ids = headings.map(h=>{let base=slugify(h)||'section';let id=base;used[base]=(used[base]||0)+1;if(used[base]>1)id=base+'-'+used[base];return id;});
       const toc = headings.length ? '<nav class="toc"><p class="toc-title">Map</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(h)+'</a>').join('')+'</nav>' : '';
-      let html = '<p class="eyebrow">'+dateFromFile(file)+' · Draft</p>';
+      let html = '<p class="eyebrow">'+dateFromFile(file)+' · '+escapeHtml(version.label || 'Draft')+'</p>';
       let para = [], quote = [], h2Index = 0, seenH1 = false, insertedToc = false, usedIntro = false, inCode = false, code = [];
       function maybeToc(){ if(seenH1 && usedIntro && !insertedToc && toc){ html += toc; insertedToc = true; } }
       function flushPara(){ if(para.length){ html += '<p>'+inline(para.join(' '))+'</p>'; para=[]; maybeToc(); } }
@@ -60,7 +101,7 @@
         if(img){ flushPara(); flushQuote(); html += '<figure class="figure"><img src="'+escapeAttr(img[2])+'" alt="'+escapeAttr(img[1])+'"></figure>'; maybeToc(); continue; }
         if(line.startsWith('>')){ flushPara(); quote.push(line.replace(/^>\s?/,'')); continue; }
         flushQuote();
-        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(line.slice(2))+'</h1>'; seenH1 = true; document.title = line.slice(2)+' - Lucy Bai'; continue; }
+        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(line.slice(2))+'</h1>'; seenH1 = true; document.title = line.slice(2)+' · '+(version.label || 'Draft')+' - Lucy Bai'; continue; }
         if(seenH1 && !usedIntro && /^\*[^*]+\*$/.test(line)){ flushPara(); html += '<p class="intro">'+inline(line.replace(/^\*|\*$/g,''))+'</p>'; usedIntro = true; maybeToc(); continue; }
         if(line.startsWith('## ')){ flushPara(); const title=line.slice(3); html += '<h2 id="'+ids[h2Index++]+'">'+inline(title)+'</h2>'; continue; }
         if(line.startsWith('### ')){ flushPara(); html += '<h3>'+inline(line.slice(4))+'</h3>'; continue; }
@@ -71,15 +112,39 @@
       if(!insertedToc && toc) html += toc;
       post.innerHTML = html;
     }
-
-    if(!file || !/^\d{8}-[a-z0-9-]+\.md$/i.test(file)){
-      post.innerHTML = '<p class="draft-error">Invalid draft file.</p>';
-    } else {
-      fetch('/draft/'+encodeURIComponent(file))
-        .then(r=>{if(!r.ok) throw new Error('not found'); return r.text();})
-        .then(render)
-        .catch(()=>{post.innerHTML='<p class="draft-error">Unable to load draft.</p>';});
+    function sourceUrl(version){
+      if(!version.ref || version.ref === 'main') return '/draft/'+encodeURIComponent(file);
+      return 'https://raw.githubusercontent.com/lucybai-dev/lucybai-dev.github.io/'+encodeURIComponent(version.ref)+'/draft/'+encodeURIComponent(file);
     }
+    async function load(){
+      if(!file || !/^\d{8}-[a-z0-9-]+\.md$/i.test(file)){
+        post.innerHTML = '<p class="draft-error">Invalid draft file.</p>';
+        return;
+      }
+      let versions = [{label:'当前版本', description:'', ref:'main'}];
+      try {
+        const response = await fetch('/draft/versions.json', {cache:'no-store'});
+        if(response.ok){
+          const manifest = await response.json();
+          if(manifest[file] && Array.isArray(manifest[file].versions) && manifest[file].versions.length){
+            versions = manifest[file].versions;
+          }
+        }
+      } catch (_) {}
+      const requested = Number(params.get('page'));
+      const page = Number.isInteger(requested) && requested >= 1 && requested <= versions.length ? requested : versions.length;
+      const version = versions[page-1];
+      navTop.innerHTML = versionNav(version, page, versions.length, false);
+      navBottom.innerHTML = versionNav(version, page, versions.length, true);
+      try {
+        const response = await fetch(sourceUrl(version), {cache: version.ref === 'main' ? 'no-store' : 'force-cache'});
+        if(!response.ok) throw new Error('not found');
+        render(await response.text(), version);
+      } catch (_) {
+        post.innerHTML = '<p class="draft-error">Unable to load this draft version.</p>';
+      }
+    }
+    load();
   </script>
 </body>
 </html>
