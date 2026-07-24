@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research Parking Lot - Lucy Bai</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .figure{margin:2rem 0}.figure img{display:block;width:100%;max-width:980px;height:auto;border-radius:24px}
+    .parking-error{border-top:1px solid var(--line);padding-top:20px;color:var(--muted)}
+    .layer-nav{display:grid;grid-template-columns:112px minmax(0,1fr) 112px;gap:18px;align-items:center;margin:0 0 48px;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .layer-nav.bottom{margin:72px 0 0}.layer-button{display:block;color:var(--text);text-decoration:none;font-size:14px}.layer-button.next{text-align:right}.layer-button:hover{text-decoration:underline;text-underline-offset:4px}.layer-button.disabled{color:#aaa;cursor:default}
+    .layer-info{min-width:0;text-align:center}.layer-count{display:block;color:var(--muted);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}.layer-info strong{display:block;font-size:14px;font-weight:600}.layer-description{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+    #post table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px;line-height:1.45}#post th,#post td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}#post th{font-weight:600;background:#fafafa}
+    @media(max-width:700px){.layer-nav{grid-template-columns:74px minmax(0,1fr) 74px;gap:8px;margin-bottom:38px}.layer-description{display:none}.layer-button{font-size:13px}#post table{display:block;overflow-x:auto;white-space:nowrap}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="site-header">
+      <a class="logo" href="/">Lucy Bai</a>
+      <nav>
+        <a href="/draft.html">Drafts</a>
+        <a href="/writing.html">Notes</a>
+        <a href="/projects.html">Projects</a>
+      </nav>
+    </header>
+    <div id="layer-nav-top"></div>
+    <article id="post"><p>Loading parking lot…</p></article>
+    <div id="layer-nav-bottom"></div>
+  </main>
+  <script>
+    const params=new URLSearchParams(location.search);
+    const post=document.getElementById('post');
+    const navTop=document.getElementById('layer-nav-top');
+    const navBottom=document.getElementById('layer-nav-bottom');
+    function escapeHtml(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+    function escapeAttr(s){return escapeHtml(s).replace(/"/g,'&quot;');}
+    function inline(s){return escapeHtml(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
+    function slugify(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'');}
+    function pageHref(page){const next=new URLSearchParams(location.search);next.set('page',String(page));return '?'+next.toString();}
+    function layerNav(layer,page,total,bottom=false){
+      const previous=page>1?'<a class="layer-button" href="'+escapeAttr(pageHref(page-1))+'">← 上一页</a>':'<span class="layer-button disabled">← 上一页</span>';
+      const next=page<total?'<a class="layer-button next" href="'+escapeAttr(pageHref(page+1))+'">下一页 →</a>':'<span class="layer-button next disabled">下一页 →</span>';
+      const description=layer.description?'<span class="layer-description">'+escapeHtml(layer.description)+'</span>':'';
+      return '<nav class="layer-nav'+(bottom?' bottom':'')+'" aria-label="研究层次">'+previous+'<div class="layer-info"><span class="layer-count">层次 '+page+' / '+total+'</span><strong>'+escapeHtml(layer.label||'未命名层次')+'</strong>'+description+'</div>'+next+'</nav>';
+    }
+    function splitTableRow(line){return line.trim().replace(/^\||\|$/g,'').split('|').map(cell=>cell.trim());}
+    function render(md,layer){
+      const lines=md.split(/\r?\n/);
+      const headings=lines.filter(l=>l.trim().startsWith('## ')).map(l=>l.trim().slice(3));
+      const used={};
+      const ids=headings.map(h=>{let base=slugify(h)||'section';let id=base;used[base]=(used[base]||0)+1;if(used[base]>1)id=base+'-'+used[base];return id;});
+      const toc=headings.length?'<nav class="toc"><p class="toc-title">Map</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(h)+'</a>').join('')+'</nav>':'';
+      let html='<p class="eyebrow">Research Parking Lot · '+escapeHtml(layer.label||'')+'</p>';
+      let para=[],quote=[],list=[],listType='',h2Index=0,seenH1=false,insertedToc=false,usedIntro=false,inCode=false,code=[];
+      function maybeToc(){if(seenH1&&usedIntro&&!insertedToc&&toc){html+=toc;insertedToc=true;}}
+      function flushPara(){if(para.length){html+='<p>'+inline(para.join(' '))+'</p>';para=[];maybeToc();}}
+      function flushQuote(){if(quote.length){html+='<blockquote><p>'+quote.map(inline).join('<br>')+'</p></blockquote>';quote=[];maybeToc();}}
+      function flushList(){if(list.length){html+='<'+listType+'>'+list.map(item=>'<li>'+inline(item)+'</li>').join('')+'</'+listType+'>';list=[];listType='';maybeToc();}}
+      function flushCode(){if(code.length){html+='<pre><code>'+escapeHtml(code.join('\n'))+'</code></pre>';code=[];maybeToc();}}
+      for(let i=0;i<lines.length;i++){
+        const raw=lines[i];
+        if(raw.trim().startsWith('```')){flushPara();flushQuote();flushList();if(inCode){flushCode();inCode=false;}else{inCode=true;}continue;}
+        if(inCode){code.push(raw);continue;}
+        const line=raw.trim();
+        if(!line){flushPara();flushQuote();flushList();continue;}
+        if(line.startsWith('|')&&i+1<lines.length&&/^\s*\|?\s*:?-+/.test(lines[i+1])){
+          flushPara();flushQuote();flushList();
+          const headers=splitTableRow(line);i++;
+          const rows=[];
+          while(i+1<lines.length&&lines[i+1].trim().startsWith('|'))rows.push(splitTableRow(lines[++i]));
+          html+='<table><thead><tr>'+headers.map(h=>'<th>'+inline(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(row=>'<tr>'+headers.map((_,j)=>'<td>'+inline(row[j]||'')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+          maybeToc();continue;
+        }
+        const img=line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+        if(img){flushPara();flushQuote();flushList();html+='<figure class="figure"><img src="'+escapeAttr(img[2])+'" alt="'+escapeAttr(img[1])+'"></figure>';maybeToc();continue;}
+        if(line.startsWith('>')){flushPara();flushList();quote.push(line.replace(/^>\s?/,''));continue;}
+        flushQuote();
+        const ul=line.match(/^[-*]\s+(.+)$/);const ol=line.match(/^\d+\.\s+(.+)$/);
+        if(ul||ol){flushPara();const type=ul?'ul':'ol';if(listType&&listType!==type)flushList();listType=type;list.push((ul||ol)[1]);continue;}
+        flushList();
+        if(line.startsWith('# ')){flushPara();html+='<h1>'+inline(line.slice(2))+'</h1>';seenH1=true;document.title=line.slice(2)+' · '+(layer.label||'Parking Lot')+' - Lucy Bai';continue;}
+        if(seenH1&&!usedIntro&&/^\*[^*]+\*$/.test(line)){flushPara();html+='<p class="intro">'+inline(line.replace(/^\*|\*$/g,''))+'</p>';usedIntro=true;maybeToc();continue;}
+        if(line.startsWith('## ')){flushPara();const title=line.slice(3);html+='<h2 id="'+ids[h2Index++]+'">'+inline(title)+'</h2>';continue;}
+        if(line.startsWith('### ')){flushPara();html+='<h3>'+inline(line.slice(4))+'</h3>';continue;}
+        para.push(line);
+      }
+      flushPara();flushQuote();flushList();flushCode();if(!insertedToc&&toc)html+=toc;post.innerHTML=html;
+    }
+    fetch('/parkinglot/pages.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('manifest');return r.json();}).then(manifest=>{
+      const pages=Array.isArray(manifest.pages)?manifest.pages:[];if(!pages.length)throw new Error('empty');
+      const requested=Number(params.get('page'));const page=Number.isInteger(requested)&&requested>=1&&requested<=pages.length?requested:pages.length;const layer=pages[page-1];
+      navTop.innerHTML=layerNav(layer,page,pages.length,false);navBottom.innerHTML=layerNav(layer,page,pages.length,true);
+      return fetch('/parkinglot/'+encodeURIComponent(layer.file),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('page');return r.text();}).then(md=>render(md,layer));
+    }).catch(()=>{post.innerHTML='<p class="parking-error">Unable to load the research parking lot.</p>';});
+  </script>
+</body>
+</html>
