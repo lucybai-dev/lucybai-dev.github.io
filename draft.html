@@ -24,6 +24,7 @@
     <header class="site-header">
       <a class="logo" href="/">Lucy Bai</a>
       <nav>
+        <a href="/parkinglot/">Parking Lot</a>
         <a href="/writing.html">Notes</a>
         <a href="/projects.html">Projects</a>
       </nav>
@@ -31,7 +32,7 @@
 
     <p class="eyebrow">private workflow</p>
     <h1>Drafts</h1>
-    <p class="intro">Preview-only drafts. These are not listed on the public Notes page.</p>
+    <p class="intro">Bilingual article drafts prepared for preview and publication. Research working notes live separately in the Parking Lot.</p>
 
     <section class="latest" id="drafts">
       <p class="status">Loading drafts…</p>
@@ -39,69 +40,62 @@
 
     <section class="workflow-note">
       <h2>Workflow</h2>
-      <p>Add a Markdown file to <code>/draft/</code> using the filename format <code>YYYYMMDD-slug.md</code>. It will appear here automatically.</p>
-      <p>Published files live under <code>/posts/</code> and appear on <code>writing.html</code>.</p>
+      <p>Add article Markdown files to <code>/draft/</code> using <code>YYYYMMDD-slug.md</code> for English and <code>YYYYMMDD-slug-zh.md</code> for Chinese. Matching language files are shown together.</p>
+      <p>Published files live under <code>/posts/</code> and appear on <code>writing.html</code>. Research layers and evolving notes live under <code>/parkinglot/</code>.</p>
       <pre class="copybox">publish &lt;slug&gt;</pre>
     </section>
   </main>
   <script>
-    const owner = 'lucybai-dev';
-    const repo = 'lucybai-dev.github.io';
-    const draftsEl = document.getElementById('drafts');
+    const owner='lucybai-dev';
+    const repo='lucybai-dev.github.io';
+    const draftsEl=document.getElementById('drafts');
+    const excluded=new Set(['20260709-research-parking-lot.md']);
 
-    function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-    function formatDate(name){
-      const m = name.match(/^(\d{4})(\d{2})(\d{2})-/);
-      return m ? `${m[1]}.${m[2]}.${m[3]}` : 'Draft';
-    }
+    function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+    function formatDate(name){const m=name.match(/^(\d{4})(\d{2})(\d{2})-/);return m?`${m[1]}.${m[2]}.${m[3]}`:'Draft';}
     function slugFromFile(name){return name.replace(/^\d{8}-/,'').replace(/\.md$/,'');}
-    function titleFromMarkdown(md, fallback){
-      const h1 = md.match(/^#\s+(.+)$/m);
-      return h1 ? h1[1].trim() : fallback.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-    }
-    function descriptionFromMarkdown(md){
-      const italic = md.match(/^\*([^*]+)\*$/m);
-      if(italic) return italic[1].trim();
-      const lines = md.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-      const first = lines.find(line=>!line.startsWith('#') && !line.startsWith('---') && !/^[-*] /.test(line));
-      return first ? first.replace(/^>|\*|\*$/g,'').trim() : '';
-    }
-    function copyPublish(text){
-      navigator.clipboard.writeText(text).then(()=>alert('Copied: '+text)).catch(()=>alert(text));
-    }
-    function renderCard(item){
-      const file = item.name;
-      const slug = slugFromFile(file);
-      const title = titleFromMarkdown(item.md, slug);
-      const description = descriptionFromMarkdown(item.md);
+    function familyKey(name){return name.replace(/-zh\.md$/i,'.md');}
+    function titleFromMarkdown(md,fallback){const h1=md.match(/^#\s+(.+)$/m);return h1?h1[1].trim():fallback.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());}
+    function descriptionFromMarkdown(md){const italic=md.match(/^\*([^*]+)\*$/m);if(italic)return italic[1].trim();const lines=md.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);const first=lines.find(line=>!line.startsWith('#')&&!line.startsWith('---')&&!/^[-*] /.test(line));return first?first.replace(/^>|\*|\*$/g,'').trim():'';}
+    function copyPublish(text){navigator.clipboard.writeText(text).then(()=>alert('Copied: '+text)).catch(()=>alert(text));}
+    function previewButton(item,label){return item?`<a class="button" href="/draft/view.html?file=${encodeURIComponent(item.name)}">${label}</a>`:'';}
+    function markdownButton(item,label){return item?`<a class="button secondary" href="/draft/${encodeURIComponent(item.name)}">${label} Markdown</a>`:'';}
+    function publishButton(item,label){if(!item)return '';const command='publish '+slugFromFile(item.name);return `<button class="button secondary" data-command="${escapeHtml(command)}">Publish ${label}</button>`;}
+    function renderCard(group){
+      const primary=group.en||group.zh;
+      const title=titleFromMarkdown(primary.md,slugFromFile(primary.name));
+      const description=descriptionFromMarkdown(primary.md);
+      const languages=[group.en?'English':null,group.zh?'中文':null].filter(Boolean).join(' / ');
       return `
         <article class="draft-card">
-          <p class="draft-meta">${formatDate(file)} · Draft</p>
+          <p class="draft-meta">${formatDate(primary.name)} · ${languages}</p>
           <h2>${escapeHtml(title)}</h2>
-          ${description ? `<p>${escapeHtml(description)}</p>` : ''}
+          ${description?`<p>${escapeHtml(description)}</p>`:''}
           <div class="draft-actions">
-            <a class="button" href="/draft/view.html?file=${encodeURIComponent(file)}">Preview</a>
-            <a class="button secondary" href="/draft/${encodeURIComponent(file)}">Markdown</a>
-            <button class="button secondary" data-command="publish ${escapeHtml(slug)}">Copy publish command</button>
+            ${previewButton(group.en,'Read English')}
+            ${previewButton(group.zh,'阅读中文')}
+            ${markdownButton(group.en,'English')}
+            ${markdownButton(group.zh,'中文')}
+            ${publishButton(group.en,'English')}
+            ${publishButton(group.zh,'中文')}
           </div>
         </article>`;
     }
 
-    fetch(`https://api.github.com/repos/${owner}/${repo}/contents/draft`)
-      .then(r=>{if(!r.ok) throw new Error('GitHub API error'); return r.json();})
+    fetch(`https://api.github.com/repos/${owner}/${repo}/contents/draft`,{cache:'no-store'})
+      .then(r=>{if(!r.ok)throw new Error('GitHub API error');return r.json();})
       .then(files=>files
-        .filter(f=>f.type==='file' && /^\d{8}-[a-z0-9-]+\.md$/i.test(f.name))
+        .filter(f=>f.type==='file'&&/^\d{8}-[a-z0-9-]+\.md$/i.test(f.name)&&!excluded.has(f.name))
         .sort((a,b)=>b.name.localeCompare(a.name)))
-      .then(files=>Promise.all(files.map(file=>
-        fetch(file.download_url).then(r=>{if(!r.ok) throw new Error('Markdown load error'); return r.text();}).then(md=>({...file,md}))
-      )))
+      .then(files=>Promise.all(files.map(file=>fetch(file.download_url,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Markdown load error');return r.text();}).then(md=>({...file,md})))))
       .then(items=>{
-        draftsEl.innerHTML = items.length ? items.map(renderCard).join('') : '<p class="status">No drafts found.</p>';
+        const grouped=new Map();
+        for(const item of items){const key=familyKey(item.name);if(!grouped.has(key))grouped.set(key,{});grouped.get(key)[/-zh\.md$/i.test(item.name)?'zh':'en']=item;}
+        const groups=[...grouped.entries()].sort((a,b)=>b[0].localeCompare(a[0])).map(([,group])=>group);
+        draftsEl.innerHTML=groups.length?groups.map(renderCard).join(''):'<p class="status">No article drafts found.</p>';
         draftsEl.querySelectorAll('[data-command]').forEach(button=>button.addEventListener('click',()=>copyPublish(button.dataset.command)));
       })
-      .catch(()=>{
-        draftsEl.innerHTML = '<p class="status">Unable to load drafts from GitHub.</p>';
-      });
+      .catch(()=>{draftsEl.innerHTML='<p class="status">Unable to load drafts from GitHub.</p>';});
   </script>
 </body>
 </html>
