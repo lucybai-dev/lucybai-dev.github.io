@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,24 +7,12 @@
   <meta name="robots" content="noindex,nofollow">
   <link rel="stylesheet" href="/style.css">
   <style>
-    .figure { margin: 2rem 0; }
-    .figure img { display: block; width: 100%; max-width: 980px; height: auto; border-radius: 24px; }
-    .draft-error { border-top:1px solid var(--line); padding-top:20px; color:var(--muted); }
-    .version-nav { display:grid; grid-template-columns:112px minmax(0,1fr) 112px; gap:18px; align-items:center; margin:0 0 48px; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-    .version-nav.bottom { margin:72px 0 0; }
-    .version-button { display:block; color:var(--text); text-decoration:none; font-size:14px; }
-    .version-button.next { text-align:right; }
-    .version-button:hover { text-decoration:underline; text-underline-offset:4px; }
-    .version-button.disabled { color:#aaa; cursor:default; }
-    .version-info { min-width:0; text-align:center; }
-    .version-count { display:block; color:var(--muted); font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:3px; }
-    .version-info strong { display:block; font-size:14px; font-weight:600; }
-    .version-description { display:block; color:var(--muted); font-size:13px; line-height:1.45; margin-top:2px; }
-    @media(max-width:700px){
-      .version-nav { grid-template-columns:74px minmax(0,1fr) 74px; gap:8px; margin-bottom:38px; }
-      .version-description { display:none; }
-      .version-button { font-size:13px; }
-    }
+    .figure{margin:2rem 0}.figure img{display:block;width:100%;max-width:980px;height:auto;border-radius:24px}
+    .draft-error{border-top:1px solid var(--line);padding-top:20px;color:var(--muted)}
+    .draft-tools{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 42px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .draft-tool{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:7px 13px;color:var(--text);text-decoration:none;font-size:14px;background:#fff;cursor:pointer}.draft-tool:hover{text-decoration:none;background:#f7f7f7}
+    #post table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px;line-height:1.45}#post th,#post td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}#post th{font-weight:600;background:#fafafa}
+    @media(max-width:700px){#post table{display:block;overflow-x:auto;white-space:nowrap}}
   </style>
 </head>
 <body>
@@ -32,157 +20,78 @@
     <header class="site-header">
       <a class="logo" href="/">Lucy Bai</a>
       <nav>
+        <a href="/draft.html">Drafts</a>
+        <a href="/parkinglot/">Parking Lot</a>
         <a href="/writing.html">Notes</a>
         <a href="/projects.html">Projects</a>
       </nav>
     </header>
-    <div id="version-nav-top"></div>
+    <div id="draft-tools"></div>
     <article id="post"><p>Loading draft…</p></article>
-    <div id="version-nav-bottom"></div>
   </main>
   <script>
-    const params = new URLSearchParams(location.search);
-    const file = params.get('file');
-    const post = document.getElementById('post');
-    const navTop = document.getElementById('version-nav-top');
-    const navBottom = document.getElementById('version-nav-bottom');
-    const repo = 'lucybai-dev/lucybai-dev.github.io';
-
-    const fallbackManifest = {
-      '20260709-research-parking-lot.md': {
-        versions: [
-          {
-            label: '基础理论层',
-            description: '解释 hidden state、background model、hypothesis space、observation model、belief update 与 effective constraint 的底层关系。',
-            ref: 'f2a0d5cd04859e1a8b68f530e1601a897bf82117'
-          },
-          {
-            label: '当前研究层',
-            description: '把基础框架转化为当前优先研究问题、活跃假设、近期实验与系统设计入口。',
-            ref: 'a10ffdb80a0ec8be81bd4a35c3e1a9e9728aaf6f'
-          }
-        ]
-      }
-    };
-
+    const params=new URLSearchParams(location.search);
+    const file=params.get('file');
+    const post=document.getElementById('post');
+    const tools=document.getElementById('draft-tools');
+    if(file==='20260709-research-parking-lot.md') location.replace('/parkinglot/');
     function escapeHtml(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
     function escapeAttr(s){return escapeHtml(s).replace(/"/g,'&quot;');}
-    function inline(s){return escapeHtml(s)
-      .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
-      .replace(/\*([^*]+)\*/g,'<em>$1</em>')
-      .replace(/`([^`]+)`/g,'<code>$1</code>');}
+    function inline(s){return escapeHtml(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
     function slugify(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'');}
-    function dateFromFile(name){
-      const m = name.match(/^(\d{4})(\d{2})(\d{2})-/);
-      return m ? `${m[1]}.${m[2]}.${m[3]}` : 'Draft';
+    function dateFromFile(name){const m=name.match(/^(\d{4})(\d{2})(\d{2})-/);return m?`${m[1]}.${m[2]}.${m[3]}`:'Draft';}
+    function splitTableRow(line){return line.trim().replace(/^\||\|$/g,'').split('|').map(cell=>cell.trim());}
+    function copyPublish(command){navigator.clipboard.writeText(command).then(()=>alert('Copied: '+command)).catch(()=>alert(command));}
+    function renderTools(meta){
+      const parts=[];
+      if(meta.alternate&&meta.alternate.file)parts.push('<a class="draft-tool" href="/draft/view.html?file='+encodeURIComponent(meta.alternate.file)+'">'+escapeHtml(meta.alternate.label||'Alternate language')+'</a>');
+      parts.push('<a class="draft-tool" href="/draft/'+encodeURIComponent(file)+'">Markdown</a>');
+      if(meta.publish_slug)parts.push('<button class="draft-tool" id="copy-publish">Copy publish command</button>');
+      tools.innerHTML=parts.join('');
+      const button=document.getElementById('copy-publish');if(button)button.addEventListener('click',()=>copyPublish('publish '+meta.publish_slug));
     }
-    function pageHref(page){
-      const next = new URLSearchParams(location.search);
-      next.set('file', file);
-      next.set('page', String(page));
-      return '?' + next.toString();
-    }
-    function versionNav(version, page, total, bottom=false){
-      if(total <= 1) return '';
-      const previous = page > 1
-        ? '<a class="version-button" href="'+escapeAttr(pageHref(page-1))+'">← 上一页</a>'
-        : '<span class="version-button disabled">← 上一页</span>';
-      const next = page < total
-        ? '<a class="version-button next" href="'+escapeAttr(pageHref(page+1))+'">下一页 →</a>'
-        : '<span class="version-button next disabled">下一页 →</span>';
-      const description = version.description
-        ? '<span class="version-description">'+escapeHtml(version.description)+'</span>'
-        : '';
-      return '<nav class="version-nav'+(bottom?' bottom':'')+'" aria-label="研究层次">'
-        + previous
-        + '<div class="version-info"><span class="version-count">层次 '+page+' / '+total+'</span><strong>'+escapeHtml(version.label || '未命名层次')+'</strong>'+description+'</div>'
-        + next
-        + '</nav>';
-    }
-    function render(md, version){
-      const lines = md.split(/\r?\n/);
-      const headings = lines.filter(l=>l.trim().startsWith('## ')).map(l=>l.trim().slice(3));
-      const used = {};
-      const ids = headings.map(h=>{let base=slugify(h)||'section';let id=base;used[base]=(used[base]||0)+1;if(used[base]>1)id=base+'-'+used[base];return id;});
-      const toc = headings.length ? '<nav class="toc"><p class="toc-title">Map</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(h)+'</a>').join('')+'</nav>' : '';
-      let html = '<p class="eyebrow">'+dateFromFile(file)+' · '+escapeHtml(version.label || 'Draft')+'</p>';
-      let para = [], quote = [], h2Index = 0, seenH1 = false, insertedToc = false, usedIntro = false, inCode = false, code = [];
-      function maybeToc(){ if(seenH1 && usedIntro && !insertedToc && toc){ html += toc; insertedToc = true; } }
-      function flushPara(){ if(para.length){ html += '<p>'+inline(para.join(' '))+'</p>'; para=[]; maybeToc(); } }
-      function flushQuote(){ if(quote.length){ html += '<blockquote><p>'+quote.map(inline).join('<br>')+'</p></blockquote>'; quote=[]; maybeToc(); } }
-      function flushCode(){ if(code.length){ html += '<pre><code>'+escapeHtml(code.join('\n'))+'</code></pre>'; code=[]; maybeToc(); } }
-      for(const raw of lines){
-        if(raw.trim().startsWith('```')){ flushPara(); flushQuote(); if(inCode){ flushCode(); inCode=false; } else { inCode=true; } continue; }
-        if(inCode){ code.push(raw); continue; }
-        const line = raw.trim();
-        if(!line){ flushPara(); flushQuote(); continue; }
-        const img = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
-        if(img){ flushPara(); flushQuote(); html += '<figure class="figure"><img src="'+escapeAttr(img[2])+'" alt="'+escapeAttr(img[1])+'"></figure>'; maybeToc(); continue; }
-        if(line.startsWith('>')){ flushPara(); quote.push(line.replace(/^>\s?/,'')); continue; }
+    function render(md,meta){
+      const lines=md.split(/\r?\n/);
+      const headings=lines.filter(l=>l.trim().startsWith('## ')).map(l=>l.trim().slice(3));
+      const used={};
+      const ids=headings.map(h=>{let base=slugify(h)||'section';let id=base;used[base]=(used[base]||0)+1;if(used[base]>1)id=base+'-'+used[base];return id;});
+      const toc=headings.length?'<nav class="toc"><p class="toc-title">'+(meta.language==='中文'?'目录':'Map')+'</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(h)+'</a>').join('')+'</nav>':'';
+      const alt=meta.alternate&&meta.alternate.file?' · <a href="/draft/view.html?file='+encodeURIComponent(meta.alternate.file)+'">'+escapeHtml(meta.alternate.label||'Alternate language')+'</a>':'';
+      let html='<p class="eyebrow">'+dateFromFile(file)+' · '+escapeHtml(meta.language||'Draft')+alt+'</p>';
+      let para=[],quote=[],list=[],listType='',h2Index=0,seenH1=false,insertedToc=false,usedIntro=false,inCode=false,code=[];
+      function maybeToc(){if(seenH1&&usedIntro&&!insertedToc&&toc){html+=toc;insertedToc=true;}}
+      function flushPara(){if(para.length){html+='<p>'+inline(para.join(' '))+'</p>';para=[];maybeToc();}}
+      function flushQuote(){if(quote.length){html+='<blockquote><p>'+quote.map(inline).join('<br>')+'</p></blockquote>';quote=[];maybeToc();}}
+      function flushList(){if(list.length){html+='<'+listType+'>'+list.map(item=>'<li>'+inline(item)+'</li>').join('')+'</'+listType+'>';list=[];listType='';maybeToc();}}
+      function flushCode(){if(code.length){html+='<pre><code>'+escapeHtml(code.join('\n'))+'</code></pre>';code=[];maybeToc();}}
+      for(let i=0;i<lines.length;i++){
+        const raw=lines[i];
+        if(raw.trim().startsWith('```')){flushPara();flushQuote();flushList();if(inCode){flushCode();inCode=false;}else{inCode=true;}continue;}
+        if(inCode){code.push(raw);continue;}
+        const line=raw.trim();
+        if(!line){flushPara();flushQuote();flushList();continue;}
+        if(line.startsWith('|')&&i+1<lines.length&&/^\s*\|?\s*:?-+/.test(lines[i+1])){
+          flushPara();flushQuote();flushList();const headers=splitTableRow(line);i++;const rows=[];while(i+1<lines.length&&lines[i+1].trim().startsWith('|'))rows.push(splitTableRow(lines[++i]));html+='<table><thead><tr>'+headers.map(h=>'<th>'+inline(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(row=>'<tr>'+headers.map((_,j)=>'<td>'+inline(row[j]||'')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';maybeToc();continue;
+        }
+        const img=line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);if(img){flushPara();flushQuote();flushList();html+='<figure class="figure"><img src="'+escapeAttr(img[2])+'" alt="'+escapeAttr(img[1])+'"></figure>';maybeToc();continue;}
+        if(line.startsWith('>')){flushPara();flushList();quote.push(line.replace(/^>\s?/,''));continue;}
         flushQuote();
-        if(line.startsWith('# ')){ flushPara(); html += '<h1>'+inline(line.slice(2))+'</h1>'; seenH1 = true; document.title = line.slice(2)+' · '+(version.label || 'Draft')+' - Lucy Bai'; continue; }
-        if(seenH1 && !usedIntro && /^\*[^*]+\*$/.test(line)){ flushPara(); html += '<p class="intro">'+inline(line.replace(/^\*|\*$/g,''))+'</p>'; usedIntro = true; maybeToc(); continue; }
-        if(line.startsWith('## ')){ flushPara(); const title=line.slice(3); html += '<h2 id="'+ids[h2Index++]+'">'+inline(title)+'</h2>'; continue; }
-        if(line.startsWith('### ')){ flushPara(); html += '<h3>'+inline(line.slice(4))+'</h3>'; continue; }
-        if(/^[-*] /.test(line)){ flushPara(); html += '<p>• '+inline(line.slice(2))+'</p>'; continue; }
+        const ul=line.match(/^[-*]\s+(.+)$/);const ol=line.match(/^\d+\.\s+(.+)$/);if(ul||ol){flushPara();const type=ul?'ul':'ol';if(listType&&listType!==type)flushList();listType=type;list.push((ul||ol)[1]);continue;}
+        flushList();
+        if(line.startsWith('# ')){flushPara();html+='<h1>'+inline(line.slice(2))+'</h1>';seenH1=true;document.title=line.slice(2)+' - Lucy Bai';continue;}
+        if(seenH1&&!usedIntro&&/^\*[^*]+\*$/.test(line)){flushPara();html+='<p class="intro">'+inline(line.replace(/^\*|\*$/g,''))+'</p>';usedIntro=true;maybeToc();continue;}
+        if(line.startsWith('## ')){flushPara();const title=line.slice(3);html+='<h2 id="'+ids[h2Index++]+'">'+inline(title)+'</h2>';continue;}
+        if(line.startsWith('### ')){flushPara();html+='<h3>'+inline(line.slice(4))+'</h3>';continue;}
         para.push(line);
       }
-      flushPara(); flushQuote(); flushCode();
-      if(!insertedToc && toc) html += toc;
-      post.innerHTML = html;
-    }
-    function decodeBase64Utf8(content){
-      const binary = atob(String(content).replace(/\s/g,''));
-      const bytes = Uint8Array.from(binary, c=>c.charCodeAt(0));
-      return new TextDecoder('utf-8').decode(bytes);
-    }
-    async function fetchGithubFile(path, ref){
-      const url = 'https://api.github.com/repos/'+repo+'/contents/'+path.split('/').map(encodeURIComponent).join('/')+'?ref='+encodeURIComponent(ref);
-      const response = await fetch(url, {
-        cache: 'no-store',
-        headers: { 'Accept': 'application/vnd.github+json' }
-      });
-      if(!response.ok) throw new Error('GitHub API '+response.status);
-      const data = await response.json();
-      if(data.encoding !== 'base64' || !data.content) throw new Error('Unsupported GitHub response');
-      return decodeBase64Utf8(data.content);
-    }
-    async function loadManifest(){
-      try {
-        const text = await fetchGithubFile('draft/versions.json', 'main');
-        const manifest = JSON.parse(text);
-        if(manifest[file] && Array.isArray(manifest[file].versions) && manifest[file].versions.length){
-          return manifest[file].versions;
-        }
-      } catch (_) {}
-      return fallbackManifest[file] ? fallbackManifest[file].versions : [{label:'当前层次',description:'',ref:'main'}];
-    }
-    async function loadVersion(version){
-      try {
-        return await fetchGithubFile('draft/'+file, version.ref);
-      } catch (primaryError) {
-        const fallbackUrl = 'https://cdn.jsdelivr.net/gh/'+repo+'@'+encodeURIComponent(version.ref)+'/draft/'+encodeURIComponent(file);
-        const response = await fetch(fallbackUrl, {cache:'no-store'});
-        if(!response.ok) throw primaryError;
-        return response.text();
-      }
+      flushPara();flushQuote();flushList();flushCode();if(!insertedToc&&toc)html+=toc;post.innerHTML=html;
     }
     async function load(){
-      if(!file || !/^\d{8}-[a-z0-9-]+\.md$/i.test(file)){
-        post.innerHTML = '<p class="draft-error">Invalid draft file.</p>';
-        return;
-      }
-      const versions = await loadManifest();
-      const requested = Number(params.get('page'));
-      const page = Number.isInteger(requested) && requested >= 1 && requested <= versions.length ? requested : versions.length;
-      const version = versions[page-1];
-      navTop.innerHTML = versionNav(version, page, versions.length, false);
-      navBottom.innerHTML = versionNav(version, page, versions.length, true);
-      try {
-        render(await loadVersion(version), version);
-      } catch (_) {
-        post.innerHTML = '<p class="draft-error">Unable to load this draft version.</p>';
-      }
+      if(!file||!/^\d{8}-[a-z0-9-]+\.md$/i.test(file)){post.innerHTML='<p class="draft-error">Invalid draft file.</p>';return;}
+      let meta={language:/-zh\.md$/i.test(file)?'中文':'English',publish_slug:file.replace(/^\d{8}-/,'').replace(/\.md$/,'')};
+      try{const r=await fetch('/draft/meta.json',{cache:'no-store'});if(r.ok){const all=await r.json();if(all[file])meta={...meta,...all[file]};}}catch(_){}
+      renderTools(meta);
+      try{const r=await fetch('/draft/'+encodeURIComponent(file),{cache:'no-store'});if(!r.ok)throw new Error('not found');render(await r.text(),meta);}catch(_){post.innerHTML='<p class="draft-error">Unable to load draft.</p>';}
     }
     load();
   </script>
