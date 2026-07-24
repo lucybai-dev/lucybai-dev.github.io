@@ -1,0 +1,18 @@
+{
+  "20260708-when-thinking-is-not-enough.md": {
+    "language": "English",
+    "alternate": {
+      "label": "中文",
+      "file": "20260708-when-thinking-is-not-enough-zh.md"
+    },
+    "publish_slug": "when-thinking-is-not-enough"
+  },
+  "20260708-when-thinking-is-not-enough-zh.md": {
+    "language": "中文",
+    "alternate": {
+      "label": "English",
+      "file": "20260708-when-thinking-is-not-enough.md"
+    },
+    "publish_slug": "when-thinking-is-not-enough-zh"
+  }
+}
