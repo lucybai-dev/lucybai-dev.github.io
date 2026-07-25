@@ -1,4 +1,12 @@
 {
+  "20260627-how-worlds-die.md": {
+    "language": "English",
+    "alternate": {
+      "label": "中文",
+      "href": "/posts/how-worlds-die-zh.html"
+    },
+    "publish_slug": "how-worlds-die"
+  },
   "20260708-when-thinking-is-not-enough.md": {
     "language": "English",
     "alternate": {
