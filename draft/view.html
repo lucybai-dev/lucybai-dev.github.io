@@ -42,9 +42,16 @@
     function dateFromFile(name){const m=name.match(/^(\d{4})(\d{2})(\d{2})-/);return m?`${m[1]}.${m[2]}.${m[3]}`:'Draft';}
     function splitTableRow(line){return line.trim().replace(/^\||\|$/g,'').split('|').map(cell=>cell.trim());}
     function copyPublish(command){navigator.clipboard.writeText(command).then(()=>alert('Copied: '+command)).catch(()=>alert(command));}
+    function alternateHref(meta){
+      if(!meta.alternate)return '';
+      if(meta.alternate.href)return meta.alternate.href;
+      if(meta.alternate.file)return '/draft/view.html?file='+encodeURIComponent(meta.alternate.file);
+      return '';
+    }
     function renderTools(meta){
       const parts=[];
-      if(meta.alternate&&meta.alternate.file)parts.push('<a class="draft-tool" href="/draft/view.html?file='+encodeURIComponent(meta.alternate.file)+'">'+escapeHtml(meta.alternate.label||'Alternate language')+'</a>');
+      const altHref=alternateHref(meta);
+      if(altHref)parts.push('<a class="draft-tool" href="'+escapeAttr(altHref)+'">'+escapeHtml(meta.alternate.label||'Alternate language')+'</a>');
       parts.push('<a class="draft-tool" href="/draft/'+encodeURIComponent(file)+'">Markdown</a>');
       if(meta.publish_slug)parts.push('<button class="draft-tool" id="copy-publish">Copy publish command</button>');
       tools.innerHTML=parts.join('');
@@ -56,7 +63,8 @@
       const used={};
       const ids=headings.map(h=>{let base=slugify(h)||'section';let id=base;used[base]=(used[base]||0)+1;if(used[base]>1)id=base+'-'+used[base];return id;});
       const toc=headings.length?'<nav class="toc"><p class="toc-title">'+(meta.language==='中文'?'目录':'Map')+'</p>'+headings.map((h,i)=>'<a href="#'+ids[i]+'">'+inline(h)+'</a>').join('')+'</nav>':'';
-      const alt=meta.alternate&&meta.alternate.file?' · <a href="/draft/view.html?file='+encodeURIComponent(meta.alternate.file)+'">'+escapeHtml(meta.alternate.label||'Alternate language')+'</a>':'';
+      const altHref=alternateHref(meta);
+      const alt=altHref?' · <a href="'+escapeAttr(altHref)+'">'+escapeHtml(meta.alternate.label||'Alternate language')+'</a>':'';
       let html='<p class="eyebrow">'+dateFromFile(file)+' · '+escapeHtml(meta.language||'Draft')+alt+'</p>';
       let para=[],quote=[],list=[],listType='',h2Index=0,seenH1=false,insertedToc=false,usedIntro=false,inCode=false,code=[];
       function maybeToc(){if(seenH1&&usedIntro&&!insertedToc&&toc){html+=toc;insertedToc=true;}}
