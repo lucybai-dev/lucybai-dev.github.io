@@ -245,4 +245,4 @@ Thinking longer about the same evidence does not create a new observation.
 
 At that point, reasoning may need to change the conditions under which the world is observed — by asking a question, running a test, using a tool, or taking an action that makes different worlds respond differently.
 
-That is the question taken up next in [When Thinking Is Not Enough](/draft/view.html?file=20260708-when-thinking-is-not-enough.md).
+That is the question the next Note will explore.
