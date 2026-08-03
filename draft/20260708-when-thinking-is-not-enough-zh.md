@@ -1,5 +1,11 @@
 # 当思考还不够
 
+*当现有证据无法继续区分相互竞争的世界时，行动如何成为推理的一部分？*
+
+> 你不需要预先了解三门问题、贝叶斯推断或因果推断。本文只使用一个规则明确的开门游戏，说明同一项观察为何会因生成机制不同而具有不同意义，以及行动如何成为获取新证据的实验。
+
+## Prologue｜当已有信息说完了它能说的一切
+
 在上一篇文章里，我尝试把推理理解成一件并不神秘的事：
 
 我们看见一些现象，构造出若干仍然可能成立的世界，再用新的事实、规则和行动，一点点排除那些无法继续自洽的世界。
@@ -16,9 +22,7 @@
 
 三门问题提供了一个足够小、却包含了几乎全部关键结构的世界。
 
----
-
-## 三扇门和三个世界
+## Chapter 1｜三扇门和三个世界
 
 你面前有三扇门。只有一扇门后有奖品，另外两扇门后什么也没有。
 
@@ -30,7 +34,7 @@
 - **世界 2：**2 号门后；
 - **世界 3：**3 号门后。
 
-在没有其他信息时，三个世界的概率各是 \(1/3\)。
+在没有其他信息时，三个世界的概率各是 `1/3`。
 
 你可以继续盯着三扇门思考，也可以分析门的颜色、把手的位置，或者自己为什么选择了 1 号门。
 
@@ -40,11 +44,11 @@
 
 上一篇文章里的“可能世界”，在统计推断中通常可以叫作 **hypotheses**。而我们对这些 hypotheses 的概率分配，可以叫作当前的 **belief**。
 
-设隐藏状态为 \(H\)，观察到的现象为 \(O\)。贝叶斯更新写作：
+设隐藏状态为 `H`，观察到的现象为 `O`。贝叶斯更新写作：
 
-\[
-P(H\mid O)\propto P(O\mid H)P(H)
-\]
+```
+P(H | O) ∝ P(O | H)P(H)
+```
 
 它告诉我们：看到一项新 evidence 后，应该怎样重新分配对各个世界的支持。
 
@@ -54,9 +58,7 @@ P(H\mid O)\propto P(O\mid H)P(H)
 
 接下来，主持人走了过来。
 
----
-
-## 主持人为什么让换门更好
+## Chapter 2｜主持人为什么让换门更好
 
 主持人知道奖品在哪里，并遵守三条规则：
 
@@ -74,11 +76,11 @@ P(H\mid O)\propto P(O\mid H)P(H)
 
 原因可以用两句话说清楚：
 
-> 你最初选中的概率只有 \(1/3\)，选错的概率是 \(2/3\)。如果一开始选错，知道答案的主持人就会被迫打开另一扇空门，把有奖品的门留给你换，因此换门恰好在那 \(2/3\) 的情况下获胜。
+> 你最初选中的概率只有 `1/3`，选错的概率是 `2/3`。如果一开始选错，知道答案的主持人就会被迫打开另一扇空门，把有奖品的门留给你换，因此换门恰好在那 `2/3` 的情况下获胜。
 
 从 likelihood 看也一样。
 
-设 \(O\) 表示“主持人打开 3 号门，而且里面为空”。
+设 `O` 表示“主持人打开 3 号门，而且里面为空”。
 
 - 奖品在 1 号门时，他有一半概率打开 3 号门；
 - 奖品在 2 号门时，他只能打开 3 号门；
@@ -86,19 +88,15 @@ P(H\mid O)\propto P(O\mid H)P(H)
 
 所以这项 observation 在三个世界中的出现概率不同。更新之后：
 
-\[
-P(H_1\mid O)=\frac13,\qquad
-P(H_2\mid O)=\frac23,\qquad
-P(H_3\mid O)=0
-\]
+```
+P(H₁ | O) = 1/3    P(H₂ | O) = 2/3    P(H₃ | O) = 0
+```
 
 主持人并没有移动奖品。
 
 他只是用自己的知识，选择性地排除了一个世界。
 
----
-
-## 同一扇空门，为什么会有不同含义
+## Chapter 3｜同一扇空门，为什么会有不同含义
 
 现在换一个主持人。
 
@@ -110,33 +108,31 @@ P(H_3\mid O)=0
 
 > 3 号门被打开，里面为空。
 
-但这一次，1 号门和 2 号门的概率各是 \(1/2\)。
+但这一次，1 号门和 2 号门的概率各是 `1/2`。
 
 因为在奖品位于 1 号门和 2 号门时，这位主持人打开 3 号门的概率相同。这项 observation 排除了世界 3，却没有进一步偏向世界 1 或世界 2。
 
-同一扇空门，在第一种机制下意味着 \(1/3\) 对 \(2/3\)，在第二种机制下意味着 \(1/2\) 对 \(1/2\)。
+同一扇空门，在第一种机制下意味着 `1/3` 对 `2/3`，在第二种机制下意味着 `1/2` 对 `1/2`。
 
 区别不在门，而在门是怎样被打开的。
 
 因此，更完整的更新不是简单的：
 
-\[
-P(H\mid O)
-\]
+```
+P(H | O)
+```
 
 而是：
 
-\[
-P(H\mid O,M)
-\]
+```
+P(H | O, M)
+```
 
-其中 \(M\) 表示 **observation-generating mechanism**：这项观察是怎样被选择、产生和呈现给我们的。
+其中 `M` 表示 **observation-generating mechanism**：这项观察是怎样被选择、产生和呈现给我们的。
 
 证据不仅包括我们看见了什么，也包括为什么偏偏让我们看见了它。
 
----
-
-## 如果开门是你要求的呢
+## Chapter 4｜如果开门是你要求的呢
 
 再改变一次规则。
 
@@ -144,7 +140,7 @@ P(H\mid O,M)
 
 幸运的是，3 号门后仍然是空的。
 
-1 号门和 2 号门的概率仍然各是 \(1/2\)。
+1 号门和 2 号门的概率仍然各是 `1/2`。
 
 这个数字与随机主持人的结果相同，但生成过程不同。
 
@@ -154,17 +150,17 @@ P(H\mid O,M)
 
 因果推断通常用下面的区别描述两者：
 
-\[
-P(Y\mid X=x)
-\]
+```
+P(Y | X = x)
+```
 
-表示观察到 \(X=x\) 后，怎样判断 \(Y\)；
+表示观察到 `X = x` 后，怎样判断 `Y`；
 
-\[
-P(Y\mid do(X=x))
-\]
+```
+P(Y | do(X = x))
+```
 
-则表示主动把 \(X\) 设置为 \(x\) 后，\(Y\) 会怎样变化。
+则表示主动把 `X` 设置为 `x` 后，`Y` 会怎样变化。
 
 在三门问题里，两种机制恰好可能得到相同的后验概率。但在更复杂的世界中，观察一项选择和强制做出一项选择，往往不是同一件事。
 
@@ -172,17 +168,15 @@ P(Y\mid do(X=x))
 
 > 如果我们能够决定下一项 observation 怎样产生，应该选择什么？
 
----
-
-## 选择下一项 observation
+## Chapter 5｜选择下一项 observation
 
 把游戏扩大到一百扇门。
 
-只有一扇门后有奖品。你先选择了 1 号门，选中的概率是 \(1/100\)，选错的概率是 \(99/100\)。
+只有一扇门后有奖品。你先选择了 1 号门，选中的概率是 `1/100`，选错的概率是 `99/100`。
 
 你可以请一位知道答案的主持人，在其余 99 扇门中打开 98 扇空门，只留下你的 1 号门和另一扇门关闭。
 
-如果主持人按照这个规则行动，剩下那扇门就承接了你最初选错的 \(99/100\) 概率。换门的胜率是 \(99/100\)。
+如果主持人按照这个规则行动，剩下那扇门就承接了你最初选错的 `99/100` 概率。换门的胜率是 `99/100`。
 
 百门版本没有改变三门问题的原理，只是让一件事变得更明显：
 
@@ -198,13 +192,11 @@ P(Y\mid do(X=x))
 
 这时，行动就开始成为实验。
 
-好的信息行动 \(a\)，应当让不同 hypotheses 对下一项 observation 给出不同预测：
+好的信息行动 `a`，应当让不同 hypotheses 对下一项 observation 给出不同预测：
 
-\[
-P(O_{\text{next}}\mid H_1,a)
-\neq
-P(O_{\text{next}}\mid H_2,a)
-\]
+```
+P(O_next | H₁, a) ≠ P(O_next | H₂, a)
+```
 
 如果一个动作在所有可能世界中都会产生相同结果，它就没有区分力。
 
@@ -212,24 +204,21 @@ P(O_{\text{next}}\mid H_2,a)
 
 于是原来的线性过程：
 
-\[
-观察\rightarrow推理\rightarrow结论
-\]
+```
+观察 → 推理 → 结论
+```
 
 变成了一个循环：
 
-\[
-观察\rightarrow可能世界\rightarrow belief
-\rightarrow行动\rightarrow新观察\rightarrow更新
-\]
+```
+观察 → 可能世界 → belief → 行动 → 新观察 → 更新
+```
 
 行动不再只是推理结束后的附属步骤。
 
 它进入了推理本身。
 
----
-
-## 信息更多，不等于信息更有价值
+## Chapter 6｜信息更多，不等于信息更有价值
 
 一项 observation 能改变 belief，也不代表它值得获取。
 
@@ -249,9 +238,7 @@ P(O_{\text{next}}\mid H_2,a)
 
 这正是 active learning、Bayesian experimental design、active sensing 等领域共同关心的结构。
 
----
-
-## 那张地图里还缺少什么
+## Chapter 7｜那张地图里还缺少什么
 
 上一篇文章已经把 possible worlds 对应到了 hidden state、observations、hypotheses、belief 和 action under uncertainty。
 
@@ -274,17 +261,17 @@ P(O_{\text{next}}\mid H_2,a)
 
 第二篇中的结构大致是：
 
-\[
-O\rightarrow H\rightarrow B\rightarrow A
-\]
+```
+O → H → B → A
+```
 
 已有 observations 限制 possible worlds，形成 belief，然后支持一次 action under uncertainty。
 
 第三篇补上的结构则是：
 
-\[
-B_t\rightarrow A_t\rightarrow O_{t+1}\rightarrow B_{t+1}
-\]
+```
+Bₜ → Aₜ → Oₜ₊₁ → Bₜ₊₁
+```
 
 行动不只消耗已有 belief，也会改变下一项 observation 怎样产生，并由此改变下一时刻的 belief。
 
@@ -302,7 +289,7 @@ B_t\rightarrow A_t\rightarrow O_{t+1}\rightarrow B_{t+1}
 
 在 AI 系统里，retrieval、ranking、tool policy、用户选择和其他 agent 的策略，也在决定 observation 的意义。
 
-## 推理之外，agent 还需要什么
+## Chapter 8｜推理之外，agent 还需要什么
 
 在固定 context 上进行更长、更复杂的推理，能够更充分地利用已有信息。
 
@@ -318,9 +305,7 @@ B_t\rightarrow A_t\rightarrow O_{t+1}\rightarrow B_{t+1}
 
 主动智能改变的是系统与信息之间的关系。
 
----
-
-## 这条线通向哪里
+## Chapter 9｜这条线通向哪里
 
 第一篇问：
 
@@ -342,19 +327,10 @@ B_t\rightarrow A_t\rightarrow O_{t+1}\rightarrow B_{t+1}
 
 三篇文章由此形成一条连续的路径：
 
-\[
-\text{Representation}
-\rightarrow
-\text{Possible Worlds}
-\rightarrow
-\text{Belief}
-\rightarrow
-\text{Information Acquisition}
-\rightarrow
-\text{Intervention}
-\rightarrow
-\text{New Observation}
-\]
+```
+Representation → Possible Worlds → Belief
+→ Information Acquisition → Intervention → New Observation
+```
 
 第一篇讨论系统应该保留什么，第二篇讨论已有 evidence 允许哪些世界继续存在，第三篇则把这些组成部分连接成一个会持续运行的闭环。
 
@@ -374,9 +350,7 @@ B_t\rightarrow A_t\rightarrow O_{t+1}\rightarrow B_{t+1}
 
 当现有证据已经说完了它能说的一切，真正的智能开始决定——下一步应该让世界回答什么。
 
----
-
-## 延伸阅读
+## Further Reading｜延伸阅读
 
 - Thomas Bayes, *An Essay towards solving a Problem in the Doctrine of Chances*
 - Richard Bellman, *A Markovian Decision Process*
