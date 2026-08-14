@@ -143,31 +143,33 @@ B 不一样。
 
 信息论用 **entropy** 来衡量这种不确定程度。
 
-对于概率分别为 `p` 和 `1-p` 的二选一问题：
+这里可以先不管公式，把 entropy 当成一把衡量“概率分布有多分散”的尺子。
 
-```
-H(p) = -p log₂p - (1-p) log₂(1-p)
-```
-
-这个公式最值得先记住的不是长相，而是它的两个端点。
-
-当概率是 `50% / 50%` 时，我们最拿不准：
+当概率是 `50% / 50%` 时，我们最拿不准，这把尺子的读数是：
 
 ```
 H(0.5) = 1 bit
 ```
 
-当概率是 `100% / 0%` 时，答案已经确定：
+当概率是 `100% / 0%` 时，答案已经完全确定，读数变成：
 
 ```
 H(1) = 0 bit
 ```
 
-`75% / 25%` 位于两者之间：
+所以 `75% / 25%` 应该落在 0 和 1 之间。它的 entropy 约为：
 
 ```
 H(0.75) ≈ 0.81 bits
 ```
+
+如果想知道这个 `0.81` 是怎样精确算出来的，二元 entropy 的定义是：
+
+```
+H(p) = -p log₂p - (1-p) log₂(1-p)
+```
+
+把 `p = 0.75` 代进去，就得到约 `0.81 bits`。
 
 所以关于“奖品在哪边”这件事，我们原本有 1 bit 的不确定性，听完 B 以后还剩约 0.81 bits。
 
@@ -338,13 +340,9 @@ B = 1
 
 这就是 **synergy** 最小的直觉。
 
-Williams 和 Beer 提出的 partial information decomposition，简称 PID，正是试图把这类问题形式化：多个 sources 关于同一个 target 的信息中，哪些是重复的，哪些是各自独有的，哪些只有联合以后才出现。
+Williams 和 Beer 提出的 partial information decomposition，简称 PID，试图把这类问题形式化：多个 sources 关于同一个 target 的信息中，哪些是重复的，哪些是各自独有的，哪些只有联合以后才出现。
 
-但这里需要小心。
-
-PID 提供了一个很有用的问题框架，并不意味着 redundancy、unique information 和 synergy 已经有唯一公认的分解定义。后续研究提出了不同方案，这个问题本身仍然是研究对象。
-
-对这篇文章来说，更重要的是它提醒我们：
+这里不展开某一种具体分解，也不把 PID 当作已经有唯一标准答案的理论。对这篇文章来说，它最重要的作用只是提醒我们：
 
 > **多个 channels 的价值不能只看每一个 channel 单独有多少 information，还要看它们彼此是什么关系。**
 
@@ -596,6 +594,50 @@ B 比 A 更有价值。
 如果它与已有 channel 共享同一个错误来源，盲目融合甚至可能制造虚假的确定性。
 
 如果它提供的是新的、互补的，甚至只有联合以后才能出现的约束，它才真正改变了系统能够区分的世界。
+
+## 这一篇装进系统以后
+
+为了不让这些理论停在“几个不同的信息概念”上，可以把这一篇最后压回三个问题。
+
+### 人类已经解决了什么？
+
+我们已经有几种相当成熟、但回答不同问题的工具：information gain 衡量 observation 平均减少多少不确定性；Blackwell ordering 比较一个 observation mechanism 是否可以视为另一个的随机降质；value of information 则把信息放回具体行动和 utility 中判断它是否真的改善决策。
+
+多个 sources 同时出现时，还必须额外检查它们之间的 redundancy、synergy 和 error dependence，而不能把 information 简单相加。
+
+### 这些答案依赖什么假设？
+
+这些比较都不是凭空成立的。
+
+information gain 需要我们先定义 hidden state 和概率分布；Blackwell comparison 假设 observation mechanisms 本身是已知的；value of information 还需要当前 belief、可选 actions、utility 和 cost；多个 channels 的联合更新则依赖我们是否正确建模了它们之间的相关性。
+
+换句话说，第四篇并没有解决“信息从哪里来”。它只是告诉我们：**如果这些结构已经给定，信息可以怎样被比较。**
+
+### 这个理论在系统中放在哪里？
+
+如果把它装进一个更完整的智能体，它对应的可以是一个 **Information Evaluator**。
+
+输入包括：
+
+- 当前 belief；
+- 候选 observation channels 或 queries；
+- observation model；
+- 当前任务的 utility；
+- acquisition cost。
+
+输出则不是一个单一的“信息分数”，而是一组不同判断：
+
+- expected information gain；
+- 是否存在 Blackwell dominance，还是两个 channels 根本不可比；
+- task-specific value of information；
+- net value after cost；
+- 多个 sources 之间是否存在明显的重复或相关错误。
+
+这一步的意义不是替 agent 决定“下一步问什么”。
+
+它只是先把一个更基础的问题说清楚：
+
+> **当两个 observation 摆在面前时，我们究竟是在按什么标准比较它们？**
 
 ## Epilogue｜为什么偏偏让我看见它？
 
