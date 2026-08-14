@@ -107,9 +107,7 @@ A 排除了一半的世界；B 却更能帮助我们行动。
 
 四个世界一开始完全等概率。
 
-如果要确定真实世界是哪一个，相当于要解决两个独立的二选一问题：奖品在左还是右，以及奖品是红还是蓝。
-
-一个完全不确定的二选一问题有 1 bit 的 entropy，因此四个等概率世界一开始有 2 bits 的 uncertainty。
+一个完全不确定的二选一问题有 1 bit 的 entropy。这个盒子游戏里有两个彼此独立的二选一：位置是左 / 右，颜色是红 / 蓝。所以一开始总共有 2 bits 的 uncertainty。
 
 A 精确告诉颜色，相当于彻底解决了其中一个二选一问题。
 
@@ -184,9 +182,9 @@ Lindley 在 1956 年把这种 Shannon 式的信息度量带进对 experiment 的
 
 > **平均减少更多 uncertainty。**
 
-但这还不是我们能说的最强的话。
+不过，“减少了多少 uncertainty”仍然只是一种比较方式。
 
-## Chapter 3｜有没有一种“不看当前任务”的更强？
+## Chapter 3｜脱离当前任务，还能怎么比较？
 
 继续用盒子。
 
@@ -203,13 +201,13 @@ Lindley 在 1956 年把这种 Shannon 式的信息度量带进对 experiment 的
 
 也就是说：
 
-> **C 可以主动把自己变差，模拟 B；B 却无法从 noisy output 中恢复 C 原本那个确定的位置 observation。**
+> **C 可以通过主动加入噪声来模拟 B；B 却无法从 noisy output 中恢复 C 原本那个确定的位置 observation。**
 
 这就是 Blackwell comparison 最重要的直觉。
 
 它关心的不是某一次任务里谁赢，而是：一个 information source 是否已经包含了另一个 source 能提供的全部能力。
 
-这里的“变差”还有一个关键条件：加噪声的规则不能偷偷查看真实 state。否则后处理就可能重新加入新的 state information，而不再只是单纯降质。
+这里要守住一个条件：这层随机后处理只能使用 C 已经给出的 observation，不能再去查看真实 state。否则它就不只是把现有 observation 弄得更粗糙，而可能借机重新获取新的 state information。
 
 在简单的 B/C 例子里，这个标准看起来有点大材小用。
 
@@ -268,10 +266,6 @@ Partial Information Decomposition（PID）试图把这类关系形式化：多�
 > **多一个 channel，不等于简单多一份 information；关键在于它新增了什么约束，以及这些约束和已有 evidence 是什么关系。**
 
 甚至“看到十次相同结论”也不自动等于十个独立 evidence，因为这些 observations 可能共享同一个错误来源。
-
-而一旦继续追问这种相关性从哪里来——它们是不是共享同一个原始来源、检索系统或生成机制——我们就已经走到下一篇的问题了。
-
-这一篇先停在这里。
 
 ## Chapter 5｜最后到底该拿哪一条？
 
@@ -337,39 +331,7 @@ Net Value(B) = 0.25 - 0.30 = -0.05
 
 > **information 不是事实数量的简单累加，而是 observation、hidden state、当前 belief、行动目标和获取条件之间的关系。**
 
-如果一次 query 还会改变未来状态、影响之后能看到什么，或者决定下一步还能问什么，那么这里的一次性比较就不够了。那会变成一个序贯的信息获取问题，留到后面再处理。
-
-## 这一篇装进系统以后
-
-为了让第二阶段的文章都落回同一张系统图，这里只保留三个问题。
-
-**人类已经解决了什么？** 我们已经有 information gain、Blackwell comparison、value of information，以及处理多源 information 关系的一系列框架。
-
-**这些答案依赖什么？** hidden state、prior、observation mechanism、utility 和 cost 等结构必须先被定义或建模。
-
-**它放进系统哪里？** 一个 **Information Evaluator**：负责比较候选 observations，但还不负责决定下一步究竟去问什么。
-
-## Epilogue｜为什么偏偏让我看见它？
-
-到这里，我们一直默认自己知道 observation 是怎样产生的。
-
-B 为什么有 75% 准确率，我们知道。
-
-C 怎样通过随机降质变成 B，我们也知道。
-
-多个 channels 是否共享错误来源，也被当成原则上可以建模的东西。
-
-现实中，这些机制往往恰恰是未知的。
-
-搜索结果经过排序，新闻经过选择和转载，tool interface 决定暴露完整状态还是只返回摘要，另一个 agent 甚至可能主动选择什么告诉我们、什么不告诉我们。
-
-所以 observation 不仅有内容。
-
-它还有自己的生成过程、选择过程和呈现过程。
-
-下一篇的问题因此不再只是“哪一条 information 更好”，而会继续往下一层走：
-
-> **为什么偏偏让我看见它？**
+如果一次 query 还会改变未来状态、影响之后能看到什么，或者决定下一步还能问什么，那么这里的一次性比较就不够了。那已经是序贯的信息获取问题，不再是本文讨论的这类一次性比较。
 
 ## Technical Notes｜不影响主线，可跳过
 
@@ -434,11 +396,11 @@ H(1) = 0 bit
 
 如果 experiment C 的 observation 可以经过一个**不依赖真实 state**的随机后处理，变成 experiment B 的 observation，那么 B 可以看作 C 的 garbling。
 
-这时，拥有 C 的决策者如果真的想按 B 的方式行动，可以先把 C 降质成 B，再使用任何只依赖 B 的策略。
+这时，拥有 C 的决策者如果真的想按 B 的方式行动，可以先把 C 经过随机后处理变成 B，再使用任何只依赖 B 的策略。
 
 因此，在相应的 Bayesian decision problems 中，拥有 C 所能达到的最优期望收益不会低于只拥有 B。
 
-这就是为什么 Blackwell comparison 比“某一个任务里 accuracy 更高”更强：它比较的是 observation structure，而不是某一个特定 payoff 下的一次胜负。
+Blackwell comparison 比“某一个任务里 accuracy 更高”更一般：它比较的是 observation structure，而不是某一个特定 payoff 下的一次胜负。
 
 ## Further Reading
 
