@@ -109,7 +109,11 @@ B 说左边，却有四分之一的概率说错。
 
 有时我们还没有确定未来任务是什么，却已经需要比较两个传感器、两个数据源或两种 observation mechanisms。
 
-于是问题才真正开始变得有意思。
+我们在前三篇其实一直沿着同一条线往前走：第一篇问 representation 应该保留哪些差异；第二篇问真实状态不可见时，哪些 possible worlds 仍然可能成立；第三篇再问，当现有 observation 不够时，智能体怎样主动制造新的 evidence。
+
+到了这里，问题自然变成了：
+
+> **如果可以选择下一条 evidence，我们究竟应该怎样比较它们？**
 
 如果暂时不问“我现在要做什么”，还能怎样比较两条 information？
 
@@ -375,7 +379,7 @@ A 无法通过随机后处理制造出 B，因为它根本没有位置信息。
 
 B 也无法制造出 A，因为它根本没有颜色信息。
 
-所以它们不是简单的一强一弱。
+所以在这个盒子设定里，它们不是简单的一强一弱。
 
 它们观察的是 hidden state 的不同方向。
 
@@ -503,7 +507,7 @@ B 75% 准确提示位置。
 
 A 更高。
 
-它排除了关于颜色的一整半 possible worlds。
+它排除了关于颜色的一半 possible worlds。
 
 这是 Shannon information / information gain 在回答的问题。
 
@@ -513,7 +517,7 @@ A 更高。
 
 C 能通过 state-independent garbling 变成 B，所以 C 在这个意义上比 B 更强。
 
-A 和 B 则通常不可比，因为它们约束的是 hidden state 的不同部分。
+A 和 B 在这个盒子设定下则不可比，因为它们约束的是 hidden state 的不同部分。
 
 ### 如果你问：在当前任务里哪条 information 最值得拿？
 
@@ -644,7 +648,7 @@ C 怎样通过随机降质变成 B，我们也知道。
 
 到了这里，问题就不再只是：
 
-> 哪一条 information 更有 information？
+> 哪一条 information 更有信息？
 
 而会继续往下一层走：
 
