@@ -215,7 +215,7 @@ I(1/2) = 1 bit
 I(1/4) = 2 bits
 ```
 
-这里的 `I(p)` 通常叫 **surprisal**：某个具体结果真的发生以后，它有多“意外”。
+今天通常把这样的 `I(p)` 叫作 **surprisal**：某个具体结果真的发生以后，它有多“意外”。
 
 ### 第二步：结果还没发生时，把各种可能结果的 surprisal 取平均
 
@@ -324,7 +324,7 @@ B 却让我们在当前任务里做得更好。
 
 这就是 **expected information gain** 的基本直觉：在 experiment 发生之前，比较它平均预计能减少多少不确定性。
 
-Lindley 在 1956 年把这种思路系统化地用于实验所提供信息的度量，也成为后来 Bayesian experimental design 的重要起点之一。
+Lindley 在 1956 年把这种 Shannon 式的信息度量带进对 experiment 的比较：在观察结果出现之前，用 prior 来衡量一个 experiment 预计能提供多少 information。
 
 现在三个层次就可以分开了：某个具体结果发生后的 `-log p` 是 surprisal；结果发生前的平均 surprisal 是 entropy；而一项 observation 让我们前后少了多少 uncertainty，才是这里真正关心的 information gain。
 
@@ -401,7 +401,7 @@ B 也无法制造出 A，因为它根本没有颜色信息。
 
 它们观察的是 hidden state 的不同方向。
 
-这就是为什么 information sources 往往只能形成**偏序**，而不是全部排成一条从第一名到最后一名的直线。
+因此，Blackwell comparison 一般不是一个能把所有 information sources 从强到弱排成一条直线的全序：像 A 和 B 这样的 channels，彼此就可能根本不可比。
 
 到这里，上一篇那个直觉性的“区分力”已经被拆成了两种不同问题：
 
@@ -447,7 +447,7 @@ B 也无法制造出 A，因为它根本没有颜色信息。
 
 第二个也告诉你“左边”。
 
-第二条 observation 可能还有新增价值，但显然不是又得到了一份完全不同的信息。
+第二条 observation 可能还有一点新增价值，但显然不是又得到了一份完全不同的信息。
 
 ### 2. 各自独有
 
@@ -579,9 +579,11 @@ Net Value(B) = 0.25 - 0.30 = -0.05
 
 > **为了得到这条 information，我值得付出多少成本？**
 
-如果任务、utility 和 cost 都已经给定，那么你在文章最前面想到的那个简单答案其实一直是对的：
+在本文这种“先获取一次 information，再立即做决策”的设定里，如果任务、utility 和 cost 都已经给定，那么文章最前面那个简单答案其实一直是对的：
 
 > **应该选择能够最大化当前决策价值、扣除获取成本以后仍最值得的 evidence。**
+
+如果一次 query 还会影响后续状态、未来 observations 或之后还能提出什么问题，这样的一次性比较就不够了；那会变成一个序贯的信息获取问题，留到后面再处理。
 
 第四篇之所以没有在 Chapter 1 就结束，是因为我们还想回答另一个层次的问题：当任务未知、任务会变化，或者我们只是想比较 information sources 本身时，上一篇那个直觉性的“区分力”到底还可以被拆成哪些不同问题？
 
@@ -669,9 +671,9 @@ C 怎样通过随机降质变成 B，我们也知道。
 
 ## Further Reading
 
-- Claude E. Shannon (1948), “A Mathematical Theory of Communication,” *Bell System Technical Journal*, 27, 379–423, 623–656.
-- David Blackwell (1953), “Equivalent Comparisons of Experiments,” *The Annals of Mathematical Statistics*, 24(2), 265–272.
-- D. V. Lindley (1956), “On a Measure of the Information Provided by an Experiment,” *The Annals of Mathematical Statistics*, 27(4), 986–1005.
-- Ronald A. Howard (1966), “Information Value Theory,” *IEEE Transactions on Systems Science and Cybernetics*, 2(1), 22–26.
+- Claude E. Shannon (1948), “A Mathematical Theory of Communication,” *Bell System Technical Journal*, 27(3), 379–423; 27(4), 623–656.
+- David Blackwell (1953), “Equivalent Comparisons of Experiments,” *The Annals of Mathematical Statistics*, 24(2), 265–272. doi:10.1214/aoms/1177729032.
+- D. V. Lindley (1956), “On a Measure of the Information Provided by an Experiment,” *The Annals of Mathematical Statistics*, 27(4), 986–1005. doi:10.1214/aoms/1177728069.
+- Ronald A. Howard (1966), “Information Value Theory,” *IEEE Transactions on Systems Science and Cybernetics*, 2(1), 22–26. doi:10.1109/TSSC.1966.300074.
 - Paul L. Williams & Randall D. Beer (2010), “Nonnegative Decomposition of Multivariate Information,” arXiv:1004.2515.
-- Nils Bertschinger, Johannes Rauh, Eckehard Olbrich, Jürgen Jost & Nihat Ay (2014), “Quantifying Unique Information,” *Entropy*, 16(4), 2161–2183.
+- Nils Bertschinger, Johannes Rauh, Eckehard Olbrich, Jürgen Jost & Nihat Ay (2014), “Quantifying Unique Information,” *Entropy*, 16(4), 2161–2183. doi:10.3390/e16042161.
