@@ -20,12 +20,12 @@
 hidden state H  →  observation O
 ```
 
-如果有多个 channels：
+如果有多个 channels，同一个 hidden state 可以分别留下不同 observations：
 
 ```text
-                 → O_vision
-hidden state H  → O_audio
-                 → O_text
+H → O_vision
+H → O_audio
+H → O_text
 ```
 
 这篇文章想追问的，就是这些箭头到底意味着什么。
@@ -336,13 +336,17 @@ H = (位置, 颜色)
 
 也就是：多模态的价值，有时不在于每个 channel 单独又知道了一点什么，而在于它们组合以后，对同一个 hidden state 形成了什么新的约束。
 
-### 写到这里，我回头查了一下现在的研究
+### 3.4 这个直觉，在研究里走到了哪里？
 
 写到这里时，我原本只是想用这个盒子游戏说明一个直觉：不同 modalities 不只是分别带来更多 information，它们之间的关系本身，也可能暴露任何单一 channel 都看不到的结构。
 
 但查资料时我发现，这个问题并没有只停留在这样的直觉里。
 
 更早的 Partial Information Decomposition（PID）工作已经尝试把多个 sources 关于同一个 target 的 information 拆成 **redundant、unique 和 synergistic** 的部分。Williams 和 Beer 在 2010 年提出的框架，就是这条研究线的重要起点之一。
+
+如果借用这套语言回头看刚才的三个例子：3.1 里“同一份 observation 被复制两次”接近最纯粹的 **redundancy**；3.2 里的视觉和声音分别提供对方没有的 distinction，可以直观理解为各自带有 **unique information**；3.3 里单独看视觉或声音都无法判断位置、联合起来却可以，则对应最典型的 **synergy**。
+
+当然，这里只是借这些概念帮助建立直觉，并不是说三个玩具例子已经给出了严格的 PID decomposition。不同 PID 定义对这些成分如何形式化，也并没有一个所有研究者都统一采用的唯一答案。
 
 而到了 multimodal learning，本身也出现了非常接近的问题。
 
@@ -358,68 +362,9 @@ H = (位置, 颜色)
 
 这也让我更愿意把多模态的价值理解成 information structure，而不只是 input count。
 
-## Chapter 4｜一个 channel 能不能替代另一个？
+## Chapter 4｜知道了这些，会改变我的行动吗？
 
-到这里，我们讨论的都是多个 sources 放在一起以后会发生什么。
-
-但还有另一种比较方式。
-
-有些 channels 并不是互补关系，而是真的可以说：有了其中一个，另一个就变得可以被模拟。
-
-回到 B 和 C：
-
-- B：75% 准确地告诉位置；
-- C：100% 准确地告诉位置。
-
-如果拥有 C，要制造一个和 B 一样的 channel 很容易。
-
-C 每次都给出正确位置，我们只需要在它输出以后，独立地以 25% 的概率把“左 / 右”随机翻转一次。
-
-于是一个完美的位置 observation 就被人为降质成了 75% 准确的 observation。
-
-```text
-C  →  加入随机噪声  →  B
-```
-
-反过来却做不到。
-
-一旦只有 B，已经丢掉的那 25% information 不能凭空恢复。
-
-因此这个例子里的关键不是“C 的 accuracy 比 B 高”，而是：
-
-> **C 可以只靠加工自己的 observation 来模拟 B；B 却不能反过来模拟 C。**
-
-这就是 **Blackwell comparison** 背后的核心直觉。
-
-更严格地说，那个后处理必须不再偷偷访问真实 state。否则我们不是在加工已有 information，而是在过程中重新获得了 evidence。
-
-为什么这个区别值得单独讲？
-
-因为它和上一章的问题不一样。
-
-Chapter 3 问的是：
-
-> 多个 sources 放在一起，到底新增了什么？
-
-Blackwell 在这里更像是在问：
-
-> **一个 source 能不能替代另一个？**
-
-再看 A 和 C，就会发现这种替代关系根本不存在。
-
-A 完美告诉颜色，却没有位置；C 完美告诉位置，却没有颜色。
-
-A 无法只加工“红 / 蓝”制造出“左 / 右”；C 也无法只加工“左 / 右”恢复“红 / 蓝”。
-
-所以两个都很准确的 channels，也可能根本没有必要硬排成一条统一的强弱顺序。
-
-它们提供的是不同 distinctions。
-
-更严格的 Blackwell 条件放在附注 2。
-
-## Chapter 5｜知道了这些，会改变我的行动吗？
-
-到这里，我们一直在问 observation 让我们知道了什么。
+到这里，我们一直在问 observation 让我们知道了什么，以及多个 channels 放在一起以后到底多出了什么。
 
 但一个会行动的 agent 最后还要问另一件事：
 
@@ -481,7 +426,7 @@ Net Value(B) = 0.25 - 0.30 = -0.05
 
 这不是在否定 Shannon information。
 
-恰恰相反：Shannon information 告诉我们 uncertainty 减少了多少；possible-world distinctions 告诉我们到底分开了什么；Blackwell 告诉我们一种 observation structure 能不能模拟另一种；decision value 再问这些区别对当前行动有没有用。
+Shannon information 告诉我们 uncertainty 减少了多少；possible-world distinctions 告诉我们到底分开了什么；多源信息的结构再问这些 distinctions 是重复、独有，还是只有联合起来才出现；decision value 最后才问这些区别对当前行动有没有用。
 
 它们回答的是不同层次的问题。
 
@@ -492,8 +437,6 @@ Net Value(B) = 0.25 - 0.30 = -0.05
 A 和 C 都减少 1 bit uncertainty，却让不同的 possible worlds 变得可区分。
 
 视觉和声音各自可能提供不同的 distinctions；有时它们高度重复，有时彼此补充，还有些 distinction 只有联合观察以后才出现。
-
-一个 channel 也可能只是另一个 channel 的降质版本；或者两者根本无法互相替代。
 
 最后，即使某条 observation 真的让我们区分了更多世界，这些区别也不一定会改变当前行动。
 
@@ -583,11 +526,26 @@ H(1) = 0 bit
 1 - 0.81 ≈ 0.19 bits
 ```
 
-### Note 2｜Blackwell comparison 更严格地在说什么？
+### Note 2｜如果真的想问“一个 channel 是否包含另一个”呢？
 
-假设两个 experiments 都在观察同一个 payoff-relevant state。
+正文没有继续展开这个问题，因为它不是多模态主线所必需的。但如果我们想比较两个 observation structures 是否存在一种更强的“包含”关系，Blackwell comparison 给出了一个经典答案。
 
-如果 experiment C 的 observation 可以经过一个**不依赖真实 state**的随机后处理，变成 experiment B 的 observation，那么 B 可以看作 C 的 garbling。
+回到正文里的 B 和 C：
+
+- B：75% 准确地告诉位置；
+- C：100% 准确地告诉位置。
+
+拥有 C 时，我们可以在它给出正确位置以后，独立地以 25% 的概率把“左 / 右”随机翻转：
+
+```text
+C  →  加入随机噪声  →  B
+```
+
+这样就能制造出和 B 一样的 observation channel。
+
+关键是，这个随机后处理不能再次访问真实 state。它只能加工 C 已经给出的 observation。否则我们不是在降质已有 information，而是在过程中重新获得 evidence。
+
+更一般地说，假设两个 experiments 都在观察同一个 payoff-relevant state。如果 experiment C 的 observation 可以经过一个**不依赖真实 state**的随机后处理，变成 experiment B 的 observation，那么 B 可以看作 C 的 garbling。
 
 直观上，拥有 C 的决策者如果真的想按照 B 的方式行动，可以先自己把 C 降质成 B，再使用任何依赖 B 的策略。
 
