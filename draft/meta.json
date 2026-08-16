@@ -31,8 +31,20 @@
     },
     "publish_slug": "when-thinking-is-not-enough-zh"
   },
+  "20260811-what-does-more-informative-mean.md": {
+    "language": "English",
+    "alternate": {
+      "label": "中文",
+      "file": "20260811-what-does-more-informative-mean-zh.md"
+    },
+    "publish_slug": "what-does-more-informative-mean"
+  },
   "20260811-what-does-more-informative-mean-zh.md": {
     "language": "中文",
+    "alternate": {
+      "label": "English",
+      "file": "20260811-what-does-more-informative-mean.md"
+    },
     "publish_slug": "what-does-more-informative-mean-zh"
   }
 }
