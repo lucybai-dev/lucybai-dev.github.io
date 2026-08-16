@@ -221,7 +221,7 @@ Information gain is therefore better understood as asking:
 
 Why the entropy of `75% / 25%` is about 0.81, and why a `log` appears in the formula, are explained in Technical Note 1. For the main argument, we only need one point:
 
-> **The amount of information matters, but a scalar summary compresses away the structure of what was actually distinguished.**
+> **The amount of information matters, but a single number compresses away the structure of what was actually distinguished.**
 
 And that becomes even more important once multiple channels are involved.
 
@@ -320,9 +320,7 @@ The same is true of audio: a high tone can occur when the prize is on either sid
 
 But once color and pitch are known together, the location becomes perfectly determined.
 
-The interesting point is not merely that “two useless signals become useful when added together.”
-
-It is that:
+The important point is:
 
 > **Neither vision nor audio alone carries information about the location. The location becomes identifiable only from their joint pattern.**
 
@@ -334,31 +332,17 @@ If I had to compress this chapter into one sentence, I would say:
 
 In other words, the value of multimodality may lie not only in what each channel provides on its own, but also in the new constraints created by their combination.
 
-### 3.4 Where Does This Intuition Show Up in Research?
+### 3.4 How Is This Intuition Formalized?
 
-Up to this point, I had intended the box game only as a way to explain an intuition: different modalities do not merely bring in more information separately; their relationship can expose structure that no single channel reveals on its own.
+Up to this point, the box game was only meant to make one intuition concrete: the value of different modalities depends not just on how much information each one carries, but also on whether they repeat one another, contribute different distinctions, or reveal something only when combined.
 
-But when I looked through the literature, I found that closely related questions have already been formalized.
+The literature already has a direct language for this. **Partial Information Decomposition (PID)** distinguishes information that multiple sources provide about the same target into **redundant, unique, and synergistic** components. In that vocabulary, the duplicated observation in 3.1 is close to pure **redundancy**; the visual and audio channels in 3.2 can be understood intuitively as carrying **unique information** not supplied by the other; and 3.3 has the canonical structure of **synergy**.
 
-Earlier work on **Partial Information Decomposition (PID)** tried to decompose the information that multiple sources provide about the same target into **redundant, unique, and synergistic** components. The framework introduced by Williams and Beer in 2010 is an important starting point for that line of work.
+These ideas also appear directly in multimodal learning. NeurIPS 2023's **Factorized Contrastive Learning** studies shared and modality-unique task-relevant information, while the ICML 2025 paper **Efficient Quantification of Multimodal Interaction at Sample Level** explicitly attempts to quantify redundancy, uniqueness, and synergy in multimodal interactions.
 
-Using that language to look back at the three toy cases: the duplicated observation in 3.1 is close to the purest form of **redundancy**; the visual and audio channels in 3.2 can be understood intuitively as carrying **unique information** that the other does not provide; and 3.3, where neither vision nor audio reveals location alone but their combination does, has the canonical structure of **synergy**.
+The point is not that these papers somehow “prove” the box-game intuition. It is that:
 
-This is only an intuitive correspondence. The toy examples are not themselves a rigorous PID decomposition, and the literature does not have one universally accepted definition for every PID component.
-
-Closely related questions have also appeared directly in multimodal learning.
-
-For example, Liang et al. argue in their NeurIPS 2023 paper **Factorized Contrastive Learning** that learning only the redundant information shared across modalities can be insufficient, because task-relevant information may also be unique to a particular modality. Their approach is designed to capture both shared and unique task-relevant information.
-
-More recently, Yang, Wang, and Hu's ICML 2025 paper **Efficient Quantification of Multimodal Interaction at Sample Level** explicitly describes multimodal interaction in terms of redundancy, uniqueness, and synergy, and attempts to quantify those components at the sample level.
-
-I do not mean that these papers somehow “prove” the box-game intuition. Their definitions, assumptions, and technical questions are much more precise than this toy example.
-
-But they do show something interesting:
-
-> **The question we just reached by reasoning from possible worlds—whether multiple modalities repeat the same information, contribute different information, or produce new information only when combined—is a real research question.**
-
-That makes me more comfortable thinking about the value of multimodality in terms of **information structure**, rather than input count alone.
+> **The question we reached through possible worlds corresponds to an information-structure problem that is already being formalized and studied.**
 
 ## Chapter 4｜Does Knowing This Change What I Do?
 
@@ -432,15 +416,9 @@ They answer different layers of the problem.
 
 Looking back, the phrase “more information” compresses several different questions into one.
 
-A and C both remove 1 bit of uncertainty, yet make different possible worlds distinguishable.
+I find it more useful to think of information as a relationship than as a fixed quantity stored inside data. It depends on the hidden state, the observation channel, what we already believe, and how multiple observations interact. If action matters, it also depends on whether those distinctions change what we should do.
 
-Vision and audio may provide different distinctions. Sometimes they are highly redundant, sometimes complementary, and sometimes a distinction appears only after the observations are combined.
-
-And even when an observation truly makes more worlds distinguishable, those distinctions may still fail to change the current action.
-
-So I now find it more useful to think of information as a relationship rather than as a fixed quantity stored inside data.
-
-It depends on a chain of relationships:
+We can summarize that relationship as:
 
 ```text
 hidden state
@@ -545,9 +523,7 @@ The important condition is that this random post-processing cannot look at the t
 
 More generally, suppose two experiments observe the same payoff-relevant state. If the observation from experiment C can be transformed into the observation from experiment B through randomized post-processing that is **independent of the true state**, then B can be viewed as a garbling of C.
 
-A decision-maker with access to C can simulate having B by first garbling C and then applying any policy defined for B.
-
-Therefore, in the corresponding Bayesian decision problems, the optimal expected payoff available with C cannot be lower than the optimal expected payoff available with B.
+A decision-maker with access to C can simulate having B by first garbling C and then applying any policy defined for B. Therefore, in the corresponding Bayesian decision problems, the optimal expected payoff available with C cannot be lower than the optimal expected payoff available with B.
 
 This is more general than saying that one channel has higher accuracy on one task. It compares observation structures rather than performance under one particular payoff function.
 
