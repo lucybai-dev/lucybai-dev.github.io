@@ -1,18 +1,18 @@
 # What Does “More Information” Mean?
 
-*Information Through Possible Worlds: Why Multimodality Is More Than Just More Input*
+*A Possible-Worlds View of Information: Why Multimodality Is More Than Just More Input*
 
-> We often say that a model has “seen more information,” or that adding another modality should let a system know more. But if the world can only be observed indirectly through different observation channels, what exactly is the “more” in more information?
+> We often say that a model has “seen more information,” or that adding another modality should let a system know more. But if we can only observe the world indirectly through different observation channels, what exactly is the “more” in more information?
 
 ## Prologue｜We Always Observe the World Through a Channel
 
-The previous essay ended with a practical question: when the evidence we already have can no longer distinguish among several worlds that remain possible, a more active intelligence has to decide what to look at, what to ask, or what to do next.
+The previous essay ended with a practical question: when the evidence we already have can no longer distinguish among several worlds that remain possible, an active agent has to decide what to observe, what to ask, or what to do next.
 
 But before asking what to observe next, there is a more basic question.
 
-We never receive the world itself directly.
+We never receive the hidden state of the world directly.
 
-Vision gives us images. Hearing gives us sounds. A thermometer gives us a reading. A search engine gives us a set of retrieved and ranked results. Each is only an observation left by the world after passing through an **observation channel**.
+Vision gives us images. Hearing gives us sounds. A thermometer gives us a reading. A search engine returns a set of retrieved and ranked results. Each is an observation produced through a particular **observation channel**, not the hidden state itself.
 
 We can write the relationship in the simplest possible way:
 
@@ -20,7 +20,7 @@ We can write the relationship in the simplest possible way:
 hidden state H  →  observation O
 ```
 
-With multiple channels, the same hidden state can leave different observations:
+With multiple channels, the same hidden state can generate different observations:
 
 ```text
 H → O_vision
@@ -85,17 +85,17 @@ If C tells us, “The prize is on the left,” the four worlds instead become:
 {H₁, H₂}
 ```
 
-The two right-side worlds are eliminated.
+The two worlds in which the prize is on the right are eliminated.
 
 A and C both reduce four possibilities to two.
 
-But they do not leave the same two worlds alive.
+But they do not leave the same two worlds possible.
 
-A makes red and blue distinguishable. C makes left and right distinguishable.
+A distinguishes the red worlds from the blue worlds. C distinguishes the left worlds from the right worlds.
 
 This already exposes something that the phrase “amount of information” can easily hide:
 
-> **Information does not merely reduce the number of possibilities. It can make possible worlds distinguishable that were previously mixed together.**
+> **Information does not merely reduce the number of possibilities. It changes which possible worlds we can distinguish from one another.**
 
 In this box game, we can even draw the hidden state as a 2 × 2 grid:
 
@@ -110,7 +110,7 @@ So two observations can eliminate the same number of worlds and still provide co
 
 B is more interesting.
 
-If B says “left,” the two right-side worlds do not disappear. B is wrong 25% of the time.
+If B says “left,” the two right-side worlds do not disappear, because B is wrong 25% of the time.
 
 Instead, the left-side worlds become more likely and the right-side worlds become less likely.
 
@@ -124,19 +124,19 @@ In this toy example, color and location happen to look like two clean “directi
 
 That is why I will use the word `distinction` more often than “direction.” The point is not to assume that reality naturally comes with labeled axes. The point is to ask which states a channel makes distinguishable that were previously hard to tell apart.
 
-This is also why information need not first be imagined as a number.
+This is also why information need not be thought of first as a number.
 
 It first changes the structure of the possible worlds.
 
-## Chapter 2｜If Both Are 1 Bit, Why Don’t We Know the Same Thing?
+## Chapter 2｜If Both Give Us 1 Bit, Why Don’t They Tell Us the Same Thing?
 
 Of course, we still want a number for “knowing more.”
 
 The most natural question is:
 
-> **After seeing an observation, how much uncertainty has disappeared?**
+> **After seeing an observation, how much uncertainty has been removed?**
 
-This is exactly the kind of question Shannon information is good at answering.
+This is exactly the kind of question Shannon's framework is good at answering.
 
 In the box game, location is a completely uncertain binary choice: left or right.
 
@@ -207,7 +207,7 @@ A: about 1 bit
 B: about 0.19 bits
 ```
 
-If the question is only “Which observation reduces more uncertainty on average?”, A gives us more.
+If the question is only “Which observation reduces more uncertainty on average?”, then by this measure A provides more information.
 
 But there is another subtle point: **that 1 bit is not a fixed amount of information stored inside A itself.**
 
@@ -221,7 +221,7 @@ Information gain is therefore better understood as asking:
 
 Why the entropy of `75% / 25%` is about 0.81, and why a `log` appears in the formula, are explained in Technical Note 1. For the main argument, we only need one point:
 
-> **The amount of information matters, but a scalar quantity compresses away the question of what was actually distinguished.**
+> **The amount of information matters, but a scalar summary compresses away the structure of what was actually distinguished.**
 
 And that becomes even more important once multiple channels are involved.
 
@@ -233,7 +233,7 @@ It is easy to say:
 
 > Image + audio obviously contains “more information” than image alone.
 
-But if Chapters 1 and 2 are right, that claim moves too quickly.
+But if Chapters 1 and 2 are right, that conclusion comes too quickly.
 
 The real question is not how many input interfaces we have. It is:
 
@@ -243,7 +243,7 @@ The real question is not how many input interfaces we have. It is:
 
 Start with the most extreme case.
 
-A camera captures one frame, and the system copies that exact frame into two different input interfaces.
+A camera captures one frame, and the system feeds that exact same frame into two different input slots.
 
 Formally, the system now receives two inputs.
 
@@ -267,7 +267,7 @@ Return to the boxes.
 
 Suppose vision only sees a close-up of the prize, so it can easily tell red from blue but cannot tell whether the prize is in the left or right box.
 
-The audio channel does not reveal color. Instead, we shake the two boxes and use differences in the resulting sounds to infer, with some noise, which box contains the prize.
+The audio channel does not reveal color. Instead, we shake the two boxes and use differences in the resulting sounds to infer—imperfectly—which box contains the prize.
 
 Vision mainly helps distinguish color.
 
@@ -275,7 +275,7 @@ Audio mainly helps distinguish location.
 
 The two channels are not simply repeating the same evidence. They provide different distinctions over the same hidden state.
 
-In this deliberately simple example, it is natural to say that the two modalities constrain different “directions” of:
+In this deliberately simple example, it is natural to say that the two modalities constrain the hidden state along different “directions”:
 
 ```text
 H = (location, color)
@@ -289,7 +289,7 @@ So the interesting question about multimodality begins to shift from “How many
 
 > **Does a new modality provide distinctions that the existing channels did not already provide?**
 
-### 3.3 Some Information Exists Only Between Channels
+### 3.3 Some Distinctions Appear Only When Channels Are Combined
 
 There is an even more counterintuitive case.
 
@@ -316,7 +316,7 @@ Red can occur when the prize is left or right. Blue can also occur when the priz
 
 So vision alone tells us nothing about location.
 
-Audio alone is the same: a high tone can come from the left or the right, and so can a low tone.
+The same is true of audio: a high tone can occur when the prize is on either side, and so can a low tone.
 
 But once color and pitch are known together, the location becomes perfectly determined.
 
@@ -324,35 +324,35 @@ The interesting point is not merely that “two useless signals become useful wh
 
 It is that:
 
-> **The distinction about location belongs neither to vision alone nor to audio alone. It exists in the relationship between the two modalities.**
+> **Neither vision nor audio alone carries information about the location. The location becomes identifiable only from their joint pattern.**
 
-This is one of the cleanest intuitions for **synergy**.
+That is the essential intuition behind **synergy**.
 
 If I had to compress this chapter into one sentence, I would say:
 
 > **Multimodal information is not only information accumulation; it can also be constraint composition.**
 
-In other words, the value of multimodality may lie not in what each channel knows separately, but in the new constraint they jointly impose on the same hidden state.
+In other words, the value of multimodality may lie not only in what each channel provides on its own, but also in the new constraints created by their combination.
 
-### 3.4 How Far Has This Intuition Gone in Research?
+### 3.4 Where Does This Intuition Show Up in Research?
 
-At this point, I originally intended the box game only as a way to explain an intuition: different modalities do not merely bring in more information separately; the relationship among them can expose structure that no single channel reveals on its own.
+Up to this point, I had intended the box game only as a way to explain an intuition: different modalities do not merely bring in more information separately; their relationship can expose structure that no single channel reveals on its own.
 
-But when I looked through the literature, I found that this question does not remain only an explanatory metaphor.
+But when I looked through the literature, I found that closely related questions have already been formalized.
 
-Earlier work on **Partial Information Decomposition (PID)** already tried to decompose the information that multiple sources provide about the same target into **redundant, unique, and synergistic** components. The framework introduced by Williams and Beer in 2010 is one important starting point for that line of work.
+Earlier work on **Partial Information Decomposition (PID)** tried to decompose the information that multiple sources provide about the same target into **redundant, unique, and synergistic** components. The framework introduced by Williams and Beer in 2010 is an important starting point for that line of work.
 
-Using that language to look back at the three toy cases: the duplicated observation in 3.1 is close to the purest form of **redundancy**; the visual and audio channels in 3.2 can be understood intuitively as carrying **unique information** not provided by the other; and 3.3, where neither vision nor audio reveals location alone but their combination does, is the canonical shape of **synergy**.
+Using that language to look back at the three toy cases: the duplicated observation in 3.1 is close to the purest form of **redundancy**; the visual and audio channels in 3.2 can be understood intuitively as carrying **unique information** that the other does not provide; and 3.3, where neither vision nor audio reveals location alone but their combination does, has the canonical structure of **synergy**.
 
 This is only an intuitive correspondence. The toy examples are not themselves a rigorous PID decomposition, and the literature does not have one universally accepted definition for every PID component.
 
-Similar questions have also appeared directly in multimodal learning.
+Closely related questions have also appeared directly in multimodal learning.
 
 For example, Liang et al. argue in their NeurIPS 2023 paper **Factorized Contrastive Learning** that learning only the redundant information shared across modalities can be insufficient, because task-relevant information may also be unique to a particular modality. Their approach is designed to capture both shared and unique task-relevant information.
 
 More recently, Yang, Wang, and Hu's ICML 2025 paper **Efficient Quantification of Multimodal Interaction at Sample Level** explicitly describes multimodal interaction in terms of redundancy, uniqueness, and synergy, and attempts to quantify those components at the sample level.
 
-I do not want to write these papers as though they “prove the box game correct.” Their definitions, assumptions, and technical questions are much more precise than this toy example.
+I do not mean that these papers somehow “prove” the box-game intuition. Their definitions, assumptions, and technical questions are much more precise than this toy example.
 
 But they do show something interesting:
 
@@ -398,7 +398,7 @@ VoI(B) = 0.75 - 0.50 = 0.25
 
 A has decision value 0 for this particular task.
 
-This is what **value of information** is trying to capture: how much the expected value of the optimal decision improves after receiving an observation.
+This is what **value of information** is meant to capture: how much the expected value of the optimal decision improves after receiving an observation.
 
 Once acquisition cost is included, the question becomes even more practical.
 
@@ -416,7 +416,7 @@ If B costs 0.30:
 Net Value(B) = 0.25 - 0.30 = -0.05
 ```
 
-The observation still contains information and still improves the decision, but it is no longer worth acquiring.
+The observation still provides information and still improves the decision, but it is no longer worth acquiring.
 
 So when action is the final goal, the question becomes:
 
@@ -424,7 +424,7 @@ So when action is the final goal, the question becomes:
 
 This does not contradict Shannon information.
 
-Shannon information tells us how much uncertainty is reduced. Possible-world distinctions tell us what was separated. Multi-source information asks whether those distinctions are redundant, unique, or available only jointly. Decision value then asks whether those distinctions matter for the action in front of us.
+Shannon information tells us how much uncertainty is reduced. Possible-world distinctions tell us what was separated. When multiple sources are involved, we can ask whether those distinctions are redundant, unique, or available only jointly. Decision value then asks whether those distinctions matter for the action in front of us.
 
 They answer different layers of the problem.
 
@@ -434,13 +434,13 @@ Looking back, the phrase “more information” compresses several different que
 
 A and C both remove 1 bit of uncertainty, yet make different possible worlds distinguishable.
 
-Vision and audio may provide different distinctions. Sometimes they are highly redundant, sometimes complementary, and sometimes a distinction exists only after the observations are combined.
+Vision and audio may provide different distinctions. Sometimes they are highly redundant, sometimes complementary, and sometimes a distinction appears only after the observations are combined.
 
 And even when an observation truly makes more worlds distinguishable, those distinctions may still fail to change the current action.
 
 So I now find it more useful to think of information as a relationship rather than as a fixed quantity stored inside data.
 
-It lives in the chain:
+It depends on a chain of relationships:
 
 ```text
 hidden state
@@ -454,11 +454,11 @@ how those distinctions combine with other observations
 whether they ultimately change belief and action
 ```
 
-The meaning of a piece of information is not only how much uncertainty it removes. It also depends on which possible worlds, previously mixed together, it makes distinguishable.
+The meaning of a piece of information is not only how much uncertainty it removes. It also depends on which possible worlds it allows us to distinguish from one another.
 
 And when multiple modalities are involved, perhaps the better question is not “How much more input did we add?” but:
 
-> **What distinctions can the system now see that no single channel could reveal on its own?**
+> **What distinctions can the system now make that no single channel could support on its own?**
 
 More important than asking “How much more do I know?” may be asking:
 
@@ -526,7 +526,7 @@ So when B changes the location belief from `50% / 50%` to `75% / 25%`, the reduc
 
 ### Note 2｜What If We Really Want to Ask Whether One Channel Contains Another?
 
-The main text does not pursue this question because it is not necessary for the multimodal argument. But if we want to compare whether two observation structures have a stronger kind of “containment” relationship, **Blackwell comparison** gives a classic answer.
+The main text does not pursue this question because it is not necessary for the multimodal argument. But if we want a stronger notion of one observation structure containing another, **Blackwell comparison** gives a classic answer.
 
 Return to B and C:
 
@@ -545,17 +545,17 @@ The important condition is that this random post-processing cannot look at the t
 
 More generally, suppose two experiments observe the same payoff-relevant state. If the observation from experiment C can be transformed into the observation from experiment B through randomized post-processing that is **independent of the true state**, then B can be viewed as a garbling of C.
 
-Intuitively, a decision-maker who has C and truly wants to behave as though they had B can first degrade C into B and then use any policy that depends only on B.
+A decision-maker with access to C can simulate having B by first garbling C and then applying any policy defined for B.
 
 Therefore, in the corresponding Bayesian decision problems, the optimal expected payoff available with C cannot be lower than the optimal expected payoff available with B.
 
-This is more general than saying that one channel has higher accuracy on one task. It compares observation structures rather than a single outcome under one particular payoff function.
+This is more general than saying that one channel has higher accuracy on one task. It compares observation structures rather than performance under one particular payoff function.
 
 ### Note 3｜Redundancy, Unique Information, and Synergy
 
 Williams and Beer introduced **Partial Information Decomposition (PID)** in 2010 as a way to describe how the information that multiple sources provide about the same target can be decomposed into different components, including redundant and synergistic information. Later work developed alternative definitions of unique information and different decomposition schemes.
 
-An important caveat is that there is no single PID decomposition that is universally accepted and uncontested across the literature.
+An important caveat is that there is no single PID decomposition that is universally accepted across the literature.
 
 The main text therefore does not treat any one PID definition as the final answer. It only borrows the structure of the questions PID makes explicit:
 
