@@ -12,7 +12,7 @@
 
 我们从来不是直接把真实世界本身拿到手里。
 
-视觉给我们图像，听觉给我们声音，温度计给我们一个读数，搜索引擎给我们一组经过检索和排序的结果。它们都只是世界经过某个 **observation channel** 以后留下的 observation。
+视觉给我们图像，听觉给我们声音，温度计给我们一个读数，搜索引擎给我们一组经过检索和排序的结果。它们都只是世界经过某个 **observation channel** 以后形成的 observation，而不是 hidden state 本身。
 
 可以把这个关系先写得很简单：
 
@@ -20,7 +20,7 @@
 hidden state H  →  observation O
 ```
 
-如果有多个 channels，同一个 hidden state 可以分别留下不同 observations：
+如果有多个 channels，同一个 hidden state 可以通过不同 channels 产生不同 observations：
 
 ```text
 H → O_vision
@@ -97,7 +97,7 @@ A 让“红 / 蓝”变得可以区分；C 让“左 / 右”变得可以区分�
 
 这已经暴露出一个很容易被“信息量”三个字遮住的东西：
 
-> **信息不只是让可能性变少，还让一些原本混在一起的 possible worlds 变得可以区分。**
+> **信息不只是让可能性变少，还会改变哪些 possible worlds 能够被我们区分。**
 
 在这个盒子例子里，我们甚至可以把它画成一个 2 × 2 的格子：
 
@@ -112,11 +112,11 @@ A 像是按颜色把格子切开；C 像是按位置把格子切开。
 
 B 又更有意思一点。
 
-如果 B 说“左边”，右边的两个世界并不会真的消失。因为 B 有 25% 的概率说错。
+如果 B 说“左边”，右边的两个世界并不会真的消失，因为 B 有 25% 的概率说错。
 
 变化只是：左边的 worlds 变得更可能，右边的 worlds 变得没那么可能。
 
-所以现实中的 observation 不一定总是一个“硬切分”。有些 observation 会直接排除 worlds；有些 noisy observation 只是重新分配不同 worlds 的权重。
+所以 observation 不一定总是一次“硬切分”。有些 observation 会直接排除 worlds；有些 noisy observation 只是重新分配不同 worlds 的权重。
 
 更一般地说，一条 observation 改变的是：
 
@@ -209,7 +209,7 @@ A：约 1 bit
 B：约 0.19 bits
 ```
 
-如果问题只是“谁平均减少了更多 uncertainty”，A 的确更多。
+如果问题只是“谁平均减少了更多 uncertainty”，按这个标准，A 的确更多。
 
 但这里还有一个容易忽略的地方：**这 1 bit 也不是 A 身上固定装着的某种信息含量。**
 
@@ -223,7 +223,7 @@ B：约 0.19 bits
 
 具体为什么 `75% / 25%` 的 entropy 是约 0.81，以及公式里的 `log` 从哪里来，放在文末附注 1。主线到这里先只保留一件事：
 
-> **information quantity 很重要，但 quantity 会把“到底区分了什么”压缩掉。**
+> **information quantity 很重要，但一个数字会把“到底区分了什么”压缩掉。**
 
 而这件事一旦放到多个 channels 上，就变得更明显。
 
@@ -277,7 +277,7 @@ O₂ = O₁
 
 它们不是简单地把同一条 evidence 重复两遍，而是在同一个 hidden state 上提供不同的 distinctions。
 
-在盒子这个刻意简化的例子里，可以很直观地说：两个 modalities 像是在从不同“方向”约束：
+在盒子这个刻意简化的例子里，可以很直观地说：两个 modalities 像是在从不同“方向”约束同一个 hidden state：
 
 ```text
 H = (位置, 颜色)
@@ -291,7 +291,7 @@ H = (位置, 颜色)
 
 > **一个新的 modality，有没有提供其他 channels 原本没有的 distinctions？**
 
-### 3.3 有些信息，只存在于 channels 之间
+### 3.3 有些区别，只有 channels 合在一起才出现
 
 还有一种情况更反直觉。
 
@@ -322,11 +322,9 @@ H = (位置, 颜色)
 
 但如果同时知道颜色和音调，位置立刻确定。
 
-这里最有意思的不是“两个没用的信息加起来突然变有用”。
+真正有意思的是：
 
-而是：
-
-> **关于位置的这条 distinction，并不属于视觉单独，也不属于声音单独；它存在于两个 modalities 的关系里。**
+> **视觉单独不携带位置信息，声音单独也不携带位置信息；只有看到二者的联合模式，位置才变得可区分。**
 
 这就是 **synergy** 最干净的直觉之一。
 
@@ -334,33 +332,19 @@ H = (位置, 颜色)
 
 > **Multimodal information 不只是 information accumulation，也可能是 constraint composition。**
 
-也就是：多模态的价值，有时不在于每个 channel 单独又知道了一点什么，而在于它们组合以后，对同一个 hidden state 形成了什么新的约束。
+也就是：多模态的价值，有时不在于每个 channel 单独又提供了什么，而在于它们组合以后，对同一个 hidden state 形成了什么新的约束。
 
-### 3.4 这个直觉，在研究里走到了哪里？
+### 3.4 这个直觉，如何被形式化？
 
-写到这里时，我原本只是想用这个盒子游戏说明一个直觉：不同 modalities 不只是分别带来更多 information，它们之间的关系本身，也可能暴露任何单一 channel 都看不到的结构。
+写到这里时，我原本只是想用盒子游戏说明一个直觉：不同 modalities 的价值，不只在于各自带来多少 information，也在于它们之间究竟是重复、互补，还是只有联合起来才暴露新的结构。
 
-但查资料时我发现，这个问题并没有只停留在这样的直觉里。
+查资料时我发现，这个问题已经有相当直接的形式化语言。Partial Information Decomposition（PID）尝试把多个 sources 关于同一个 target 的 information 区分为 **redundant、unique 和 synergistic** 的部分。借用这套语言回头看：3.1 的重复 observation 接近 **redundancy**；3.2 中视觉和声音各自提供另一方没有的 distinction，可以直观理解为 **unique information**；3.3 中单独任何 modality 都无法判断位置、联合后却可以，则是 **synergy** 的典型结构。
 
-更早的 Partial Information Decomposition（PID）工作已经尝试把多个 sources 关于同一个 target 的 information 拆成 **redundant、unique 和 synergistic** 的部分。Williams 和 Beer 在 2010 年提出的框架，就是这条研究线的重要起点之一。
+这些概念后来也直接进入了 multimodal learning。比如 NeurIPS 2023 的 **Factorized Contrastive Learning** 讨论了 shared 与 modality-unique task-relevant information；ICML 2025 的 **Efficient Quantification of Multimodal Interaction at Sample Level** 则直接尝试量化 multimodal interaction 中的 redundancy、uniqueness 和 synergy。
 
-如果借用这套语言回头看刚才的三个例子：3.1 里“同一份 observation 被复制两次”接近最纯粹的 **redundancy**；3.2 里的视觉和声音分别提供对方没有的 distinction，可以直观理解为各自带有 **unique information**；3.3 里单独看视觉或声音都无法判断位置、联合起来却可以，则对应最典型的 **synergy**。
+这里并不是说这些论文“证明了”我们的盒子游戏，而是说：
 
-当然，这里只是借这些概念帮助建立直觉，并不是说三个玩具例子已经给出了严格的 PID decomposition。不同 PID 定义对这些成分如何形式化，也并没有一个所有研究者都统一采用的唯一答案。
-
-而到了 multimodal learning，本身也出现了非常接近的问题。
-
-例如 Liang 等人在 NeurIPS 2023 的 **Factorized Contrastive Learning** 中明确指出，只学习 modalities 之间共享的 redundant information 可能不够，因为与下游任务相关的信息也可能只存在于某一个 modality 的 unique 部分。他们试图同时捕捉 shared 和 unique task-relevant information。
-
-更近一些，Yang、Wang 和 Hu 在 ICML 2025 的工作 **Efficient Quantification of Multimodal Interaction at Sample Level** 中，直接把 modalities 之间的 interaction 写成 redundancy、uniqueness 和 synergy，并尝试在 sample level 对这些成分进行量化。
-
-我不想把这些论文写成“它们证明了盒子游戏是对的”。它们研究的问题、定义和假设都比这个小例子严格得多。
-
-但它们至少说明了一件很有意思的事：
-
-> **我们刚刚从 possible worlds 一步步推到的问题——多个 modalities 到底是在重复、各自补充，还是只有联合起来才产生新的 information——确实已经是一个真实的研究问题。**
-
-这也让我更愿意把多模态的价值理解成 information structure，而不只是 input count。
+> **我们刚刚从 possible worlds 推出来的问题，确实对应着一个正在被形式化研究的信息结构问题。**
 
 ## Chapter 4｜知道了这些，会改变我的行动吗？
 
@@ -426,23 +410,17 @@ Net Value(B) = 0.25 - 0.30 = -0.05
 
 这不是在否定 Shannon information。
 
-Shannon information 告诉我们 uncertainty 减少了多少；possible-world distinctions 告诉我们到底分开了什么；多源信息的结构再问这些 distinctions 是重复、独有，还是只有联合起来才出现；decision value 最后才问这些区别对当前行动有没有用。
+Shannon information 告诉我们 uncertainty 减少了多少；possible-world distinctions 告诉我们到底分开了什么；当多个 sources 同时存在时，我们还可以问这些 distinctions 是重复、独有，还是只有联合起来才出现；decision value 最后才问这些区别对当前行动有没有用。
 
 它们回答的是不同层次的问题。
 
 ## Ending｜真正的问题不是“信息更多了吗？”
 
-现在再回头看“更多 information”这句话，会发现它把几件不同的事压在了一起。
+现在再回头看“更多 information”这句话，会发现它把几个不同的问题压在了一起。
 
-A 和 C 都减少 1 bit uncertainty，却让不同的 possible worlds 变得可区分。
+所以我现在更愿意把 information 想成一种关系，而不是装在数据里的固定数量。它发生在 hidden state、observation channel、我们原有的 belief，以及多个 observations 彼此如何组合之间；如果还有行动，它还取决于这些区别最终会不会改变 decision。
 
-视觉和声音各自可能提供不同的 distinctions；有时它们高度重复，有时彼此补充，还有些 distinction 只有联合观察以后才出现。
-
-最后，即使某条 observation 真的让我们区分了更多世界，这些区别也不一定会改变当前行动。
-
-所以我现在更愿意把 information 想成一种关系，而不是装在数据里的固定数量。
-
-它发生在：
+可以把这条关系写成：
 
 ```text
 hidden state
@@ -456,11 +434,11 @@ observation channel
 它们最终是否改变 belief 和 action
 ```
 
-一条 information 的意义，不只是它让我们少了多少 uncertainty，还在于它让哪些原本混在一起的 possible worlds 变得可以区分。
+一条 information 的意义，不只是它让我们少了多少 uncertainty，还在于它让哪些原本分不清的 possible worlds 变得可以区分。
 
 而当多个 modalities 同时存在时，更值得问的也许不是“又多了多少输入”，而是：
 
-> **它们让系统看见了哪些单一 channel 原本看不见的区别？**
+> **它们让系统获得了哪些单一 channel 原本无法提供的 distinctions？**
 
 比“我又知道了多少”更值得追问的是：
 
@@ -547,9 +525,7 @@ C  →  加入随机噪声  →  B
 
 更一般地说，假设两个 experiments 都在观察同一个 payoff-relevant state。如果 experiment C 的 observation 可以经过一个**不依赖真实 state**的随机后处理，变成 experiment B 的 observation，那么 B 可以看作 C 的 garbling。
 
-直观上，拥有 C 的决策者如果真的想按照 B 的方式行动，可以先自己把 C 降质成 B，再使用任何依赖 B 的策略。
-
-因此，在相应的 Bayesian decision problems 中，拥有 C 所能达到的最优期望收益不会低于只拥有 B。
+直观上，拥有 C 的决策者可以先把 C 降质成 B，再使用任何只依赖 B 的策略。因此，在相应的 Bayesian decision problems 中，拥有 C 所能达到的最优期望收益不会低于只拥有 B。
 
 这比“某一个任务里 accuracy 更高”更一般，因为它比较的是 observation structure，而不是某一个特定 payoff 下的一次胜负。
 
