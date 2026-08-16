@@ -108,7 +108,9 @@ A cuts the grid by color. C cuts it by location.
 
 So two observations can eliminate the same number of worlds and still provide completely different **distinctions**.
 
-B is more interesting.
+So far, however, the observations have been deterministic: they eliminate some worlds outright.
+
+B adds one more complication.
 
 If B says “left,” the two right-side worlds do not disappear, because B is wrong 25% of the time.
 
@@ -209,9 +211,9 @@ B: about 0.19 bits
 
 If the question is only “Which observation reduces more uncertainty on average?”, then by this measure A provides more information.
 
-But there is another subtle point: **that 1 bit is not a fixed amount of information stored inside A itself.**
+But even this number is not a fixed property of source A.
 
-It depends on what we did not already know.
+It depends on what we already believed before observing it.
 
 If we were already 99% certain that the prize was red, then even a perfectly accurate color observation would no longer give us 1 new bit. We were already almost certain about color.
 
@@ -262,6 +264,8 @@ Real sensors are rarely exact duplicates. Even when two sensors observe the same
 The point here is narrower: we cannot count information simply by counting inputs.
 
 ### 3.2 Different Channels Can Add Different Distinctions
+
+Exact duplication is only the extreme case. More often, a new channel does add information—but it may add a different kind of distinction.
 
 Return to the boxes.
 
@@ -334,9 +338,9 @@ In other words, the value of multimodality may lie not only in what each channel
 
 ### 3.4 How Is This Intuition Formalized?
 
-Up to this point, the box game was only meant to make one intuition concrete: the value of different modalities depends not just on how much information each one carries, but also on whether they repeat one another, contribute different distinctions, or reveal something only when combined.
+At this point, I went looking for a more formal language for the distinction we had just reached: repetition, source-specific information, and information that appears only jointly.
 
-The literature already has a direct language for this. **Partial Information Decomposition (PID)** distinguishes information that multiple sources provide about the same target into **redundant, unique, and synergistic** components. In that vocabulary, the duplicated observation in 3.1 is close to pure **redundancy**; the visual and audio channels in 3.2 can be understood intuitively as carrying **unique information** not supplied by the other; and 3.3 has the canonical structure of **synergy**.
+One closely related framework is **Partial Information Decomposition (PID)**. It decomposes the information that multiple sources provide about the same target into **redundant, unique, and synergistic** components. In that vocabulary, the duplicated observation in 3.1 is close to pure **redundancy**; the visual and audio channels in 3.2 can be understood intuitively as carrying **unique information** not supplied by the other; and 3.3 has the canonical structure of **synergy**.
 
 These ideas also appear directly in multimodal learning. NeurIPS 2023's **Factorized Contrastive Learning** studies shared and modality-unique task-relevant information, while the ICML 2025 paper **Efficient Quantification of Multimodal Interaction at Sample Level** explicitly attempts to quantify redundancy, uniqueness, and synergy in multimodal interactions.
 
@@ -346,9 +350,11 @@ The point is not that these papers somehow “prove” the box-game intuition. I
 
 ## Chapter 4｜Does Knowing This Change What I Do?
 
-So far, we have asked what an observation lets us know, and what multiple channels add when they are combined.
+So far, all of these questions have been about the structure of information itself: what an observation distinguishes, and how multiple channels combine.
 
-But an agent that has to act must eventually ask one more question:
+But an agent usually acquires information in order to act.
+
+That leaves one final question:
 
 > **Will knowing this make me act differently?**
 
@@ -406,17 +412,11 @@ So when action is the final goal, the question becomes:
 
 > **Will this new distinction change my decision? If so, is it worth the cost of acquiring it?**
 
-This does not contradict Shannon information.
-
-Shannon information tells us how much uncertainty is reduced. Possible-world distinctions tell us what was separated. When multiple sources are involved, we can ask whether those distinctions are redundant, unique, or available only jointly. Decision value then asks whether those distinctions matter for the action in front of us.
-
-They answer different layers of the problem.
-
 ## Ending｜The Real Question Is Not Just “Is There More Information?”
 
 Looking back, the phrase “more information” compresses several different questions into one.
 
-I find it more useful to think of information as a relationship than as a fixed quantity stored inside data. It depends on the hidden state, the observation channel, what we already believe, and how multiple observations interact. If action matters, it also depends on whether those distinctions change what we should do.
+I find it more useful to think of information as a relationship than as a fixed quantity stored inside data.
 
 We can summarize that relationship as:
 
