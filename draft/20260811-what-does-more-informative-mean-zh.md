@@ -110,7 +110,9 @@ A 像是按颜色把格子切开；C 像是按位置把格子切开。
 
 所以两条 information 即使排除了同样数量的 worlds，也完全可能提供不同的 **distinctions**。
 
-B 又更有意思一点。
+到这里，我们讨论的还是最简单的情况：observation 可以直接排除一些 worlds。
+
+B 则让问题再往前一步。
 
 如果 B 说“左边”，右边的两个世界并不会真的消失，因为 B 有 25% 的概率说错。
 
@@ -211,9 +213,9 @@ B：约 0.19 bits
 
 如果问题只是“谁平均减少了更多 uncertainty”，按这个标准，A 的确更多。
 
-但这里还有一个容易忽略的地方：**这 1 bit 也不是 A 身上固定装着的某种信息含量。**
+不过，连这个数字本身也不是 information source 的固定属性。
 
-它取决于我们原来不知道什么。
+它还取决于我们原来有多不确定。
 
 如果事前已经有 99% 的把握奖品是红色，那么 A 即使仍然 100% 准确地告诉颜色，也不会再带来 1 bit 的新 information。
 
@@ -264,6 +266,8 @@ O₂ = O₁
 这里的重点只是：不能按 input 数量直接数 information。
 
 ### 3.2 不同 channel，可能补上不同的区别
+
+完全重复只是最极端的情况。更常见、也更有意思的是：新的 channel 确实带来了新 information，但它带来的可能是另一种 distinction。
 
 回到盒子。
 
@@ -336,9 +340,9 @@ H = (位置, 颜色)
 
 ### 3.4 这个直觉，如何被形式化？
 
-写到这里时，我原本只是想用盒子游戏说明一个直觉：不同 modalities 的价值，不只在于各自带来多少 information，也在于它们之间究竟是重复、互补，还是只有联合起来才暴露新的结构。
+写到这里时，我去查了一下：这种“重复、各自独有、联合以后才出现”的区别，在已有研究里有没有更正式的表达？
 
-查资料时我发现，这个问题已经有相当直接的形式化语言。Partial Information Decomposition（PID）尝试把多个 sources 关于同一个 target 的 information 区分为 **redundant、unique 和 synergistic** 的部分。借用这套语言回头看：3.1 的重复 observation 接近 **redundancy**；3.2 中视觉和声音各自提供另一方没有的 distinction，可以直观理解为 **unique information**；3.3 中单独任何 modality 都无法判断位置、联合后却可以，则是 **synergy** 的典型结构。
+一个很接近的框架是 Partial Information Decomposition（PID）。它尝试把多个 sources 关于同一个 target 的 information 分解为 **redundant、unique 和 synergistic** 的部分。借用这套语言回头看：3.1 的重复 observation 接近 **redundancy**；3.2 中视觉和声音各自提供另一方没有的 distinction，可以直观理解为 **unique information**；3.3 中单独任何 modality 都无法判断位置、联合后却可以，则是 **synergy** 的典型结构。
 
 这些概念后来也直接进入了 multimodal learning。比如 NeurIPS 2023 的 **Factorized Contrastive Learning** 讨论了 shared 与 modality-unique task-relevant information；ICML 2025 的 **Efficient Quantification of Multimodal Interaction at Sample Level** 则直接尝试量化 multimodal interaction 中的 redundancy、uniqueness 和 synergy。
 
@@ -348,9 +352,11 @@ H = (位置, 颜色)
 
 ## Chapter 4｜知道了这些，会改变我的行动吗？
 
-到这里，我们一直在问 observation 让我们知道了什么，以及多个 channels 放在一起以后到底多出了什么。
+到这里，我们问的仍然都是 information 本身的结构：一条 observation 区分了什么，多个 channels 又怎样组合。
 
-但一个会行动的 agent 最后还要问另一件事：
+但 information 最终往往不是为了被知道，而是为了让 agent 做决定。
+
+于是还剩最后一个问题：
 
 > **知道以后，我会做得不一样吗？**
 
@@ -408,19 +414,13 @@ Net Value(B) = 0.25 - 0.30 = -0.05
 
 > **这个新的 distinction 会不会改变我的决定？如果会，它值不值得获取？**
 
-这不是在否定 Shannon information。
-
-Shannon information 告诉我们 uncertainty 减少了多少；possible-world distinctions 告诉我们到底分开了什么；当多个 sources 同时存在时，我们还可以问这些 distinctions 是重复、独有，还是只有联合起来才出现；decision value 最后才问这些区别对当前行动有没有用。
-
-它们回答的是不同层次的问题。
-
 ## Ending｜真正的问题不是“信息更多了吗？”
 
 现在再回头看“更多 information”这句话，会发现它把几个不同的问题压在了一起。
 
-所以我现在更愿意把 information 想成一种关系，而不是装在数据里的固定数量。它发生在 hidden state、observation channel、我们原有的 belief，以及多个 observations 彼此如何组合之间；如果还有行动，它还取决于这些区别最终会不会改变 decision。
+所以我现在更愿意把 information 想成一种关系，而不是装在数据里的固定数量。
 
-可以把这条关系写成：
+更准确地说，它存在于这样一串关系里：
 
 ```text
 hidden state
