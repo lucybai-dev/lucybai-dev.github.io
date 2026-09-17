@@ -51,7 +51,7 @@
     const langSwitch = '<a href="/posts/how-worlds-die-zh.html">中文</a>';
     function escapeHtml(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
     function escapeAttr(s){return escapeHtml(s).replace(/"/g,'&quot;');}
-    function inline(s){return escapeHtml(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
+    function inline(s){return escapeHtml(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
     function slugify(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'');}
     function splitTableRow(line){return line.trim().replace(/^\||\|$/g,'').split('|').map(cell=>cell.trim());}
     function publishedAsset(path){return path.replace(/^\/draft\/assets\//,'/posts/assets/');}
