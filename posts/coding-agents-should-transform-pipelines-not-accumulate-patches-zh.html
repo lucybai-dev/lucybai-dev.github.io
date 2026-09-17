@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coding Agent 应该改造 Pipeline，而不是堆积 Patch - Lucy Bai</title>
+  <meta name="description" content="把 bounded pipeline transformation 作为 agentic software change 的工作单位：让多处 coordinated changes 最终收敛到一个 coherent repository state。">
+  <meta property="article:published_time" content="2026-09-17">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .article-meta{font-size:13px;color:var(--muted);margin:0 0 34px}
+    article ul,article ol{padding-left:1.35rem;margin:0 0 22px}
+    article li{margin:6px 0;color:#333}
+    article pre{margin:24px 0 28px;padding:16px 18px;overflow-x:auto;background:#f6f6f6;border:1px solid var(--line);border-radius:4px;line-height:1.5}
+    article pre code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:13px;color:#222;background:transparent;border:0;padding:0}
+    .figure-breakout{width:min(1240px,calc(100vw - 48px));max-width:none;margin:8px 50% 54px;transform:translateX(-50%);overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+    .figure-breakout img{display:block;width:100%;height:auto;max-width:none}
+    .article-note{margin-top:54px;padding-top:22px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+    .article-note em{color:var(--muted)}
+    .article-note a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--text)}
+    @media(max-width:1000px){.figure-breakout img{width:1080px}}
+    @media(max-width:700px){.figure-breakout{width:calc(100vw - 40px);margin:8px 50% 42px}article pre{padding:14px 15px}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="site-header">
+      <a class="logo" href="/">Lucy Bai</a>
+      <nav>
+        <a href="/writing.html">Notes</a>
+        <a href="/projects.html">Projects</a>
+      </nav>
+    </header>
+
+    <article id="post"></article>
+    <noscript>
+      <article>
+        <p class="eyebrow">Agent-Operated Repositories · 01 · 中文 · <a href="/posts/coding-agents-should-transform-pipelines-not-accumulate-patches.html">English</a></p>
+        <h1>Coding Agent 应该改造 Pipeline，而不是堆积 Patch</h1>
+        <p class="intro">把 bounded pipeline transformation 作为 agentic software change 的工作单位</p>
+        <p><a href="/posts/20260917-coding-agents-should-transform-pipelines-not-accumulate-patches-zh.md">阅读 Markdown 源文</a></p>
+      </article>
+    </noscript>
+
+    <footer>
+      <p>Lucy Bai · <a class="text-link" href="mailto:Ruyu.bai@foxmail.com">Email</a> · <a class="text-link" href="https://www.linkedin.com/in/lucy-bai-tech/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · notes in progress</p>
+    </footer>
+  </main>
+
+  <script>
+    const src='/posts/20260917-coding-agents-should-transform-pipelines-not-accumulate-patches-zh.md';
+    const post=document.getElementById('post');
+    const langSwitch='<a href="/posts/coding-agents-should-transform-pipelines-not-accumulate-patches.html">English</a>';
+    function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+    function inline(s){
+      return esc(s)
+        .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+        .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g,'<em>$1</em>')
+        .replace(/`([^`]+)`/g,'<code>$1</code>');
+    }
+    function render(md){
+      const lines=md.split(/\r?\n/);let html='<p class="eyebrow">Agent-Operated Repositories · 01 · 中文 · '+langSwitch+'</p>';let para=[],quote=[],list=[],listType='',code=[],inCode=false,seenH1=false,seenIntro=false,skipPublication=false,afterRule=false;
+      const flushPara=()=>{if(para.length){const text=para.join(' ');html+=(afterRule?'<p class="article-note">':'<p>')+inline(text)+'</p>';para=[];afterRule=false;}};
+      const flushQuote=()=>{if(quote.length){html+='<blockquote><p>'+quote.map(inline).join('<br>')+'</p></blockquote>';quote=[];}};
+      const flushList=()=>{if(list.length){html+='<'+listType+'>'+list.map(x=>'<li>'+inline(x)+'</li>').join('')+'</'+listType+'>';list=[];listType='';}};
+      const flushCode=()=>{if(code.length){html+='<pre><code>'+esc(code.join('\n'))+'</code></pre>';code=[];}};
+      for(let i=0;i<lines.length;i++){
+        const raw=lines[i],line=raw.trim();
+        if(line.startsWith('```')){flushPara();flushQuote();flushList();if(inCode){flushCode();inCode=false}else inCode=true;continue}
+        if(inCode){code.push(raw);continue}
+        if(!line){flushPara();flushQuote();flushList();continue}
+        if(line==='---'){flushPara();flushQuote();flushList();afterRule=true;continue}
+        const img=line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);if(img){flushPara();flushQuote();flushList();const path=img[2].replace(/^assets\//,'/posts/assets/');html+='<figure class="figure-breakout"><img src="'+path+'" alt="'+esc(img[1]).replace(/"/g,'&quot;')+'"></figure>';continue}
+        if(line.startsWith('>')){flushPara();flushList();quote.push(line.replace(/^>\s?/,''));continue}
+        flushQuote();
+        const ul=line.match(/^[-*]\s+(.+)$/),ol=line.match(/^\d+\.\s+(.+)$/);if(ul||ol){flushPara();const type=ul?'ul':'ol';if(listType&&listType!==type)flushList();listType=type;list.push((ul||ol)[1]);continue}
+        flushList();
+        if(line.startsWith('# ')){flushPara();html+='<h1>'+inline(line.slice(2))+'</h1>';seenH1=true;continue}
+        if(seenH1&&!seenIntro&&/^\*[^*]+\*$/.test(line)){flushPara();html+='<p class="intro">'+inline(line.slice(1,-1))+'</p>';seenIntro=true;skipPublication=true;continue}
+        if(skipPublication&&/^\*[^*]+\*$/.test(line)){html+='<p class="article-meta">初稿写于 2026 年 7 月 · 2026 年 9 月 17 日发布</p>';skipPublication=false;continue}
+        if(line.startsWith('## ')){flushPara();html+='<h2>'+inline(line.slice(3))+'</h2>';continue}
+        para.push(line);
+      }
+      flushPara();flushQuote();flushList();flushCode();post.innerHTML=html;
+    }
+    fetch(src,{cache:'no-store'}).then(r=>r.text()).then(render).catch(()=>{post.innerHTML='<p>文章加载失败。</p>'});
+  </script>
+</body>
+</html>
