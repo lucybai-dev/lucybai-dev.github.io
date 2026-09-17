@@ -40,6 +40,9 @@
         <p><a href="/posts/20260627-how-worlds-die.md">Read the Markdown source</a></p>
       </article>
     </noscript>
+    <footer>
+      <p>Lucy Bai · <a class="text-link" href="mailto:Ruyu.bai@foxmail.com">Email</a> · <a class="text-link" href="https://www.linkedin.com/in/lucy-bai-tech/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · notes in progress</p>
+    </footer>
   </main>
   <script>
     const src = '/posts/20260627-how-worlds-die.md';
@@ -48,7 +51,7 @@
     const langSwitch = '<a href="/posts/how-worlds-die-zh.html">中文</a>';
     function escapeHtml(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
     function escapeAttr(s){return escapeHtml(s).replace(/"/g,'&quot;');}
-    function inline(s){return escapeHtml(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
+    function inline(s){return escapeHtml(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');}
     function slugify(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'');}
     function splitTableRow(line){return line.trim().replace(/^\||\|$/g,'').split('|').map(cell=>cell.trim());}
     function publishedAsset(path){return path.replace(/^\/draft\/assets\//,'/posts/assets/');}
