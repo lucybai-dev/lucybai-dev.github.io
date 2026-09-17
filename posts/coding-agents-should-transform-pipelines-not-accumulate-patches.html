@@ -35,7 +35,7 @@
     <article id="post"></article>
     <noscript>
       <article>
-        <p class="eyebrow">Agent-Operated Repositories · 01</p>
+        <p class="eyebrow">Agent-Operated Repositories · 01 · English · <a href="/posts/coding-agents-should-transform-pipelines-not-accumulate-patches-zh.html">中文</a></p>
         <h1>Coding Agents Should Transform Pipelines, Not Accumulate Patches</h1>
         <p class="intro">A proposal for bounded pipeline transformations as the unit of agentic software change</p>
         <p><a href="/posts/20260917-coding-agents-should-transform-pipelines-not-accumulate-patches.md">Read the Markdown source</a></p>
@@ -50,6 +50,7 @@
   <script>
     const src='/posts/20260917-coding-agents-should-transform-pipelines-not-accumulate-patches.md';
     const post=document.getElementById('post');
+    const langSwitch='<a href="/posts/coding-agents-should-transform-pipelines-not-accumulate-patches-zh.html">中文</a>';
     function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
     function inline(s){
       return esc(s)
@@ -59,7 +60,7 @@
         .replace(/`([^`]+)`/g,'<code>$1</code>');
     }
     function render(md){
-      const lines=md.split(/\r?\n/);let html='<p class="eyebrow">Agent-Operated Repositories · 01</p>';let para=[],quote=[],list=[],listType='',code=[],inCode=false,seenH1=false,seenIntro=false,skipPublication=false,afterRule=false;
+      const lines=md.split(/\r?\n/);let html='<p class="eyebrow">Agent-Operated Repositories · 01 · English · '+langSwitch+'</p>';let para=[],quote=[],list=[],listType='',code=[],inCode=false,seenH1=false,seenIntro=false,skipPublication=false,afterRule=false;
       const flushPara=()=>{if(para.length){const text=para.join(' ');html+=(afterRule?'<p class="article-note">':'<p>')+inline(text)+(afterRule?'</p>':'</p>');para=[];afterRule=false;}};
       const flushQuote=()=>{if(quote.length){html+='<blockquote><p>'+quote.map(inline).join('<br>')+'</p></blockquote>';quote=[];}};
       const flushList=()=>{if(list.length){html+='<'+listType+'>'+list.map(x=>'<li>'+inline(x)+'</li>').join('')+'</'+listType+'>';list=[];listType='';}};
